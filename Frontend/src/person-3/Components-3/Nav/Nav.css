@@ -1,0 +1,45 @@
+.nav{
+    display:  flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: brown;
+    color: white;
+    /* height: 100px; */
+}
+
+.nav .right{
+    margin-left: 30px;
+}
+.nav .right h2{
+/* display: inline; */
+font-size: 20px;
+    color: white;
+    position: relative;
+    padding-right: 10px;
+    padding-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 2px solid #FFD700;
+    border-radius: 10px;
+    color: #FFD700; 
+     text-shadow: 0 0 10px rgba(255, 215, 0, 0.7), 
+                    0 0 20px rgba(255, 215, 0, 0.5),
+                    0 0 30px rgba(255, 215, 0, 0.3),
+                    0 0 40px rgba(255, 215, 0, 0.2);
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.7), 
+                    0 0 20px rgba(255, 215, 0, 0.5),
+                    0 0 30px rgba(255, 215, 0, 0.3),
+                    0 0 40px rgba(255, 215, 0, 0.2);
+}
+.nav .left{
+    display:  flex;
+    justify-content: space-around;
+    align-items: center;   
+}
+.nav .left h2{
+    margin-right: 30px;
+    cursor: pointer;
+}
+.nav .left h2:hover{
+    color:gold;
+}

@@ -1,0 +1,52 @@
+.cat{
+    margin-top:40px ;
+}
+
+.cat .top{
+    background-color: #fff;
+    width: 60vw;
+    
+}
+.cat .top{
+    color: brown;
+    margin-bottom: 40px;
+}
+
+
+.mid {
+    border:2px solid red;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    width: 80%;
+    margin: 0 auto;
+  }
+  
+  .mid img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px; /* Optional for rounded corners */
+  }
+  
+  .bottom {
+    margin-top: 20px;
+    padding: 10px;
+    text-align: center;
+    background-color: #f9f9f9; /* Light background color for the bottom section */
+    border-top: 1px solid #ddd; /* Optional border */
+  }
+  
+  .explore-button {
+    background-color: brown;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px; /* Optional for rounded corners */
+  }
+  
+  .explore-button:hover {
+    background-color: darkred; /* Darker shade for hover effect */
+  }

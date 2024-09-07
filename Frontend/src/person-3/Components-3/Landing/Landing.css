@@ -1,0 +1,18 @@
+.landing{
+    display: flex;
+}
+.landing .left img{
+    width: 50vw;
+    height: 100%;
+}
+.landing .right{
+    width: 50vw;
+    background-color: #fff;
+}
+.landing .right h2{
+    margin-top: 10px;
+}
+.landing .right p{
+    margin-top:25px ;
+   font-size:20px ;
+}
