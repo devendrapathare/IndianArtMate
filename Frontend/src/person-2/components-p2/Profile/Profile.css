@@ -1,0 +1,6 @@
+.profile-container{
+    display: grid;
+    grid-template-columns: 1.25fr 3fr 1fr;
+    height: 100%;
+    background: white;
+}
