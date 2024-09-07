@@ -1,0 +1,7 @@
+.ProfilefeedDisplay-container{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    margin: 20px 0;
+    padding: 20px;
+    background: #FFF9D7;
+}

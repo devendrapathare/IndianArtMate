@@ -1,0 +1,17 @@
+.ProfileDisplay-container {
+    display: flex;
+    flex-direction: column; /* Arrange items in a column */
+    align-items: center;    /* Center items horizontally */
+    padding: 20px;          /* Add padding around the container */
+}
+
+.ProfileDisplay-profile {
+    margin-bottom: 20px; /* Space between profile and feed */
+}
+
+.ProfileDisplay-feed {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive grid with minimum column width of 200px */
+    gap: 0; /* No gaps between grid items */
+    width: 100%; /* Full width of the container */
+}

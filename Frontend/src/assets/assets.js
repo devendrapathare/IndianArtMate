@@ -28,6 +28,53 @@ const images_for_categories = {
 
 export default images_for_categories;
 
+export const allImagesAvailable = [
+  {
+    id: 1,
+    name: 'image1',
+    image: img1
+  },
+  {
+    id: 2,
+    name: 'image2',
+    image: img2
+  },
+  {
+    id: 3,
+    name: 'image3',
+    image: img3
+  },
+  {
+    id: 4,
+    name: 'image4',
+    image: img4
+  },
+  {
+    id: 5,
+    name: 'image5',
+    image: img5
+  },
+  {
+    id: 6,
+    name: 'image6',
+    image: img6
+  }
+  ,{
+    id: 7,
+    name: 'image7',
+    image: img7
+  },
+  {
+    id: 8,
+    name: 'image8',
+    image: img8
+  },
+  {
+    id: 9,
+    name: 'image9',
+    image: img9
+  }
+]
 
 export const assets = {
     profileTest,

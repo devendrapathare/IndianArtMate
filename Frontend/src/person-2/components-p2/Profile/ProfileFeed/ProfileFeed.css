@@ -1,0 +1,20 @@
+.ProfileFeed-container {
+    background: #FFF9D7; 
+    margin: 1px;
+}
+
+.profileFeed-feed {
+    height: 300px;
+    width: 100%;  
+    border: 3px solid #8E4800;
+    overflow: hidden; 
+    display: flex;
+    justify-content: center; 
+    align-items: center;  
+}
+
+.profileFeed-feed img {
+    width: 100%;     
+    height: 100%;    
+    object-fit: cover; 
+}
