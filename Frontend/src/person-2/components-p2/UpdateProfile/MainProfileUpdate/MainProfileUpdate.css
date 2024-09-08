@@ -1,0 +1,10 @@
+.MainProfileUpdate-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* border: 2px solid black; */
+    background: #FFF9D7; 
+    margin: 20px 0;
+    padding: 1rem 2rem;
+    height: 100vh;
+}
