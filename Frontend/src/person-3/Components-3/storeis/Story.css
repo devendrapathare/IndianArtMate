@@ -1,0 +1,96 @@
+.Stories-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .story-cards {
+    width: 80%;
+    margin-bottom: 20px;
+  }
+  
+  .story-card {
+    display: flex;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    justify-content: space-between;
+    align-items: center;
+    background: #FFF9D7; 
+  }
+  
+  .left-section img {
+    width: 150px; 
+    height: 150px; 
+    object-fit: cover; 
+    border-radius: 50%; 
+  }
+  
+  .right-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 20px;
+    width: 100%;
+  }
+  
+  .right-section p {
+    margin: 0;
+    padding: 5px 0;
+  }
+  
+  .right-section p:first-child {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .right-section p:last-child {
+    font-size: 1em;
+    color: #777;
+  }
+  
+  @media (min-width: 768px) {
+    .Stories-section {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+  
+    .story-cards {
+      width: 45%;
+      margin: 10px;
+    }
+  }
+  
+
+  .btn {
+    margin-top: 20px;
+  }
+  
+  .btn button {
+    background-color: brown; /* Primary color */
+    color: #fff; /* Text color */
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  
+  .btn button:hover {
+    background-color: darkred; /* Darker shade of the primary color */
+  }
+  
+  .btn button:focus {
+    outline: none;
+  }
+  
+  .btn button:active {
+    transform: scale(0.98); /* Slightly shrink on click */
+  }
+  

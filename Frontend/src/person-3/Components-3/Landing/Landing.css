@@ -4,10 +4,13 @@
 .landing .left img{
     width: 50vw;
     height: 100%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 .landing .right{
     width: 50vw;
-    background-color: #fff;
+    background: #FFF9D7; 
+    border: 2px solid #ddd;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 .landing .right h2{
     margin-top: 10px;

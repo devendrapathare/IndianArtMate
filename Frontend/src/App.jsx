@@ -10,9 +10,9 @@ function App() {
   return (
     <>
       <Nav />
-      {/* <ProfilePage /> */}
-      {/* <Homepage/> */}
-      <UpdateProfilePage />
+      {/* <ProfilePage />  */}
+      <Homepage/>
+      {/* <UpdateProfilePage /> */}
       <Footer />
 
     </>
