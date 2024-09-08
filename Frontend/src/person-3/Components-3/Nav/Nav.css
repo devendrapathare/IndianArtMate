@@ -2,13 +2,15 @@
     display:  flex;
     justify-content: space-between;
     align-items: center;
-    background-color: brown;
+    background: #6f3d00; 
+    
     color: white;
     /* height: 100px; */
 }
 
 .nav .right{
     margin-left: 30px;
+    
 }
 .nav .right h2{
 /* display: inline; */

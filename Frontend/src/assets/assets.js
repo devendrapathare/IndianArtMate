@@ -25,6 +25,16 @@ import linkedin_icon from './Images/linkedin_icon.png'
 import facebook_icon from './Images/facebook_icon.png'
 import twitter_icon from './Images/twitter_icon.png'
 
+import like from './Images/like.png'
+import dislike from './Images/dislike.png'
+
+
+export const like_dislike_images = {
+  like,
+  dislike
+}
+
+
 const images_for_categories = {
   img1,
   img2,
