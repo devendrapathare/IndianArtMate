@@ -14,7 +14,8 @@ const LeftProfileUpdate = () => {
       reader.readAsDataURL(file);
     }
   };
-
+  // console.log(image);
+  
   return (
     <div className='LeftProfileUpdate-container'>
       <div className='profile-header'>

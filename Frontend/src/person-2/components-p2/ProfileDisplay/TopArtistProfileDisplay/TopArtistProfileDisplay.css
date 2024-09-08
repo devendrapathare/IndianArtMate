@@ -1,6 +1,8 @@
 .TopArtistProfileDisplay-container{
     margin: 20px ;
     background: #FFF9D7;
+    border-radius: 8px; 
+
 }
 
 .TopArtistProfile-header{
@@ -11,6 +13,8 @@
     align-items: center;
     height: 80px;
     width: 100%;
+    border-radius: 8px 8px 0 0;
+
 }
 
 .TopArtistProfile-header p{

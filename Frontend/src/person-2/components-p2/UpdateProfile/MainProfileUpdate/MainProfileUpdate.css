@@ -1,10 +1,118 @@
-.MainProfileUpdate-container{
+.MainProfileUpdate-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    /* border: 2px solid black; */
-    background: #FFF9D7; 
-    margin: 20px 0;
-    padding: 1rem 2rem;
-    height: 100vh;
+    background: #FFF9D7;  
+    margin: 20px 0; 
+    border-radius: 8px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    height: 100vh; 
+    overflow-y: auto; 
 }
+
+.MainProfileUpdate-header {
+    background: #6f3d00;
+    color: #FFF9D7; 
+    text-align: center; 
+    font-size: 1.25rem; 
+    border-radius: 8px 8px 0 0;
+    margin-bottom: 1rem; 
+}
+
+.address-detail-container {
+    padding: 2rem; 
+    background: #FFF9D7; 
+    border-radius: 8px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem; 
+    overflow-y: auto; 
+}
+
+.name-update, .bio-update, .update-profile-type, .update-mobile-no, .update-gender, .update-address {
+    margin-bottom: 1rem; 
+}
+
+input[type="text"], input[type="number"], textarea, select {
+    width: 100%;
+    padding: 0.5rem; 
+    border: 1px solid #d4b86f; 
+    border-radius: 4px; 
+    box-sizing: border-box;
+    background-color: #FFF9D7; 
+    color: #6f3d00; 
+}
+
+textarea {
+    resize: vertical;
+}
+
+.address-detail-container button {
+    background-color: #8E4800;
+    color: #FFF9D7;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 15px;
+    font-size: 0.875rem;
+    font-weight: bold;
+    cursor: pointer;
+    width: 25%;
+    line-height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    align-self: center;
+}
+
+button:hover {
+    background-color: #8c4d2f;  
+}
+
+.address-differentiate {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem; 
+}
+
+.Address-line-one, .Address-line-two, .address-country, .address-state, .address-city {
+    flex: 1;  
+    min-width: 200px; 
+}
+
+.address-country, .address-state, .address-city {
+    margin-bottom: 0; 
+}
+
+select {
+    background-color: #FFF9D7;  
+    color: #6f3d00;  
+}
+
+/* For WebKit browsers (Chrome, Safari) */
+.MainProfileUpdate-container::-webkit-scrollbar {
+    width: 12px;
+}
+
+.MainProfileUpdate-container::-webkit-scrollbar-track {
+    background: #FFF9D7;
+    border-radius: 8px;
+}
+
+.MainProfileUpdate-container::-webkit-scrollbar-thumb {
+    background-color: #6f3d00; 
+    border-radius: 8px;
+    border: 3px solid #FFF9D7; 
+    
+}
+
+.MainProfileUpdate-container::-webkit-scrollbar-thumb:hover {
+    background-color: #8c4d2f; 
+}
+
+
+.MainProfileUpdate-container {
+    scrollbar-width: thin; 
+    scrollbar-color: #6f3d00 #FFF9D7; 
+}
+

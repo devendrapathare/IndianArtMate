@@ -5,6 +5,7 @@
     background: #FFF9D7; 
     margin: 20px;
     height: 100vh;
+    border-radius: 8px; 
 }
 
 .LeftProfileUpdate-image {
@@ -50,7 +51,9 @@
     color: #FFF9D7;
     display: flex;
     justify-content: center;
-    margin-bottom: 225px;
+    margin-bottom: 200px;
+    border-radius: 8px 8px 0 0;
+
 }
 .profile-header p{
     font-weight: 500;
