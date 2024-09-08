@@ -14,6 +14,17 @@ import img7 from './Images/img7.jpg';
 import img8 from './Images/img8.jpg';
 import img9 from './Images/img9.jpg';
 
+import profile1 from './Images/ArtistProfile/profile1.jpeg'
+import profile2 from './Images/ArtistProfile/profile2.jpeg'
+import profile3 from './Images/ArtistProfile/profile3.jpeg'
+import profile4 from './Images/ArtistProfile/profile4.jpeg'
+import profile5 from './Images/ArtistProfile/profile5.jpeg'
+import profile7 from './Images/ArtistProfile/profile7.jpeg'
+
+import linkedin_icon from './Images/linkedin_icon.png'
+import facebook_icon from './Images/facebook_icon.png'
+import twitter_icon from './Images/twitter_icon.png'
+
 const images_for_categories = {
   img1,
   img2,
@@ -76,10 +87,53 @@ export const allImagesAvailable = [
   }
 ]
 
+export const artistProfile = [
+  {
+    id: 1,
+    name: 'artist1',
+    image: profile1,
+    respecters:100
+  },
+  {
+    id: 2,
+    name:'artist2',
+    image: profile2,
+    respecters:200
+  },
+  {
+    id: 3,
+    name:'artist3',
+    image: profile3,
+    respecters:500
+  },
+  {
+    id: 4,
+    name:'artist4',
+    image: profile4,
+    respecters:900
+  },
+  {
+    id: 5,
+    name:'artist5',
+    image: profile5,
+    respecters:150
+  },
+  {
+    id: 6,
+    name:'artist6',
+    image: profile7,
+    respecters: 1000
+  }
+]
+
 export const assets = {
     profileTest,
+    linkedin_icon,
+    facebook_icon,
+    twitter_icon,
 }
 
 export const for_home = {
     port_on_Landing,
+
 }

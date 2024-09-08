@@ -1,0 +1,20 @@
+.TopArtistProfileDisplay-container{
+    margin: 20px ;
+    background: #FFF9D7;
+}
+
+.TopArtistProfile-header{
+    font-weight: 700;
+    font-size: 20px;
+    background-color: #8E4800;
+    display: flex;
+    align-items: center;
+    height: 80px;
+    width: 100%;
+}
+
+.TopArtistProfile-header p{
+    position: relative;
+    left: 60px;
+    color: #FFF9D7;
+}
