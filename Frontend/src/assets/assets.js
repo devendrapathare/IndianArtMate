@@ -28,6 +28,11 @@ import twitter_icon from './Images/twitter_icon.png'
 import like from './Images/like.png'
 import dislike from './Images/dislike.png'
 
+import closeIcone from './Images/close.png'
+
+export const closeI = {
+  closeIcone
+}
 
 export const like_dislike_images = {
   like,

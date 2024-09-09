@@ -1,0 +1,64 @@
+.CreateStore{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.store-left{
+    width: 25%;
+}
+.store-mid {
+    width: 50%;
+    /* margin: 20px auto;  */
+    padding: 20px;
+    border: 2px solid #FF6F61; 
+    background-color: #FFF9D7; 
+    border-radius: 10px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    text-align: center;
+}
+
+
+
+.store-mid form {
+    margin-top: 20px;
+}
+
+.store-mid input[type='text'] {
+    width: 80%;
+    padding: 10px;
+    border: 2px solid #8E4800;;
+    border-radius: 5px;
+    font-size: 16px;
+    outline: none;
+    margin-bottom: 10px;
+    transition: border-color 0.3s ease-in-out;
+}
+
+.store-mid input[type='text']:focus {
+    border-color: #FF3D00; 
+}
+
+.store-mid button {
+    padding: 10px 20px;
+    background-color: brown; 
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.store-mid button:hover {
+    background-color: #FF3D00; /* Darker shade on hover */
+}
+
+.store-mid button:active {
+    background-color: #D9432D; /* Even darker when clicked */
+}
+
+.store-right{
+    width: 25%;
+
+}
