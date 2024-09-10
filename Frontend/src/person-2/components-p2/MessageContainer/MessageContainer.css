@@ -1,0 +1,31 @@
+.MessageContainer-container {
+    display: flex;
+    flex-direction: column;
+    background: #FFF9D7;
+}
+
+
+@media (min-width: 768px) {
+    .MessageContainer-container {
+        min-width: 76.5%;
+    }
+}
+
+.MessageContainer-content{
+    background: #6f3d00;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 0.5rem; 
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.span1{
+    color: #FFF9D7;
+}
+
+.span2{
+    color: #FFF9D7;
+    font-weight: 700;
+    font-size: 16px;
+}

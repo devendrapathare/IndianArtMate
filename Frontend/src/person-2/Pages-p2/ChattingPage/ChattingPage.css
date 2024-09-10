@@ -1,0 +1,17 @@
+.ChattingPage-container {
+    display: flex;
+    border-radius: 0.5rem; 
+    overflow: hidden;
+    background-color: #d1d5db; 
+    background-clip: padding-box; 
+    backdrop-filter: blur(10px); 
+    height: 100%;
+    margin: 20px;
+  }
+  
+  @media (min-width: 768px) {
+    .ChattingPage-container {
+      height: 600px;
+    }
+  }
+  

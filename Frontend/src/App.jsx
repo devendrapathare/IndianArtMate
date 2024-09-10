@@ -7,6 +7,9 @@ import Footer from './person-2/components-p2/Footer/Footer';
 import My_Store from './person-3/Components-3/Store/CreateNewStore/My_Store';
 import UpdateProfilePage from './person-2/Pages-p2/UpdateProfilePage/UpdateProfilePage';
 import Login from './person-3/Components-3/Register/Login/Login';
+import Cart from './person-2/Pages-p2/Cart/Cart';
+import { Route, Routes } from 'react-router-dom';
+import ChattingPage from './person-2/Pages-p2/ChattingPage/ChattingPage';
 
 function App() {
   const [activeComponent, setActiveComponent] = useState('home');
@@ -18,12 +21,14 @@ function App() {
   return (
     <>
       <Nav onNavClick={handleNavClick} />
-
-      {activeComponent === 'home' && <Homepage />}
-      {activeComponent === 'profile' && <ProfilePage />}
-      {activeComponent === 'store' &&  <My_Store/>}
-      {activeComponent === 'login' && <Login/> }
-     
+      <Routes>
+        <Route path='/' element={<Homepage />} />
+        <Route path='/ProfilePage' element={<ProfilePage />} />
+        <Route path='/myStore' element={<My_Store />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/cart' element={<Cart />} />
+        <Route path='/myChats' element={<ChattingPage />} />
+      </Routes>
       <Footer />
     </>
   );
