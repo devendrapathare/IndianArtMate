@@ -28,6 +28,11 @@ import twitter_icon from './Images/twitter_icon.png'
 import like from './Images/like.png'
 import dislike from './Images/dislike.png'
 
+import closeIcone from './Images/close.png'
+
+export const closeI = {
+  closeIcone
+}
 
 export const like_dislike_images = {
   like,
@@ -102,37 +107,43 @@ export const artistProfile = [
     id: 1,
     name: 'artist1',
     image: profile1,
-    respecters:100
+    respecters:100,
+    Contact_info:1234567890
   },
   {
     id: 2,
     name:'artist2',
     image: profile2,
-    respecters:200
+    respecters:200,
+    Contact_info:1234567890
   },
   {
     id: 3,
     name:'artist3',
     image: profile3,
-    respecters:500
+    respecters:500,
+    Contact_info:1234567890
   },
   {
     id: 4,
     name:'artist4',
     image: profile4,
-    respecters:900
+    respecters:900,
+    Contact_info:1234567890
   },
   {
     id: 5,
     name:'artist5',
     image: profile5,
-    respecters:150
+    respecters:150,
+    Contact_info:1234567890
   },
   {
     id: 6,
     name:'artist6',
     image: profile7,
-    respecters: 1000
+    respecters: 1000,
+    Contact_info:1234567890
   }
 ]
 

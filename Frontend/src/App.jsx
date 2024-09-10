@@ -1,22 +1,32 @@
-import './App.css'
-import ProfilePage from './person-2/Pages-p2/profilePage/ProfilePage'
-import Homepage from './person-3/Homepage/Homepage'
-import Nav from './person-3/Components-3/Nav/Nav'
-import Footer from './person-2/components-p2/Footer/Footer'
-import UpdateProfilePage from './person-2/Pages-p2/UpdateProfilePage/UpdateProfilePage'
+import React, { useState } from 'react';
+import './App.css';
+import ProfilePage from './person-2/Pages-p2/profilePage/ProfilePage';
+import Homepage from './person-3/Homepage/Homepage';
+import Nav from './person-3/Components-3/Nav/Nav';
+import Footer from './person-2/components-p2/Footer/Footer';
+import My_Store from './person-3/Components-3/Store/CreateNewStore/My_Store';
+import UpdateProfilePage from './person-2/Pages-p2/UpdateProfilePage/UpdateProfilePage';
+import Login from './person-3/Components-3/Register/Login/Login';
 
 function App() {
+  const [activeComponent, setActiveComponent] = useState('home');
+
+  const handleNavClick = (component) => {
+    setActiveComponent(component); 
+  };
 
   return (
     <>
-      <Nav />
-      {/* <ProfilePage />  */}
-      {/* <Homepage/> */}
-      <UpdateProfilePage />
-      <Footer />
+      <Nav onNavClick={handleNavClick} />
 
+      {activeComponent === 'home' && <Homepage />}
+      {activeComponent === 'profile' && <ProfilePage />}
+      {activeComponent === 'store' &&  <My_Store/>}
+      {activeComponent === 'login' && <Login/> }
+     
+      <Footer />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
