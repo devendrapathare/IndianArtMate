@@ -11,8 +11,8 @@ function App() {
     <>
       <Nav />
       {/* <ProfilePage />  */}
-      <Homepage/>
-      {/* <UpdateProfilePage /> */}
+      {/* <Homepage/> */}
+      <UpdateProfilePage />
       <Footer />
 
     </>
