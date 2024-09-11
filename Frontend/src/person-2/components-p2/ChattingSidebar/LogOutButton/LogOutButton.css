@@ -1,4 +1,4 @@
-.LogOutButton-container{
+/* .LogOutButton-container{
     margin-top: auto;
 }
 
@@ -6,4 +6,21 @@
     width: 1.5rem;
     height: 1.5rem;
     cursor: pointer;
-}
+} */
+
+.LogOutButton-container {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px;
+  }
+  
+  .icon {
+    font-size: 24px;
+    cursor: pointer;
+    color: #333;
+  }
+  
+  .icon:hover {
+    color: #000;
+  }
+  

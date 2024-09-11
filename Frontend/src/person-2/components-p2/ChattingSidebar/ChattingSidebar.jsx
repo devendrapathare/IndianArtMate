@@ -3,6 +3,7 @@ import './ChattingSidebar.css'
 import SearchInputs from './SearchInputs/SearchInputs'
 import Conversations from './Conversations/Conversations'
 import LogOutButton from './LogOutButton/LogOutButton'
+import './tailwind.css'
 
 const ChattingSidebar = () => {
   return (

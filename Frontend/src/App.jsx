@@ -10,6 +10,7 @@ import Login from './person-3/Components-3/Register/Login/Login';
 import Cart from './person-2/Pages-p2/Cart/Cart';
 import { Route, Routes } from 'react-router-dom';
 import ChattingPage from './person-2/Pages-p2/ChattingPage/ChattingPage';
+import Chat from './person-3/Components-3/chat/Chat';
 
 function App() {
   const [activeComponent, setActiveComponent] = useState('home');
@@ -27,7 +28,7 @@ function App() {
         <Route path='/myStore' element={<My_Store />} />
         <Route path='/login' element={<Login />} />
         <Route path='/cart' element={<Cart />} />
-        <Route path='/myChats' element={<ChattingPage />} />
+        <Route path='/myChats' element={<Chat />} />
       </Routes>
       <Footer />
     </>
