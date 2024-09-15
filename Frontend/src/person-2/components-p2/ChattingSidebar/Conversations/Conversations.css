@@ -1,9 +1,9 @@
-.Conversations-container{
+/* .Conversations-container{
     overflow: auto;
 }
 
 
-/* For WebKit browsers (Chrome, Safari) */
+
 .Conversations-container::-webkit-scrollbar {
     width: 12px;
 }
@@ -23,8 +23,13 @@
     background-color: #8c4d2f;
 }
 
-/* For Firefox */
 .Conversations-container {
     scrollbar-width: thin; 
     scrollbar-color: #6f3d00 #FFF9D7; 
-}
+} */
+.Conversations-container {
+    overflow-y: auto;
+    max-height: 100vh;
+    padding: 10px;
+  }
+  

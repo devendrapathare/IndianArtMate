@@ -1,0 +1,135 @@
+.my-chat-box{
+    display: flex;
+}
+
+
+.side-bar {
+    width: 25%;
+    height: 100vh; 
+    background-color: #f4f2ec; 
+    border-right: 2px solid #9b6a28; 
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .user-list {
+    flex-grow: 1; 
+    padding: 20px 10px;
+    overflow-y: auto; 
+    max-height: calc(100vh - 100px); 
+  }
+
+  #search{
+    outline: none;
+    margin-bottom: 20px;
+  }
+  
+  .user-card {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background-color: #fff; 
+    margin-bottom: 10px; 
+    border-radius: 10px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    transition: background-color 0.3s ease; 
+  }
+  
+  .user-card:hover {
+    background-color: #f3e2ca; 
+  }
+  
+  .user-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%; /* Circular image */
+    margin-right: 15px; /* Space between image and text */
+    object-fit: cover; /* Makes sure image fits nicely */
+  }
+  
+  .user-info h4, .user-info h5 {
+    margin: 0;
+    font-size: 14px;
+    color: #9b6a28; /* Brown color to match theme */
+    font-weight: bold;
+  }
+  
+  .user-info h5 {
+    font-size: 12px;
+    font-weight: normal;
+  }
+  
+  .user-info p {
+    margin: 5px 0 0;
+    font-size: 12px;
+    color: #a6a6a6; /* Gray for message text */
+  }
+
+  /* Scrollbar styling for WebKit browsers (Chrome, Safari) */
+.user-list::-webkit-scrollbar {
+    width: 4px; /* Width of the scrollbar */
+}
+
+.user-list::-webkit-scrollbar-thumb {
+    background-color: brown; /* Color of the scrollbar */
+    border-radius: 10px; /* Rounded corners for the scrollbar */
+}
+
+.user-list::-webkit-scrollbar-track {
+    background-color: #f4f2ec; /* Background color of the scrollbar track */
+}
+
+/* If you need similar styling for Firefox, add: */
+.user-list {
+    scrollbar-width: thin; /* Makes scrollbar thinner */
+    scrollbar-color: brown #f4f2ec; /* Scrollbar color and track color */
+}
+
+  
+.chat-field{
+    display: flex;
+    flex-direction: column;
+    width: 55%;
+    border-right: 2px solid brown;
+    border-bottom: 2px solid brown;
+
+    
+}
+.chat-field .visible-chat{
+    height: 80%;
+}
+.chat-field .chat-input{
+    height: 20%;
+    margin-left: 20px;
+    margin-right: 20px;
+    display: flex;
+    justify-content: center;
+
+}
+
+.chat-field .chat-input input{
+    height: 60px;
+    outline: none;
+}
+.chat-field .chat-input button{
+    background-color: brown;
+    outline: none;
+    border: none;
+    color: white;
+    font-size: 18px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    height: 60px;
+    width: 100px;
+
+}
+
+
+.notification{
+    width: 20%;
+    border-bottom: 2px solid brown;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+

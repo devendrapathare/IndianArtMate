@@ -1,3 +1,9 @@
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities; */
+
+
+
 .text-color{
     color: #FFF9D7;
 
