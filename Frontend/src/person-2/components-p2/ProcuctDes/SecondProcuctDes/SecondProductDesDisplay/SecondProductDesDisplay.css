@@ -1,0 +1,8 @@
+.SecondProductDesDisplay-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+    height: 100%;
+    width: 100%;
+}

@@ -1,0 +1,32 @@
+.ThirdProductDes-container {
+    line-height: 1.6;
+    padding: 20px;
+}
+
+.ThirdProductDes-container p{
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.add-dis {
+    margin-bottom: 1rem;
+    padding: 20px;
+}
+
+.toggle-button-container{
+    align-self: center;
+}
+
+.toggle-button {
+    background-color: transparent;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 0;
+}
+
+.toggle-button:hover {
+    text-decoration: underline;
+}

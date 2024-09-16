@@ -1,0 +1,146 @@
+.FirstProuctDes-container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    gap: 20px;
+}
+
+.FirstProuctDes-img {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background-color: #bfae8c;
+    border: 2px solid #6f3d00;
+    border-radius: 8px;
+    height: 100%;
+    padding: 20px;
+}
+
+.FirstProuctDes-img img {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.FirstProuctDes-main-info {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.FirstProuctDes-main-info h2{
+    align-self: center;
+}
+
+.price{
+    padding-left: 50px;
+    display: flex;
+    gap: 20px;
+    align-items: center
+}
+
+.price p{
+    font-size: 25px;
+    font-weight: 700;
+    color: brown;
+}
+
+.price div p{
+    font-size: 14px;
+    color: black;
+    opacity: 0.5;
+}
+
+
+.summery{
+    padding: 0 20px;
+}
+
+.summery p{
+    color: #6f3d00;
+}
+
+.item-owner p{
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.owner-profile{
+    display: flex;
+    gap: 25px;
+    background: #bfae8c;
+    align-items: center;
+    padding-left: 40px;
+    border-radius: 10%;
+    margin-bottom: 20px;
+    width: 20.5rem;
+    margin-left: 165px;
+    position: relative;
+    bottom: 15px;
+    border: 2px solid #6f3d00;
+}
+
+.owner-img{
+    border-radius: 50%;         
+    height: 70px;               
+    width: 70px;                
+    overflow: hidden;            
+    border: 2px solid #ddd;     
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.owner-img img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.owner-name p{
+    position: relative;
+    top: 5px;
+}
+
+.owner-respecters{
+    position: relative;
+    bottom: 5px;
+}
+
+.buttons{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 40px 0;
+    gap: 50px;
+}
+
+.buttons button{
+    background-color: #8E4800;
+    color: #FFF9D7;
+    border: none;
+    border-radius: 4px;
+    padding: 25px 40px;
+    font-size: 1.25rem;
+    font-weight: bold;
+    cursor: pointer;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-radius: 25px;
+}
+
+.buttons button:hover {
+    background-color: #A65E00;
+}
+
+.buttons button:active {
+    background-color: #6D3F00; 
+    transform: scale(0.95); 
+}

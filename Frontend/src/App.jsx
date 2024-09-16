@@ -11,25 +11,27 @@ import Cart from './person-2/Pages-p2/Cart/Cart';
 import { Route, Routes } from 'react-router-dom';
 import ChattingPage from './person-2/Pages-p2/ChattingPage/ChattingPage';
 import Chat from './person-3/Components-3/chat/Chat';
+import ProductDesPage from './person-2/Pages-p2/ProductDesPage/ProductDesPage';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
-  const [activeComponent, setActiveComponent] = useState('home');
-
-  const handleNavClick = (component) => {
-    setActiveComponent(component); 
-  };
+  const [showLogin, setshowLogin] = useState(false);
 
   return (
     <>
-      <Nav onNavClick={handleNavClick} />
-      <Routes>
-        <Route path='/' element={<Homepage />} />
-        <Route path='/ProfilePage' element={<ProfilePage />} />
-        <Route path='/myStore' element={<My_Store />} />
-        <Route path='/login' element={<Login />} />
-        <Route path='/cart' element={<Cart />} />
-        <Route path='/myChats' element={<Chat />} />
-      </Routes>
+      {showLogin ? <Login setshowLogin={setshowLogin} /> : <></>}
+      <div className="app">
+        <Nav setshowLogin={setshowLogin} />
+        <Routes>
+          <Route path='/' element={<Homepage />} />
+          <Route path='/ProfilePage' element={<ProfilePage />} />
+          <Route path='/myStore' element={<My_Store />} />
+          <Route path='/cart' element={<Cart />} />
+          <Route path='/myChats' element={<Chat />} />
+          <Route path='/productDes' element={<ProductDesPage />} />
+        </Routes>
+        <Toaster />
+      </div>
       <Footer />
     </>
   );

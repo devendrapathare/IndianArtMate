@@ -28,11 +28,14 @@ import twitter_icon from './Images/twitter_icon.png'
 import like from './Images/like.png'
 import dislike from './Images/dislike.png'
 
-import closeIcone from './Images/close.png'
+import closeIcon from './Images/close.png'
 
-export const closeI = {
-  closeIcone
-}
+import fast_delivery from './Images/fast-delivery.png';
+import cash_on_delivery from './Images/cash-on-delivery.png';  
+import product_return from './Images/product-return.png';
+import police_icon from './Images/police.png';
+
+import logout_icon from './Images/logout.png'
 
 export const like_dislike_images = {
   like,
@@ -152,7 +155,32 @@ export const assets = {
     linkedin_icon,
     facebook_icon,
     twitter_icon,
+    closeIcon,
+    logout_icon,
 }
+
+export const forSecondProductDes = [
+  {
+    id: 1,
+    img: fast_delivery,
+    title: 'Fast Delivery'
+  },
+  {
+    id: 2,
+    img: cash_on_delivery,
+    title: 'Cash on Delivery'
+  },
+  {
+    id: 3,
+    img: product_return,
+    title: 'Product Return'
+  },
+  {
+    id: 4,
+    img: police_icon,
+    title: 'Secure Transition'
+  }
+]
 
 export const for_home = {
     port_on_Landing,
