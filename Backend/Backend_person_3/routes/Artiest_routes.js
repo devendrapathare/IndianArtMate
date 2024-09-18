@@ -44,6 +44,33 @@ router.get('/store_by_arti/:artiId', async (req, res) => {
     }
 });
 
+router.get('/check_store/:userId', async (req, res) => {
+  try {
+      const userId = req.params.userId;
+      const user = await Arti.findById(userId);
+
+      if (!user) {
+          return res.status(404).json({ message: 'User not found' });
+      }
+
+      const storeId = user.store_id;
+
+      if (storeId) {
+          const store = await Store.findById(storeId).populate('list_of_store_arties');
+          return res.status(200).json({
+              hasStore: true,
+              store: store,
+              // arties: store.list_of_store_arties
+          });
+      } else {
+          return res.status(200).json({ hasStore: false });
+      }
+  } catch (error) {
+      console.error("Error checking store:", error);
+      return res.status(500).json({ error: 'Failed to check store' });
+  }
+});
+
 
 router.get('/users', async (req, res) => {
     try {
@@ -67,7 +94,7 @@ router.post('/create_store', async (req, res) => {
       const artiest =  await  Arti.findById(userId)
       const newStore = new Store({
         owner_id: userId,
-        owner_name: artiest.name || "sam", 
+        owner_name: artiest.userName, 
         store_name: storeName,
         list_of_store_arties: [] 
       });

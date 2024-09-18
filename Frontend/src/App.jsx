@@ -13,12 +13,16 @@ import ChattingPage from './person-2/Pages-p2/ChattingPage/ChattingPage';
 import Chat from './person-3/Components-3/chat/Chat';
 import ProductDesPage from './person-2/Pages-p2/ProductDesPage/ProductDesPage';
 import { Toaster } from 'react-hot-toast';
+import UploadPost from './person-2/components-p2/UploadPost/UploadPost';
 
 function App() {
   const [showLogin, setshowLogin] = useState(false);
 
   return (
     <>
+     
+      
+    
       {showLogin ? <Login setshowLogin={setshowLogin} /> : <></>}
       <div className="app">
         <Nav setshowLogin={setshowLogin} />
@@ -29,10 +33,12 @@ function App() {
           <Route path='/cart' element={<Cart />} />
           <Route path='/myChats' element={<Chat />} />
           <Route path='/productDes' element={<ProductDesPage />} />
+          <Route path='/UpdateProfilePage' element={<UpdateProfilePage />} />
         </Routes>
         <Toaster />
       </div>
       <Footer />
+     
     </>
   );
 }

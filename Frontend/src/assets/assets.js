@@ -36,6 +36,7 @@ import product_return from './Images/product-return.png';
 import police_icon from './Images/police.png';
 
 import logout_icon from './Images/logout.png'
+import upload_photo from './Images/upload-file.png'
 
 export const like_dislike_images = {
   like,
@@ -157,6 +158,7 @@ export const assets = {
     twitter_icon,
     closeIcon,
     logout_icon,
+    upload_photo,
 }
 
 export const forSecondProductDes = [

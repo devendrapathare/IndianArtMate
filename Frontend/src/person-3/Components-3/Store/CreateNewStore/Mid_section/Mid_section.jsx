@@ -1,16 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import './Mid_section.css';
+import { useAuthContext } from '../../../../../person-2/context/AuthContext/AuthContext'; 
+
 
 const Mid_section = () => {
   const [storeData, setStoreData] = useState(null);
   const [error, setError] = useState(null); 
-  const storeId = '66e98753c2f967e8e422269b'; 
+  const { authUser } = useAuthContext();
+  console.log("User info from AuthContext:", authUser);
+
+  const userId = authUser?._id; 
+  console.log("User ID:", userId);
+
 
   useEffect(() => {
     const fetchStoreData = async () => {
       try {
         console.log("entry"); 
-        const response = await fetch(`http://localhost:4000/store_by_arti/${storeId}`);
+        const response = await fetch(`http://localhost:4000/store_by_arti/${userId}`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -25,12 +32,10 @@ const Mid_section = () => {
     fetchStoreData();
   }, []);
   
-  // Handle case when received storeData is null
   if (storeData === null) {
     return <div>No store data available</div>;
   }
 
-  // Display loading state if data is not fetched yet
   if (!storeData) {
     return <div>Loading...</div>;
   }
@@ -55,7 +60,7 @@ const Mid_section = () => {
             </div>
           ))
         ) : (
-          <div>No arties found</div>
+          <div>No arties currently</div>
         )}
       </div>
     </>
