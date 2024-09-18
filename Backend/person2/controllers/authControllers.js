@@ -47,6 +47,7 @@ export const signupUser = async (req, res) => {
                 profilePic: newUser.profilePic
     
             })
+            console.log("new user is here")
         }
         else {
             res.status(400).json({ error: "Failed to Create User Since it is Invalid" })
@@ -109,12 +110,14 @@ export const loginUser = async (req, res) => {
 
 export const logOutUser = async (req, res) => {
     try {
-
+        
         res.cookie("jwt","",{maxAge:0})
         res.status(200).json({ message: "User logged out successfully" })
-
+        
     } catch (error) {
         console.log("Error in authController.js logoutUser", error.message);
         res.status(500).json({ error: "Error in authController.js logoutUser" })
     }
 }
+
+

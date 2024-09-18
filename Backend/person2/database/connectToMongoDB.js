@@ -2,13 +2,18 @@ import mongoose from 'mongoose';
 
 const connectToMongoDB = async () => {
     try {
+        const mongoURI = process.env.MONGO_DB_URI || 'mongodb://localhost:27017/Indian_ArtMate';
 
-        await mongoose.connect(process.env.MONGO_DB_URI);
-        console.log('Connected to MongoDB');
-        
+        await mongoose.connect(mongoURI, {
+        });
+
+        console.log('Successfully connected to the Indian_ArtMate database');
+
+       
+
     } catch (error) {
-        console.log("Error connecting to MongoDB from connectToMongoDB.js",error.messge);
-        
+        console.error("Error connecting to MongoDB from connectToMongoDB.js:", error.message || error);
+        process.exit(1);
     }
 }
 
