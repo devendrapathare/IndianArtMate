@@ -1,8 +1,16 @@
 import React from 'react'
 import './ProfileInfo.css'
 import { assets } from '../../../../assets/assets'
+import { useNavigate } from 'react-router-dom'
 
-const ProfileInfo = () => {
+const ProfileInfo = ({setshowUploadPost}) => {
+
+    const navigate = useNavigate();
+
+    const handleUpdateProfileClick = () =>{
+        navigate('/UpdateProfilePage')
+    }
+
     return (
         <div className="profileInfo-container">
             <div className="profileInfo-profile-icon">
@@ -15,7 +23,7 @@ const ProfileInfo = () => {
 
             <div className="profileInfo-buttons">
                 <button className="profileIcon-respect-button">Respect</button>
-                <button className="profileIcon-update-profile-button profileIcon-respect-button">Update Profile</button>
+                <button onClick={handleUpdateProfileClick} className="profileIcon-update-profile-button profileIcon-respect-button">Update Profile</button>
             </div>
 
             <div className="middle">
@@ -29,7 +37,7 @@ const ProfileInfo = () => {
             </div>
 
             <div className="profileInfo-buttons">
-                <button className="profileIcon-respect-button">Upload</button>
+                <button onClick={() =>setshowUploadPost(false)} className="profileIcon-respect-button">Upload</button>
                 <button className="profileIcon-update-profile-button profileIcon-respect-button">Story</button>
             </div>
 

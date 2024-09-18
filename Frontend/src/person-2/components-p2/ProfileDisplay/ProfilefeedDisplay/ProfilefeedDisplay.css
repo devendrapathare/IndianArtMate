@@ -4,4 +4,34 @@
     margin: 20px 0;
     padding: 20px;
     background: #FFF9D7;
+    height: 120vh;
+    overflow: auto;
+    border-radius: 8px;
+}
+
+/* For WebKit browsers (Chrome, Safari) */
+.ProfilefeedDisplay-container::-webkit-scrollbar {
+    width: 12px;
+}
+
+.ProfilefeedDisplay-container::-webkit-scrollbar-track {
+    background: #FFF9D7;
+    border-radius: 8px;
+}
+
+.ProfilefeedDisplay-container::-webkit-scrollbar-thumb {
+    background-color: #6f3d00; 
+    border-radius: 8px;
+    border: 3px solid #FFF9D7; 
+    
+}
+
+.ProfilefeedDisplay-container::-webkit-scrollbar-thumb:hover {
+    background-color: #8c4d2f; 
+}
+
+
+.ProfilefeedDisplay-container {
+    scrollbar-width: thin; 
+    scrollbar-color: #6f3d00 #FFF9D7; 
 }
