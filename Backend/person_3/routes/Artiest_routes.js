@@ -1,8 +1,9 @@
-const mongoose = require('mongoose');
-const express = require('express');
+import express from 'express';
+// import Store from '../models/StoreSchema.js';
+import Store from '../models/StoreSchema.js';
+import Arti from '../../person2/models/userModels.js';
+
 const router = express.Router();
-const Store = require('../models/StoreSchema');
-const Arti = require('../models/UserSchema'); 
 
 
 router.get("/sam", (req, res) => {
@@ -126,4 +127,4 @@ router.post('/create_store', async (req, res) => {
   });
   
 
-module.exports = router;
+export default  router;

@@ -34,7 +34,7 @@ const CreateStore = () => {
     };
 
     try {
-      const response = await fetch('http://localhost:4000/create_store', {
+      const response = await fetch('http://localhost:5000/create_store', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -59,7 +59,7 @@ const CreateStore = () => {
       // console.log("Creating store for user:", userId);  
 
       try {
-        const response = await fetch(`http://localhost:4000/check_store/${userId}`);
+        const response = await fetch(`http://localhost:5000/check_store/${userId}`);
         if (response.ok) {
           const data = await response.json();
           console.log('Data:', data);

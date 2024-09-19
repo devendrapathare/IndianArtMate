@@ -17,7 +17,7 @@ const Mid_section = () => {
     const fetchStoreData = async () => {
       try {
         console.log("entry"); 
-        const response = await fetch(`http://localhost:4000/store_by_arti/${userId}`);
+        const response = await fetch(`http://localhost:5000/store_by_arti/${userId}`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
