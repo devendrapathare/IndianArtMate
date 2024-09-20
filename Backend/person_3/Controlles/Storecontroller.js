@@ -1,17 +1,7 @@
-import express from 'express';
-// import Store from '../models/StoreSchema.js';
 import Store from '../models/StoreSchema.js';
 import Arti from '../../person2/models/userModels.js';
 
-const router = express.Router();
-
-
-router.get("/sam", (req, res) => {
-    res.send("yes, I'm here");
-});
-
-
-router.get('/store_by_arti/:artiId', async (req, res) => {
+export const Find_store_artiest = async(req, res) => {
     try {
         const artiId = req.params.artiId; 
         const artiData = await Arti.findById(artiId);
@@ -29,7 +19,7 @@ router.get('/store_by_arti/:artiId', async (req, res) => {
         const storeData = await Store.findById(storeId);
 
         if (storeData) {
-            const artieIds = storeData.list_of_store_arties;
+            const artieIds = storeData.list_of_store_artiest;
             const artiesData = await Arti.find({ _id: { $in: artieIds } });
 
             return res.status(201).json({
@@ -43,37 +33,38 @@ router.get('/store_by_arti/:artiId', async (req, res) => {
         console.error("Error fetching store or arties:", e);
         return res.status(500).json({ error: "Failed to fetch data" });
     }
-});
+}
 
-router.get('/check_store/:userId', async (req, res) => {
-  try {
-      const userId = req.params.userId;
-      const user = await Arti.findById(userId);
 
-      if (!user) {
-          return res.status(404).json({ message: 'User not found' });
-      }
-
-      const storeId = user.store_id;
-
-      if (storeId) {
-          const store = await Store.findById(storeId).populate('list_of_store_arties');
-          return res.status(200).json({
-              hasStore: true,
-              store: store,
-              // arties: store.list_of_store_arties
-          });
-      } else {
-          return res.status(200).json({ hasStore: false });
-      }
-  } catch (error) {
-      console.error("Error checking store:", error);
-      return res.status(500).json({ error: 'Failed to check store' });
+export const check_user_has_store_or_not=async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const user = await Arti.findById(userId);
+  
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+  
+        const storeId = user.store_id;
+  
+        if (storeId) {
+            const store = await Store.findById(storeId).populate('list_of_store_arties');
+            return res.status(200).json({
+                hasStore: true,
+                store: store,
+                // arties: store.list_of_store_arties
+            });
+        } else {
+            return res.status(200).json({ hasStore: false });
+        }
+    } catch (error) {
+        console.error("Error checking store:", error);
+        return res.status(500).json({ error: 'Failed to check store' });
+    }
   }
-});
 
 
-router.get('/users', async (req, res) => {
+export const fetch_any_user_data_by_id = async (req, res) => {
     try {
         const users = await Arti.find();
 
@@ -86,9 +77,10 @@ router.get('/users', async (req, res) => {
         console.error("Error fetching users:", error);
         return res.status(500).json({ error: "Failed to fetch users" });
     }
-});
+}
 
-router.post('/create_store', async (req, res) => {
+
+export const create_store = async (req, res) => {
     const { userId, storeName } = req.body;
   
     try {
@@ -124,7 +116,4 @@ router.post('/create_store', async (req, res) => {
       console.error('Error creating store and updating user:', error);
       res.status(500).json({ error: 'Failed to create store and update user' });
     }
-  });
-  
-
-export default  router;
+  }

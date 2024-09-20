@@ -4,7 +4,7 @@ import cors from 'cors'
 import authRouters from './person2/routes/authRoutes.js'
 import userPosts from './person2/routes/userPosts.js'
 import connectToMongoDB from './person2/database/connectToMongoDB.js'
-import artiest_rout from './person_3/routes/Artiest_routes.js'
+import artiest_rout from './person_3/routes/StoreRoutes.js'
 
 const app = express();
 
