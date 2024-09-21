@@ -10,8 +10,6 @@ import UploadPost from '../UploadPost/UploadPost'
 const Profile = () => {
 
   const [showUploadPost, setshowUploadPost] = useState(true)
-  console.log(("shoesss",showUploadPost));
-  
 
   return (
     <div className='profile-container'>

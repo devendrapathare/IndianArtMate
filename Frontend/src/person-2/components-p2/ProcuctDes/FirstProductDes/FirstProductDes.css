@@ -38,6 +38,18 @@
     align-self: center;
 }
 
+.header-title{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.header-title p{
+    opacity: 0.6;
+    align-self: flex-end;
+}
+
 .price{
     padding-left: 50px;
     display: flex;

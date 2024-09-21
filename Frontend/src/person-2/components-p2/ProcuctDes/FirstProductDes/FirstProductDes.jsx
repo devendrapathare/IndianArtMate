@@ -2,26 +2,33 @@ import React from 'react'
 import './FirstProductDes.css'
 import images_for_categories, { assets } from '../../../../assets/assets'
 
-const FirstProductDes = () => {
-  console.log(images_for_categories.img1);
+const FirstProductDes = ({ image,category,description,price,title }) => {
+
+  const maxDescriptionLength = 150;
 
   return (
     <div className='FirstProuctDes-container'>
       <div className="FirstProuctDes-img">
-        <img src={images_for_categories.img1} alt="" />
+        <img src={image} alt="" />
       </div>
       <div className="FirstProuctDes-main-info">
-        <h2>Product Name</h2>
+        <div className="header-title">
+        <h2>{title}</h2>
+        <p>({category})</p>
+        </div>
         <hr />
         <div className="price">
-          <p>₹100</p>
+          <p>₹{price}</p>
           <div>
           <p>No hidden fees – all taxes are included!</p>
           </div>
         </div>
         <hr />
         <div className="summery">
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Architecto autem nulla magni rem quaerat, dolore officia libero doloribus deserunt ad id eveniet modi maxime perspiciatis?</p>
+          <p>
+          {description && description.length > maxDescriptionLength
+              ? `${description.substring(0, maxDescriptionLength)}...`
+              : description}          </p>
         </div>
         <hr />
         <div className="item-owner">
