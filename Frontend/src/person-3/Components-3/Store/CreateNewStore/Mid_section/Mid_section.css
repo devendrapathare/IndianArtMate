@@ -17,9 +17,18 @@
     padding: 10px;
 }
 
+#arti-chat{
+    background-color: #8E4800;
+    text-align: center;
+    width: 80px;
+    border-radius: 10px;
+}
+
 .artist_card{
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    
     border-bottom: 2px solid brown;
 }
 .artist_card .artist_card_left{

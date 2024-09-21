@@ -15,17 +15,48 @@ const userSchema = new mongoose.Schema({
         required: true,
         minlength: 8
     },
+    bio: {
+        type: String,
+        default: ''
+    },
     gender: {
         type: String,
         required: true,
         enum: ["male", "female"]
     },
-    profilePic:{
-        type:String,
-        default:""
+    profilePic: {
+        type: String,
+        default: ""
     },
-},{timestamps:true})
+    store_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Store", 
+        default: null 
+    },
+    respecting: {
+        type: [mongoose.Schema.Types.ObjectId],  
+        ref: "User",
+        default: []  
+    },
+    respectors: {
+        type: [mongoose.Schema.Types.ObjectId],  
+        ref: "User",
+        default: []  
+    },
+    addressLine1: {
+        type: String,
+        default: ''
+    },
+    addressLine2: {
+        type: String,
+        default: ''
+    },
+    profile_type: {
+        type: String, 
+        default : ''
+    }
+}, { timestamps: true });
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model("User", userSchema, "users");
 
-export default User
+export default User;

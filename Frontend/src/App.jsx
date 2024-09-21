@@ -20,6 +20,9 @@ function App() {
 
   return (
     <>
+     
+      
+    
       {showLogin ? <Login setshowLogin={setshowLogin} /> : <></>}
       <div className="app">
         <Nav setshowLogin={setshowLogin} />
@@ -35,6 +38,7 @@ function App() {
         <Toaster />
       </div>
       <Footer />
+     
     </>
   );
 }

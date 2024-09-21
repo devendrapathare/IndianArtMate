@@ -1,92 +1,76 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './MainProfileUpdate.css';
+import { useAuthContext } from '../../../../person-2/context/AuthContext/AuthContext'; 
+import axios from 'axios';  
+import { useNavigate } from 'react-router-dom';
+// import somthing from ''
+
 
 const MainProfileUpdate = () => {
-  const [countries] = useState([
-    { 
-      name: 'India', 
-      states: [
-        { name: 'Delhi', cities: ['New Delhi', 'South Delhi', 'North Delhi'] },
-        { name: 'Maharashtra', cities: ['Mumbai', 'Pune', 'Nagpur'] },
-        { name: 'Karnataka', cities: ['Bengaluru', 'Mysuru', 'Hubli'] }
-      ]
-    },
-    { 
-      name: 'United States', 
-      states: [
-        { name: 'California', cities: ['Los Angeles', 'San Francisco', 'San Diego'] },
-        { name: 'New York', cities: ['New York City', 'Buffalo', 'Rochester'] },
-        { name: 'Texas', cities: ['Houston', 'Dallas', 'Austin'] }
-      ]
-    },
-    { 
-      name: 'Canada', 
-      states: [
-        { name: 'Ontario', cities: ['Toronto', 'Ottawa', 'Hamilton'] },
-        { name: 'Quebec', cities: ['Montreal', 'Quebec City', 'Gatineau'] },
-        { name: 'British Columbia', cities: ['Vancouver', 'Victoria', 'Kelowna'] }
-      ]
-    },
-    { 
-      name: 'United Kingdom', 
-      states: [
-        { name: 'England', cities: ['London', 'Manchester', 'Birmingham'] },
-        { name: 'Scotland', cities: ['Edinburgh', 'Glasgow', 'Aberdeen'] },
-        { name: 'Wales', cities: ['Cardiff', 'Swansea', 'Newport'] }
-      ]
-    },
-    { 
-      name: 'Australia', 
-      states: [
-        { name: 'New South Wales', cities: ['Sydney', 'Newcastle', 'Wollongong'] },
-        { name: 'Victoria', cities: ['Melbourne', 'Geelong', 'Ballarat'] },
-        { name: 'Queensland', cities: ['Brisbane', 'Gold Coast', 'Cairns'] }
-      ]
-    },
-    { 
-      name: 'Germany', 
-      states: [
-        { name: 'Berlin', cities: ['Berlin'] },
-        { name: 'Bavaria', cities: ['Munich', 'Nuremberg', 'Augsburg'] },
-        { name: 'Hesse', cities: ['Frankfurt', 'Wiesbaden', 'Kassel'] }
-      ]
-    },
-    { 
-      name: 'France', 
-      states: [
-        { name: 'Île-de-France', cities: ['Paris', 'Versailles', 'Boulogne-Billancourt'] },
-        { name: 'Auvergne-Rhône-Alpes', cities: ['Lyon', 'Clermont-Ferrand', 'Grenoble'] },
-        { name: 'Provence-Alpes-Côte d\'Azur', cities: ['Marseille', 'Nice', 'Toulon'] }
-      ]
-    },
-  ]);
+  const { authUser } = useAuthContext();
+  const userId = authUser?._id; 
+  const [user, setUser] = useState({}); 
+  const navigate = useNavigate();
 
-  const [states, setStates] = useState([]);
-  const [cities, setCities] = useState([]);
-  const [selectedCountry, setSelectedCountry] = useState('');
-  const [selectedState, setSelectedState] = useState('');
+  // = () => {
+  //     navigate('../UpdateProfile');
+  // };
 
-  const handleCountryChange = (e) => {
-    const country = e.target.value;
-    setSelectedCountry(country);
-    const selectedCountryData = countries.find(c => c.name === country);
-    if (selectedCountryData) {
-      setStates(selectedCountryData.states);
-    } else {
-      setStates([]);
-    }
-    setSelectedState('');
-    setCities([]);
+  const [formData, setFormData] = useState({
+    userName: '',
+    bio: '',
+    email: '',
+    addressLine1: '',  
+    addressLine2: '',
+    profile_type: '',  
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/users/${userId}`);
+        const userData = response.data;
+        setUser(userData); 
+        setFormData({
+          userName: userData.userName || '',
+          bio: userData.bio || '',
+          email: userData.email || '',
+          addressLine1: userData.addressLine1 || '',
+          addressLine2: userData.addressLine2 || '',
+          profile_type: userData.profile_type || '',  // Fetching profile_type from API
+        });
+      } catch (e) {
+        console.log("Error fetching data:", e);
+      }
+    };
+    fetchData();
+  }, [userId]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
-  const handleStateChange = (e) => {
-    const state = e.target.value;
-    setSelectedState(state);
-    const selectedStateData = states.find(s => s.name === state);
-    if (selectedStateData) {
-      setCities(selectedStateData.cities);
-    } else {
-      setCities([]);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // If fields are empty, use the original user data fetched from the API
+    const updatedData = {
+      userName: formData.userName || user.userName,
+      bio: formData.bio || user.bio,
+      email: formData.email || user.email,
+      addressLine1: formData.addressLine1 || user.addressLine1,
+      addressLine2: formData.addressLine2 || user.addressLine2,
+      profile_type: formData.profile_type || user.profile_type,  // Include profile_type
+    };
+
+    try {
+      const response = await axios.put(`http://localhost:5000/profile/update/${userId}`, updatedData);
+      alert('Profile updated successfully!');
+      console.log("Updated data:", response.data);
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      alert('Failed to update profile.');
     }
   };
 
@@ -95,79 +79,85 @@ const MainProfileUpdate = () => {
       <div className="MainProfileUpdate-header">
         Update Details Here
       </div>
-      <form className='address-detail-container'>
+      <form className='address-detail-container' onSubmit={handleSubmit}>
         <div className="name-update">
           <span>Name:</span>
-          <input type="text" placeholder='Enter New Name' />
+          <input 
+            type="text" 
+            name="userName" 
+            value={formData.userName} 
+            onChange={handleChange} 
+            placeholder="Enter your name" 
+            required 
+          />
         </div>
 
         <div className="bio-update">
           <span>Bio:</span>
-          <textarea placeholder='Enter New Bio'></textarea>
+          <textarea 
+            name="bio" 
+            value={formData.bio} 
+            onChange={handleChange} 
+            placeholder="Enter your bio"
+          ></textarea>
         </div>
 
-        <div className="update-profile-type">
+        <div className="email-update">
+          <span>Email:</span>
+          <input 
+            type="email" 
+            name="email" 
+            value={formData.email} 
+            onChange={handleChange} 
+            placeholder="Enter your email" 
+            required 
+          />
+        </div>
+        <div className="profile-type-update">
           <span>Profile Type:</span>
-          <select name="Profile Type" id="">
-            <option value="buyer">Buyer</option>
-            <option value="seller">Seller</option>
-          </select>
-        </div>
-
-        <div className="update-mobile-no">
-          <span>Mobile No:</span>
-          <input type="number" placeholder='Enter New Mobile No' />
-        </div>
-
-        <div className="update-gender">
-          <span>Gender:</span>
-          <select name="Gender" id="">
-            <option value="male">Male</option>
-            <option value="female">Female</option>
+          <select 
+            name="profile_type" 
+            value={formData.profile_type} 
+            onChange={handleChange} 
+            required
+          >
+            <option value="">Select a profile type</option>
+            <option value="Painting">Painter</option>
+            <option value="Handlooms">Handloom Artiest</option>
+            <option value="Handcrafts">Handcraft Artiest</option>
           </select>
         </div>
 
         <div className="update-address">
-          <span>Address</span>
+          <span>Address:</span>
           <div className="address-differentiate">
-            <div className="Address-line-one">
+            <div className="address-line">
               <span>Address Line 1:</span>
-              <input type="text" placeholder='Room No/House/Building/Apartment' />
+              <input 
+                type="text" 
+                name="addressLine1" 
+                value={formData.addressLine1} 
+                onChange={handleChange} 
+                placeholder="Enter address line 1" 
+                required
+              />
             </div>
-            <div className="Address-line-two">
+            <div className="address-line">
               <span>Address Line 2:</span>
-              <input type="text" placeholder='Street/Locality' />
-            </div>
-            <div className="address-country">
-              <span>Country:</span>
-              <select name="Country" id="" value={selectedCountry} onChange={handleCountryChange}>
-                <option value="">Select a country</option>
-                {countries.map((country, index) => (
-                  <option key={index} value={country.name}>{country.name}</option>
-                ))}
-              </select>
-            </div>
-            <div className="address-state">
-              <span>State:</span>
-              <select name="State" id="" value={selectedState} onChange={handleStateChange}>
-                <option value="">Select a state</option>
-                {states.map((state, index) => (
-                  <option key={index} value={state.name}>{state.name}</option>
-                ))}
-              </select>
-            </div>
-            <div className="address-city">
-              <span>City:</span>
-              <select name="City" id="">
-                <option value="">Select a city</option>
-                {cities.map((city, index) => (
-                  <option key={index} value={city}>{city}</option>
-                ))}
-              </select>
+              <input 
+                type="text" 
+                name="addressLine2" 
+                value={formData.addressLine2} 
+                onChange={handleChange} 
+                placeholder="Enter address line 2"
+                required
+              />
             </div>
           </div>
         </div>
-        <button>Update</button>
+
+       
+        <button type="submit" >Update</button>
       </form>
     </div>
   );

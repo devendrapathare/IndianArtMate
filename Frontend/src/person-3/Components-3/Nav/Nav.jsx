@@ -24,7 +24,7 @@ const Nav = ({ setshowLogin }) => {
         <Link to='/'><h2>Home</h2></Link>
 
         {!authUser ? (
-          <h2 onClick={() => setshowLogin(true)}>Sign In</h2>
+          <h2 onClick={() => setshowLogin(true)}>Login</h2>
         ) : (
           <>
             <Link to='/myStore'><h2 onClick={() => onNavClick('store')}>My Store</h2></Link>
