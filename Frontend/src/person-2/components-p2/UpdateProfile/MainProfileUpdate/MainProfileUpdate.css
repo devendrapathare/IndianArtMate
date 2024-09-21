@@ -33,7 +33,7 @@
     margin-bottom: 1rem; 
 }
 
-input[type="text"], input[type="number"], textarea, select {
+input[type="text"], input[type="number"],input[type="email"], textarea, select {
     width: 100%;
     padding: 0.5rem; 
     border: 1px solid #d4b86f; 
@@ -71,18 +71,15 @@ button:hover {
 
 .address-differentiate {
     display: flex;
-    flex-wrap: wrap;
     gap: 1rem; 
 }
 
-.Address-line-one, .Address-line-two, .address-country, .address-state, .address-city {
+.Address-line {
     flex: 1;  
-    min-width: 200px; 
+    /* min-width: 200px; */
 }
 
-.address-country, .address-state, .address-city {
-    margin-bottom: 0; 
-}
+
 
 select {
     background-color: #FFF9D7;  

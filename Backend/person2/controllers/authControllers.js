@@ -70,7 +70,6 @@ export const loginUser = async (req, res) => {
         if (!password) {
             return res.status(400).json({ error: "Password is required" });
         }
-        // Build query dynamically
         const query = {};
         if (userName) {
             query.userName = userName;
@@ -79,12 +78,10 @@ export const loginUser = async (req, res) => {
             query.email = email;
         }
 
-        // Find the user based on the constructed query
         const user = await User.findOne(query);
         console.log(query);
         
         const isPasswordCorrect = await bcrypt.compare(password, user?.password ||"")
-        // console.log(user);
         
 
         if (!user || !isPasswordCorrect ) {

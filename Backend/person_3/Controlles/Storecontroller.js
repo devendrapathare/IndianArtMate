@@ -36,7 +36,7 @@ export const Find_store_artiest = async(req, res) => {
 }
 
 
-export const check_user_has_store_or_not=async (req, res) => {
+export const check_user_has_store_or_not = async (req, res) => {
     try {
         const userId = req.params.userId;
         const user = await Arti.findById(userId);
@@ -52,7 +52,6 @@ export const check_user_has_store_or_not=async (req, res) => {
             return res.status(200).json({
                 hasStore: true,
                 store: store,
-                // arties: store.list_of_store_arties
             });
         } else {
             return res.status(200).json({ hasStore: false });
@@ -64,20 +63,7 @@ export const check_user_has_store_or_not=async (req, res) => {
   }
 
 
-export const fetch_any_user_data_by_id = async (req, res) => {
-    try {
-        const users = await Arti.find();
 
-        if (!users || users.length === 0) {
-            return res.status(404).json({ message: "No users found" });
-        }
-
-        return res.status(200).json(users);
-    } catch (error) {
-        console.error("Error fetching users:", error);
-        return res.status(500).json({ error: "Failed to fetch users" });
-    }
-}
 
 
 export const create_store = async (req, res) => {

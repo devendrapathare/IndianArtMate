@@ -4,7 +4,8 @@ import cors from 'cors'
 import authRouters from './person2/routes/authRoutes.js'
 import userPosts from './person2/routes/userPosts.js'
 import connectToMongoDB from './person2/database/connectToMongoDB.js'
-import artiest_rout from './person_3/routes/StoreRoutes.js'
+import store_rout from './person_3/routes/StoreRoutes.js'
+import profile_rout from './person_3/routes/ProfileRoutes.js'
 
 const app = express();
 
@@ -22,7 +23,8 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRouters)
 app.use("/api/post", userPosts)
 app.use("/images",express.static('uploads'))
-app.use(artiest_rout)
+app.use(store_rout)
+app.use(profile_rout)
 
 
 app.listen(PORT, () => {

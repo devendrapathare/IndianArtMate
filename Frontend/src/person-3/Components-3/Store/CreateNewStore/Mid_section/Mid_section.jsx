@@ -2,36 +2,49 @@ import React, { useEffect, useState } from 'react';
 import './Mid_section.css';
 import { useAuthContext } from '../../../../../person-2/context/AuthContext/AuthContext'; 
 
-
 const Mid_section = () => {
   const [storeData, setStoreData] = useState(null);
+  const [artiesData, setArtiesData] = useState([]); // State for artist data
   const [error, setError] = useState(null); 
   const { authUser } = useAuthContext();
-  console.log("User info from AuthContext:", authUser);
-
+  
   const userId = authUser?._id; 
-  console.log("User ID:", userId);
-
 
   useEffect(() => {
     const fetchStoreData = async () => {
       try {
-        console.log("entry"); 
         const response = await fetch(`http://localhost:5000/store_by_arti/${userId}`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
         setStoreData(data);
-        console.log(data); 
+
+        // Fetch artist data for each artist ID
+        const artistPromises = data.store.list_of_store_arties.map(artistId =>
+          fetch(`http://localhost:5000/users/${artistId}`).then(res => {
+            if (!res.ok) {
+              throw new Error(`Error fetching artist data: ${res.status}`);
+            }
+            return res.json();
+          })
+        );
+
+        const fetchedArtiesData = await Promise.all(artistPromises);
+        setArtiesData(fetchedArtiesData); // Update state with fetched artist data
       } catch (error) {
         console.error('Error fetching store data:', error);
         setError(error.message); 
       }
     };
+
     fetchStoreData();
-  }, []);
-  
+  }, [userId]);
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
   if (storeData === null) {
     return <div>No store data available</div>;
   }
@@ -39,8 +52,6 @@ const Mid_section = () => {
   if (!storeData) {
     return <div>Loading...</div>;
   }
-  
-  const arties = Array.isArray(storeData.arties) ? storeData.arties : [];
 
   return (
     <>
@@ -49,14 +60,15 @@ const Mid_section = () => {
         <button id='mid-secton-top_btn'>Hire Arties</button>
       </div>
       <div className='mid_section-bottom'>
-        {arties.length > 0 ? (
-          arties.map((artist) => (
+        {artiesData.length > 0 ? (
+          artiesData.map((artist) => (
             <div key={artist._id} className="artist_card">
               <div className="artist_card_right">
-                <h3>{artist.name}</h3>
+                <p>Artiest Name : <u>{artist.userName}</u></p>
                 <p>Respecters: {artist.respectors?.length || 0}</p> 
                 <p id='Contact_info'>Email: {artist.email}</p>
               </div>
+                <button id = "arti-chat">Chat</button>
             </div>
           ))
         ) : (
