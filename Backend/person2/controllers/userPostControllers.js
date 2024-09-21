@@ -38,4 +38,20 @@ const listPostData = async (req,res) =>{
     }
 }
 
-export { userPostData,listPostData }
+const listLogedInUserPostData = async (req, res) => {
+    try {
+        const userId = req.query.userId;
+
+        // Assuming userPosts is a model from your database
+        const posts = await userPosts.find({ userId: userId });
+
+        // Respond with the posts data
+        res.status(200).json({ success: true, data: posts });
+    } catch (error) {
+        console.log("Error in userPostController.js listLogedInUserPostData", error.message);
+        res.status(500).json({ error: "Error in userPostController.js" });
+    }
+};
+
+
+export { userPostData,listPostData,listLogedInUserPostData }

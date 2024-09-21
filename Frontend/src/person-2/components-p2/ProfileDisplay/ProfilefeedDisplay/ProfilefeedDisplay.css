@@ -9,6 +9,35 @@
     border-radius: 8px;
 }
 
+.EmptyProfilefeedDisplay-container{
+    margin: 20px 0;
+    padding: 20px;
+    background: #FFF9D7;
+    height: 120vh;
+    overflow: auto;
+    border-radius: 8px;
+}
+
+.ProfilefeedDisplay-empty{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    align-self: center;
+    width: 100%;
+    position: relative;
+    top: 15%;
+}
+
+.ProfilefeedDisplay-empty h1{
+    color: #8c4d2f;
+    font-size: 45px;
+}
+
+.ProfilefeedDisplay-empty img{
+    width: 35%;
+}
+
 /* For WebKit browsers (Chrome, Safari) */
 .ProfilefeedDisplay-container::-webkit-scrollbar {
     width: 12px;
