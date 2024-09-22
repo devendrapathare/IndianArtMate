@@ -9,38 +9,37 @@ import UpdateProfilePage from './person-2/Pages-p2/UpdateProfilePage/UpdateProfi
 import Login from './person-3/Components-3/Register/Login/Login';
 import Cart from './person-2/Pages-p2/Cart/Cart';
 import { Route, Routes } from 'react-router-dom';
-import ChattingPage from './person-2/Pages-p2/ChattingPage/ChattingPage';
 import Chat from './person-3/Components-3/chat/Chat';
 import ProductDesPage from './person-2/Pages-p2/ProductDesPage/ProductDesPage';
 import { Toaster } from 'react-hot-toast';
-import UploadPost from './person-2/components-p2/UploadPost/UploadPost';
+import { useAuthContext } from './person-2/context/AuthContext/AuthContext';
+import Temp from './person-3/Components-3/temp';
 
 function App() {
-  const [showLogin, setshowLogin] = useState(false);
+    const { authUser } = useAuthContext();
+    const userId = authUser?._id
+    const [showLogin, setshowLogin] = useState(false);
 
-  return (
-    <>
-     
-      
-    
-      {showLogin ? <Login setshowLogin={setshowLogin} /> : <></>}
-      <div className="app">
-        <Nav setshowLogin={setshowLogin} />
-        <Routes>
-          <Route path='/' element={<Homepage />} />
-          <Route path='/ProfilePage' element={<ProfilePage />} />
-          <Route path='/myStore' element={<My_Store />} />
-          <Route path='/cart' element={<Cart />} />
-          <Route path='/myChats' element={<Chat />} />
-          <Route path='/productDes' element={<ProductDesPage />} />
-          <Route path='/UpdateProfilePage' element={<UpdateProfilePage />} />
-        </Routes>
-        <Toaster />
-      </div>
-      <Footer />
-     
-    </>
-  );
+    return (
+        <>
+            {showLogin && <Login setshowLogin={setshowLogin} />}
+            <div className="app">
+                <Nav setshowLogin={setshowLogin} />
+                <Routes>
+                    <Route path="/" element={<Homepage />} />
+                    <Route path="/profilePage" element={<ProfilePage current_id = {userId} />} />
+                    <Route path="/myStore" element={<My_Store />} />
+                    <Route path="/cart" element={<Cart />} />
+                    <Route path="/myChats" element={<Chat />} />
+                    <Route path="/productDes" element={<ProductDesPage />} />
+                    <Route path="/UpdateProfilePage" element={<UpdateProfilePage />} />
+                    <Route path = "/temp/:id" element={<Temp/>}/>
+                </Routes>
+                <Toaster />
+            </div>
+            <Footer />
+        </>
+    );
 }
 
 export default App;

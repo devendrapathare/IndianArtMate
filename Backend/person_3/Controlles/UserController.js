@@ -45,3 +45,20 @@ export const update_profile =  async (req, res) => {
       res.status(500).json({ message: 'Server error' });
     }
   }
+
+export const fetch_all_users = async(req,res)=>{
+
+    try{
+      const all_user_data = await Arti.find();
+
+      if (!all_user_data) {
+        return res.status(404).json({ message: 'Users not found' });
+      }
+      res.status(200).json({ message: 'users feched' ,user:all_user_data});
+      
+    }catch(e){
+      console.error('can not find user:', e);
+      res.status(500).json({ message: 'can not find user' });
+    }
+
+}

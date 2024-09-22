@@ -4,26 +4,23 @@ import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../../../../person-2/context/AuthContext/AuthContext';
 import axios from 'axios';
 
-const ProfileInfo = ({ setshowUploadPost }) => {
-    const [userData, setUserData] = useState(null); // State to store user data
-    const [image, setImage] = useState(null); // State to store profile picture
+const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
+    const [userData, setUserData] = useState(null); 
+    const [image, setImage] = useState(null); 
     const { authUser } = useAuthContext();
-    const userId = authUser?._id; // Get the logged-in user's ID
-
+    
     const navigate = useNavigate();
 
-    // Navigate to the profile update page
     const handleUpdateProfileClick = () => {
         navigate('/UpdateProfilePage');
     };
 
-    // Fetch user data including profile picture from API
     useEffect(() => {
         const fetchUserData = async () => {
             try {
                 const response = await axios.get(`http://localhost:5000/users/${userId}`);
                 setUserData(response.data);
-                setImage(response.data.profilePic); // Set profile picture
+                setImage(response.data.profilePic); 
             } catch (error) {
                 console.error('Error fetching user data:', error);
             }
@@ -33,7 +30,6 @@ const ProfileInfo = ({ setshowUploadPost }) => {
         }
     }, [userId]);
 
-    // Handle image change (file input)
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -54,14 +50,16 @@ const ProfileInfo = ({ setshowUploadPost }) => {
         <div className="profileInfo-container">
             <div className="profileInfo-profile-icon">
                 {/* Display profile picture or fallback to default */}
-                <img src={image || assets.defaultProfilePic} alt="Profile" />
-                <input
-                    type="file"
-                    id="file-input"
-                    style={{ display: 'none' }}
-                    accept="image/*"
-                    onChange={handleImageChange}
-                />
+                <img src={image || 'defaultProfilePic.png'} alt="Profile" />
+                {isOwnProfile && (
+                    <input
+                        type="file"
+                        id="file-input"
+                        style={{ display: 'none' }}
+                        accept="image/*"
+                        onChange={handleImageChange}
+                    />
+                )}
             </div>
 
             <div className="above">
@@ -72,9 +70,11 @@ const ProfileInfo = ({ setshowUploadPost }) => {
 
             <div className="profileInfo-buttons">
                 <button className="profileIcon-respect-button">Respect</button>
-                <button onClick={handleUpdateProfileClick} className="profileIcon-update-profile-button profileIcon-respect-button">
-                    Update Profile
-                </button>
+                {isOwnProfile && (
+                    <button onClick={handleUpdateProfileClick} className="profileIcon-update-profile-button profileIcon-respect-button">
+                        Update Profile
+                    </button>
+                )}
             </div>
 
             <div className="middle">
@@ -90,7 +90,9 @@ const ProfileInfo = ({ setshowUploadPost }) => {
             </div>
 
             <div className="profileInfo-buttons">
-                <button onClick={() => setshowUploadPost(false)} className="profileIcon-respect-button">Upload</button>
+                {isOwnProfile && (
+                    <button onClick={() => setshowUploadPost(false)} className="profileIcon-respect-button">Upload</button>
+                )}
                 <button className="profileIcon-update-profile-button profileIcon-respect-button">Story</button>
             </div>
         </div>

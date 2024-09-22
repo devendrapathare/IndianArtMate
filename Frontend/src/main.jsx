@@ -7,7 +7,7 @@ import { AuthContextProvider } from './person-2/context/AuthContext/AuthContext.
 import  PostContextProvider  from './person-2/context/PostContext/PostContext.jsx'
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
+  // <StrictMode>
     <BrowserRouter>
       <AuthContextProvider>
         <PostContextProvider>
@@ -15,5 +15,5 @@ createRoot(document.getElementById('root')).render(
         </PostContextProvider>
       </AuthContextProvider>
     </BrowserRouter>
-  </StrictMode>,
+  // </StrictMode>,
 )

@@ -12,7 +12,7 @@ const UploadPost = () => {
         description: '',
         category: 'Painting',
         price: '',
-        userId: '' // Add userId to the data state
+        userId: '' 
     });
     
 
@@ -73,9 +73,6 @@ const UploadPost = () => {
             console.error("Error submitting data:", error);
         }
     };
-    // console.log("data",image);
-    
-    
     
     return (
         <div className='UploadPost-container'>
