@@ -22,7 +22,7 @@ const Profile = ({ isOwnProfile, userId }) => {
      <ProfileInfo setshowUploadPost={setShowUploadPost} isOwnProfile={isOwnProfile} userId={userId} />
 
       {/* {showUploadPost ?<ProfilefeedDisplay />:<UploadPost/>} */}
-      {showUploadPost ?<UploadPost/>:<ProfilefeedDisplay />}
+      {showUploadPost ?<UploadPost/>:<ProfilefeedDisplay isOwnProfile={isOwnProfile} current_id = {userId} />}
       <TopArtistProfileDisplay userId={userId} /> 
     </div>
   );

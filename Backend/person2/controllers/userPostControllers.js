@@ -28,13 +28,19 @@ const userPostData = async (req,res) =>{
 
 const listPostData = async (req,res) =>{
     try {
+        const userId = req.query.userId; // Get userId from query parameters
+        let posts;
 
-        const posts = await userPosts.find({})
-        res.status(200).json({success:true,data:posts})
-        
+        if (userId) {
+            posts = await userPosts.find({ userId: userId }); // Fetch posts for the specific user
+        } else {
+            posts = await userPosts.find(); // Fetch all posts if no userId is provided
+        }
+
+        res.status(200).json({ success: true, data: posts });
     } catch (error) {
-        console.log("Error in userPostController.js listPostData", error.message);
-        res.status(500).json({ error: "Error in userPostController.js " })
+        console.error("Error fetching posts:", error);
+        res.status(500).json({ error: "Server error" });
     }
 }
 
@@ -42,7 +48,17 @@ const listLogedInUserPostData = async (req, res) => {
     try {
         const userId = req.query.userId;
 
-        const posts = await userPosts.find({ userId: userId });
+        if (!userId) {
+            return res.status(400).json({ error: "userId is required" });
+        }
+
+        const objectId = mongoose.Types.ObjectId.isValid(userId) ? mongoose.Types.ObjectId(userId) : null;
+        
+        if (!objectId) {
+            return res.status(400).json({ error: "Invalid userId" });
+        }
+
+        const posts = await userPosts.find({ userId: objectId });
 
         res.status(200).json({ success: true, data: posts });
     } catch (error) {

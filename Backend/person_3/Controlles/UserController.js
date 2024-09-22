@@ -1,4 +1,6 @@
 import Arti from '../../person2/models/userModels.js';
+import userPosts from "../../person2/models/postModels.js";
+
 
 export const fetch_any_user_data_by_id = async (req, res) => {
     try {
@@ -62,3 +64,31 @@ export const fetch_all_users = async(req,res)=>{
     }
 
 }
+
+export  const fetchPostsByUserId = async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+      if (!userId) {
+          return res.status(400).json({ error: "userId is required" });
+      }
+
+      // const objectId = mongoose.Types.ObjectId.isValid(userId) ? mongoose.Types.ObjectId(userId) : null;
+
+      // if (!objectId) {
+      //     return res.status(400).json({ error: "Invalid userId format" });
+      // }
+
+      const posts = await userPosts.find({ userId: userId });
+
+      if (posts.length === 0) {
+          return res.status(200).json({ success: false, message: "No posts found for this user" });
+      }
+
+      res.status(200).json({ success: true, data: posts });
+  } catch (error) {
+      console.error("Error in fetchPostsByUserId:", error.message);
+      res.status(500).json({ error: "Server error" });
+  }
+};
+
