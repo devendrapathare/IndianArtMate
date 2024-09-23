@@ -91,7 +91,7 @@ const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
 
             <div className="profileInfo-buttons">
                 {isOwnProfile && (
-                    <button onClick={() => setshowUploadPost(false)} className="profileIcon-respect-button">Upload</button>
+                    <button onClick={() => setshowUploadPost(false)} className="profileIcon-respect-button">My Uploads</button>
                 )}
                 <button className="profileIcon-update-profile-button profileIcon-respect-button">Story</button>
             </div>

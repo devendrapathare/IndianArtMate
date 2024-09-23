@@ -1,11 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react';
 import './ProfilefeedDisplay.css';
 import ProfileFeed from '../../Profile/ProfileFeed/ProfileFeed';
+import { usePostContext } from '../../../context/PostContext/PostContext';
 
 const ProfilefeedDisplay = ({ isOwnProfile, current_id }) => {
     const [viewerPosts, setViewerPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const isMounted = useRef(true);
+   
 
     useEffect(() => {
       const fetchUserPosts = async () => {
@@ -13,10 +15,9 @@ const ProfilefeedDisplay = ({ isOwnProfile, current_id }) => {
           try {
               const response = await fetch(`http://localhost:5000/fetchPostsByUserId/${current_id}`);
               if (!response.ok) {
-                  throw new Error('Network response was not ok');
+                throw new Error('Network response was not ok');
               }
               const data = await response.json();
-  
               if (data && Array.isArray(data.data)) {
                   setViewerPosts(data.data);
               } else {
@@ -33,12 +34,12 @@ const ProfilefeedDisplay = ({ isOwnProfile, current_id }) => {
       if (current_id) {
           fetchUserPosts();
           console.log("this is wjay i  got:",viewerPosts)
+        //   console.log("this is:",loggedInUserPosts)
+
       }
   }, [current_id]);
   
-
     const containerClass = viewerPosts.length > 0 ? 'ProfilefeedDisplay-container' : 'EmptyProfilefeedDisplay-container';
-
     return (
         <div className={containerClass}>
             {loading ? (

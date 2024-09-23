@@ -14,6 +14,7 @@ const Profile = ({ isOwnProfile, userId }) => {
   useEffect(() => {
     if (!isOwnProfile) {
       setShowUploadPost(false); 
+      console.log("yes owner",showUploadPost)
     }
   }, [isOwnProfile]);
 
