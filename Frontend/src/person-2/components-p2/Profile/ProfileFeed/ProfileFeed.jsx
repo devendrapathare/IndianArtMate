@@ -15,9 +15,7 @@ const ProfileFeed = ({ image,category,description,price,title }) => {
       price,
       title
     }})
-  }
-  console.log(image,category,description,price,title);
-  
+  } 
     
   return (
     <div className='ProfileFeed-container'>

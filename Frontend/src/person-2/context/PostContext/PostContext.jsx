@@ -30,7 +30,7 @@ const PostContextProvider = (props) => {
             });
             const sortedPosts = response.data.data.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
             setlogedInUserPosts(sortedPosts);
-            console.log("Fetched logedIn user Posts posts:", sortedPosts); 
+            // console.log("Fetched logedIn user Posts posts:", sortedPosts); 
         } catch (error) {
             console.error("Error fetching posts:", error);
         }

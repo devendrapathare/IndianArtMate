@@ -6,7 +6,6 @@ import { assets } from '../../../../assets/assets';
 
 const ProfilefeedDisplay = () => {
   const { logedInUserPosts } = usePostContext();
-  console.log(logedInUserPosts); // Log the entire posts array
 
   const containerClass =  logedInUserPosts.length > 0 ? 'ProfilefeedDisplay-container' :"EmptyProfilefeedDisplay-container"
 
