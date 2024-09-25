@@ -15,6 +15,6 @@ const upload = multer({storage:storage})
 
 router.post('/uploadPost',upload.single('image'),userPostData)
 router.get('/listPost',listPostData)
-router.get('/listlogedIUserPost',listLogedInUserPostData)
+router.get('/listlogedInUserPost/:userId',listLogedInUserPostData)
 
 export default router

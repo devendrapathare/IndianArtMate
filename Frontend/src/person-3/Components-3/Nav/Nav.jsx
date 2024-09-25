@@ -8,6 +8,8 @@ import UseLogout from '../../../person-2/hooks/UseLogout/UseLogout';
 const Nav = ({ setshowLogin }) => {
 
   const { authUser } = useAuthContext();
+  // console.log(authUser);
+  
   
   const { logout } = UseLogout();
 

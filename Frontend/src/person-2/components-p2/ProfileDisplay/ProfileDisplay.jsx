@@ -1,13 +1,14 @@
-import React from 'react'
-import './ProfileDisplay.css'
-import Profile from '../Profile/Profile'
+// ProfileDisplay.js
+import React from 'react';
+import './ProfileDisplay.css';
+import Profile from '../Profile/Profile';
 
-const ProfileDisplay = () => {
+const ProfileDisplay = ({ isOwnProfile, userId }) => {
   return (
     <div>
-      <Profile />
+      <Profile isOwnProfile={isOwnProfile} userId={userId} />
     </div>
-  )
-}
+  );
+};
 
-export default ProfileDisplay
+export default ProfileDisplay;

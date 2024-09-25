@@ -40,7 +40,10 @@ const listPostData = async (req,res) =>{
 
 const listLogedInUserPostData = async (req, res) => {
     try {
-        const userId = req.query.userId;
+        const userId = req.params.userId;
+        // const userId = "66e7e4093b0079974ff4dd57";
+        // console.log("userback",userId);
+        
 
         // Assuming userPosts is a model from your database
         const posts = await userPosts.find({ userId: userId });

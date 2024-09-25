@@ -4,7 +4,7 @@ import generateTokenAndSetCookie from '../utils/generateToken.js';
 
 export const signupUser = async (req, res) => {
     try {
-        const { userName, email, password, confirmPassword,gender } = req.body;
+        const { userName, email, password, confirmPassword,gender,bio,store_id,respecting,respectors,addressLine1,addressLine2,profile_type } = req.body;
 
         if (password != confirmPassword) {
             return res.status(400).json({ msg: "Passwords do not match" })
@@ -33,7 +33,14 @@ export const signupUser = async (req, res) => {
             email,
             password: hashedPassword,
             gender,
-            profilePic: gender === "male" ? boyProfilePic : girlProfilePic
+            profilePic: gender === "male" ? boyProfilePic : girlProfilePic,
+            bio,
+            store_id,
+            respecting,
+            respectors,
+            addressLine1,
+            addressLine2,
+            profile_type,
         })
 
         if (newUser) {
@@ -44,8 +51,14 @@ export const signupUser = async (req, res) => {
                 userName: newUser.userName,
                 email: newUser.email, 
                 gender:newUser.gender,
-                profilePic: newUser.profilePic
-    
+                profilePic: newUser.profilePic,
+                bio: newUser.bio,
+                store_id: newUser.store_id,
+                respecting: newUser.respecting,
+                respectors: newUser.respectors,
+                addressLine1: newUser.addressLine1,
+                addressLine2: newUser.addressLine2,
+                profile_type: newUser.profile_type
             })
             console.log("new user is here")
         }
@@ -96,7 +109,14 @@ export const loginUser = async (req, res) => {
             email: user.email,
             // email: user.email,   if you want this too then uncomment it then you will be able to access the email in your client side 
             gender: user.gender,
-            profilePic: user.profilePic
+            profilePic: user.profilePic,
+            bio: user.bio,
+            store_id: user.store_id,
+            respecting: user.respecting,
+            respectors: user.respectors,
+            addressLine1: user.addressLine1,
+            addressLine2: user.addressLine2,
+            profile_type: user.profile_type
         })
         
     } catch (error) {

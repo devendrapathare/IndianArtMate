@@ -6,18 +6,13 @@ import Mid_section from './Mid_section/Mid_section';
 import { useAuthContext } from '../../../../person-2/context/AuthContext/AuthContext'; 
 
 const CreateStore = () => {
-  // const { authUser } = useAuthContext(); // Get authUser from context
   const [storeAvailable, setStoreAvailable] = useState(false);  
-  // const userId = authUser._Id; // Use authUser from context
   const [storeName, setStoreName] = useState('');
   const [loading, setLoading] = useState(true); 
-  const [error, setError] = useState(null); 
   const { authUser } = useAuthContext();
-  console.log("User info from AuthContext:", authUser);
-
+  
   const userId = authUser?._id; // Fetch the userId from authUser
   console.log("User ID:", userId);
-
 
   const handleCreateStore = async (e) => {
     e.preventDefault(); 
@@ -56,18 +51,12 @@ const CreateStore = () => {
 
   useEffect(() => {
     const checkStore = async () => {
-      // console.log("Creating store for user:", userId);  
-
       try {
         const response = await fetch(`http://localhost:5000/check_store/${userId}`);
         if (response.ok) {
           const data = await response.json();
           console.log('Data:', data);
-          if (data.hasStore) {
-            setStoreAvailable(true);
-          } else {
-            setStoreAvailable(false);
-          }
+          setStoreAvailable(data.hasStore);
         } else {
           console.error('Failed to fetch store data:', response.statusText);
         }
@@ -78,24 +67,20 @@ const CreateStore = () => {
       }
     };
   
-    checkStore();
+    if (userId) {
+      checkStore();
+    }
   }, [userId]);
   
 
-  // Loading state
   if (loading) {
     return <div>Loading...</div>;
-  }
-
-  // Error state
-  if (error) {
-    return <div>Error: {error}</div>;
   }
 
   return (
     <div className='CreateStore'>
       <div className="store-left">
-        <ProfileInfo/>
+        <ProfileInfo setshowUploadPost={false} isOwnProfile={true} userId={userId} />
       </div>
 
       <div className="store-mid">

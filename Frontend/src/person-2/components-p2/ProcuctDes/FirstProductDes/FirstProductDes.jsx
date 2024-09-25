@@ -1,8 +1,19 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './FirstProductDes.css'
 import images_for_categories, { assets } from '../../../../assets/assets'
+import { useAuthContext } from '../../../context/AuthContext/AuthContext'
+import { usePostContext } from '../../../context/PostContext/PostContext'
 
-const FirstProductDes = ({ image,category,description,price,title }) => {
+const FirstProductDes = ({ image,category,description,price,title,userId }) => {
+
+  const { singleUserData } = usePostContext()
+  const { authUser } = useAuthContext()
+  console.log("FirstProductDes:",authUser.respectors.length);
+  // console.log("FirstProductDesk:",userId);
+  // console.log("FirstProductDesk:",singleUserData);
+  // console.log("FirstProductDesk:",singleUserData);
+
+  const respectorsCount = singleUserData.respectors?.length || authUser.respectors?.length || 0 ;
 
   const maxDescriptionLength = 150;
 
@@ -35,24 +46,31 @@ const FirstProductDes = ({ image,category,description,price,title }) => {
           <p>Designed by</p>
           <div className="owner-profile">
             <div className="owner-img">
-              <img src={assets.profileTest} alt="owner Profile" />
+              <img src={singleUserData.profilePic || authUser.profilePic } alt="owner Profile" />
             </div>
             <div className="owner-detail">
               <div className="owner-name">
-                <p>Krish Mishra</p>
+                <p>{singleUserData.userName || authUser.userName || 'Not Available'}</p>
               </div>
               <div className="owner-respecters">
-                <p>100 Respecters</p>
+                <p><span>{respectorsCount}</span> Respecters</p>
               </div>
             </div>
           </div>
         </div>
         <hr />
-        <div className="buttons">
-          <button className="hire-me">Hire Me</button>
-          <button className="buy-btn">Buy Now</button>
-          <button className="add-to-cart-btn">Add to Cart</button>
-        </div>
+        {authUser._id === userId ? (
+          <div className="impressions buttons">
+            <p>Like</p>
+            <p>Dislike</p>
+          </div>
+        ) : (
+          <div className="buttons">
+            <button className="hire-me">Hire Me</button>
+            <button className="buy-btn">Buy Now</button>
+            <button className="add-to-cart-btn">Add to Cart</button>
+          </div>
+        )}
       </div>
     </div>
   )
