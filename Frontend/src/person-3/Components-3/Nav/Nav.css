@@ -108,8 +108,8 @@
     position: absolute;
     min-width: 10px;
     min-height: 10px;
-    background-color: tomato;
+    background-color: #e9a046;
     border-radius: 5px;
-    top: 16px;
-    right: 24px;
+    top: 14px;
+    right: 20px;
 }

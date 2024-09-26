@@ -60,7 +60,11 @@ const Cart = () => {
             <hr />
             <div className="cart-total-details">
               <b>Total</b>
-              <b>9004</b>
+              <b>{getTotalCartAmount() === 0
+              ?0
+              :getTotalCartAmount() >499
+              ?getTotalCartAmount()
+            : getTotalCartAmount() + 40 }</b>
             </div>
           </div>
           <button >PROCEED TO CHECKOUT</button>
