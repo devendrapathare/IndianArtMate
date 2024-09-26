@@ -18,12 +18,30 @@ const Profile = ({ isOwnProfile, userId }) => {
     }
   }, [isOwnProfile]);
 
+
+
+
   return (
     <div className='profile-container'>
      <ProfileInfo setshowUploadPost={setShowUploadPost} isOwnProfile={isOwnProfile} userId={userId} />
 
       {/* {showUploadPost ?<ProfilefeedDisplay />:<UploadPost/>} */}
-      {showUploadPost ?<UploadPost/>:<ProfilefeedDisplay isOwnProfile={isOwnProfile} current_id = {userId} />}
+      {
+  isOwnProfile ? (
+    showUploadPost ? (
+      <ProfilefeedDisplay isOwnProfile={isOwnProfile} current_id={userId} />
+    ) : (
+      <UploadPost />
+    )
+  ) : (
+    showUploadPost ? (
+      <UploadPost />
+    ) : (
+      <ProfilefeedDisplay isOwnProfile={isOwnProfile} current_id={userId} />
+    )
+  )
+}
+
       <TopArtistProfileDisplay userId={userId} /> 
     </div>
   );

@@ -61,6 +61,9 @@
 .navbar-profile img{
     height: 100%;
     width: 100%;
+    display: flex;
+    object-fit: fill;
+    border-radius:100% ;
 }
 
 .nav-profile-dropdown{

@@ -6,6 +6,7 @@ import userPosts from './person2/routes/userPosts.js'
 import connectToMongoDB from './person2/database/connectToMongoDB.js'
 import store_rout from './person_3/routes/StoreRoutes.js'
 import profile_rout from './person_3/routes/ProfileRoutes.js'
+import profile_pic_router from './person_3/routes/Profile_pic_routes.js'
 
 const app = express();
 
@@ -23,8 +24,12 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRouters)
 app.use("/api/post", userPosts)
 app.use("/images",express.static('uploads'))
+
 app.use(store_rout)
 app.use(profile_rout)
+app.use('/profilePics', express.static('uploads/profilePic'));
+app.use(profile_pic_router)
+
 
 
 app.listen(PORT, () => {

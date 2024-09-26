@@ -31,7 +31,7 @@ const Mid_section = () => {
         );
 
         const fetchedArtiesData = await Promise.all(artistPromises);
-        setArtiesData(fetchedArtiesData); // Update state with fetched artist data
+        setArtiesData(fetchedArtiesData); 
       } catch (error) {
         console.error('Error fetching store data:', error);
         setError(error.message); 

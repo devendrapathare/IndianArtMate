@@ -53,7 +53,7 @@
     width: 100%; /* Make image responsive */
     height: 60px; /* Maintain aspect ratio */
     width: 60px;
-    border-radius: 5px; /* Round the image corners */
+    border-radius: 50%; /* Round the image corners */
 }
 
 .top-artists-list p {

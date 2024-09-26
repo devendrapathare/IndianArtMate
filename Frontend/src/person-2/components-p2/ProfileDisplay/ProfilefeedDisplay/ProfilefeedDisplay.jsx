@@ -6,9 +6,7 @@ import { usePostContext } from '../../../context/PostContext/PostContext';
 const ProfilefeedDisplay = ({ isOwnProfile, current_id }) => {
     const [viewerPosts, setViewerPosts] = useState([]);
     const [loading, setLoading] = useState(true);
-    const isMounted = useRef(true);
    
-
     useEffect(() => {
       const fetchUserPosts = async () => {
           setLoading(true);
@@ -34,18 +32,17 @@ const ProfilefeedDisplay = ({ isOwnProfile, current_id }) => {
       if (current_id) {
           fetchUserPosts();
           console.log("this is wjay i  got:",viewerPosts)
-        //   console.log("this is:",loggedInUserPosts)
 
       }
   }, [current_id]);
   
     const containerClass = viewerPosts.length > 0 ? 'ProfilefeedDisplay-container' : 'EmptyProfilefeedDisplay-container';
     return (
-        <div className={containerClass}>
+        <>
             {loading ? (
                 <h1>Loading...</h1>
             ) : (
-                <div className="show">
+                <div className={containerClass}>
                     {viewerPosts.length > 0 ? (
                         viewerPosts.map((item) => (
                             <ProfileFeed 
@@ -62,7 +59,7 @@ const ProfilefeedDisplay = ({ isOwnProfile, current_id }) => {
                     )}
                 </div>
             )}
-        </div>
+        </>
     );
 };
 

@@ -28,13 +28,13 @@ const userPostData = async (req,res) =>{
 
 const listPostData = async (req,res) =>{
     try {
-        const userId = req.query.userId; // Get userId from query parameters
+        const userId = req.query.userId; 
         let posts;
 
         if (userId) {
-            posts = await userPosts.find({ userId: userId }); // Fetch posts for the specific user
+            posts = await userPosts.find({ userId: userId }); 
         } else {
-            posts = await userPosts.find(); // Fetch all posts if no userId is provided
+            posts = await userPosts.find(); 
         }
 
         res.status(200).json({ success: true, data: posts });
@@ -67,5 +67,48 @@ const listLogedInUserPostData = async (req, res) => {
     }
 };
 
+export const for_like = async (req, res) => {
+    const { postId } = req.params;
+    const { userId } = req.body;
+  
+    try {
+      const post = await userPosts.findById(postId);
+  
+      if (!post.like.includes(userId)) {
+        post.like.push(userId);
+        post.disLike = post.disLike.filter(id => id !== userId); // Remove from dislikes if the user had disliked before
+      } else {
+        // Remove the like if the user had already liked
+        post.like = post.like.filter(id => id !== userId);
+      }
+  
+      await post.save();
+      res.status(200).json(post);
+    } catch (err) {
+      res.status(500).json({ error: 'Something went wrong' });
+    }
+  }
+
+export const for_dislike = async (req, res) => {
+    const { postId } = req.params;
+    const { userId } = req.body;
+  
+    try {
+      const post = await userPosts.findById(postId);
+  
+      if (!post.disLike.includes(userId)) {
+        post.disLike.push(userId);
+        post.like = post.like.filter(id => id !== userId); // Remove from likes if the user had liked before
+      } else {
+        // Remove the dislike if the user had already disliked
+        post.disLike = post.disLike.filter(id => id !== userId);
+      }
+  
+      await post.save();
+      res.status(200).json(post);
+    } catch (err) {
+      res.status(500).json({ error: 'Something went wrong' });
+    }
+  }
 
 export { userPostData,listPostData,listLogedInUserPostData }

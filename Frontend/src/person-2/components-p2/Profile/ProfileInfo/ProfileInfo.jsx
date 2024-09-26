@@ -16,32 +16,41 @@ const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
     };
 
     useEffect(() => {
-        const fetchUserData = async () => {
-            try {
-                const response = await axios.get(`http://localhost:5000/users/${userId}`);
-                setUserData(response.data);
-                setImage(response.data.profilePic); 
-            } catch (error) {
-                console.error('Error fetching user data:', error);
-            }
-        };
-        if (userId) {
-            fetchUserData();
-        }
-    }, [userId]);
 
+        const fetchUserProfile = async () => {
+          try {
+            const response = await fetch(`http://localhost:5000/users/${userId}`);
+            if (!response.ok) throw new Error('Network response was not ok');
+            const data = await response.json();
+      
+            let fullImageUrl;
+            setUserData(data);
+          
+          if (data.profilePic.startsWith('http')) {
+            fullImageUrl = data.profilePic;
+          } else {
+            fullImageUrl = `http://localhost:5000/profilePics${data.profilePic.split('/profilePic')[1]}`;
+          }
+            setImage(fullImageUrl);
+            console.log("Profile Pic URL image:", image);
+          } catch (error) {
+            console.error('Error fetching user data:', error);
+          }
+        };
+      
+        fetchUserProfile();
+      }, [userId]);
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
             const reader = new FileReader();
             reader.onloadend = () => {
-                setImage(reader.result); // Set new image in state
+                setImage(reader.result); 
             };
             reader.readAsDataURL(file);
         }
     };
 
-    // Render loading state if userData is not yet available
     if (!userData) {
         return <div>Loading...</div>;
     }
@@ -49,7 +58,6 @@ const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
     return (
         <div className="profileInfo-container">
             <div className="profileInfo-profile-icon">
-                {/* Display profile picture or fallback to default */}
                 <img src={image || 'defaultProfilePic.png'} alt="Profile" />
                 {isOwnProfile && (
                     <input
@@ -63,7 +71,6 @@ const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
             </div>
 
             <div className="above">
-                {/* Display user's username and occupation */}
                 <h2>{userData.userName || 'Krish Mishra'}</h2>
                 <p>{userData.profile_type || 'Painter'}</p>
             </div>
@@ -78,7 +85,6 @@ const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
             </div>
 
             <div className="middle">
-                {/* Display user's post count, respecters, and respecting */}
                 <p>Posts: <span>200</span></p>
                 <p>Respecters: <span>{userData.respectors?.length || 0}</span></p>
                 <p>Respecting: <span>{userData.respecting?.length || 0}</span></p>
@@ -91,7 +97,7 @@ const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
 
             <div className="profileInfo-buttons">
                 {isOwnProfile && (
-                    <button onClick={() => setshowUploadPost(false)} className="profileIcon-respect-button">My Uploads</button>
+                    <button onClick={() => setshowUploadPost(false)} className="profileIcon-respect-button">Upload</button>
                 )}
                 <button className="profileIcon-update-profile-button profileIcon-respect-button">Story</button>
             </div>

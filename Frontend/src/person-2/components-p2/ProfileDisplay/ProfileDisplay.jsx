@@ -1,4 +1,3 @@
-// ProfileDisplay.js
 import React from 'react';
 import './ProfileDisplay.css';
 import Profile from '../Profile/Profile';
