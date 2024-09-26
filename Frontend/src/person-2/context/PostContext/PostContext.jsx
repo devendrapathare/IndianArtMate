@@ -19,6 +19,7 @@ const PostContextProvider = ({ children }) => {
             });
             const sortedPosts = response.data.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
             setPosts(sortedPosts);
+            // console.log('fetchpostlist',sortedPosts);
         } catch (error) {
             console.error("Error fetching posts:", error);
         }
@@ -50,9 +51,9 @@ const PostContextProvider = ({ children }) => {
     };
     
     
-    useEffect(() => {
-        console.log("Single user data updated:", singleUserData);
-    }, [singleUserData]);
+    // useEffect(() => {
+    //     console.log("Single user data updated:", singleUserData);
+    // }, [singleUserData]);
     
     
     useEffect(() => {

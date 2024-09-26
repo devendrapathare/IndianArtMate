@@ -51,6 +51,7 @@ const ProfilefeedDisplay = ({ isOwnProfile, current_id }) => {
                         viewerPosts.map((item) => (
                             <ProfileFeed
                                 key={item._id}
+                                id={item._id}
                                 image={item.image}
                                 category={item.category}
                                 description={item.description}

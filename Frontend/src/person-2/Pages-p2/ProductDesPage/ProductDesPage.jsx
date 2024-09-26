@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom';
 
 const ProductDesPage = () => {
   const location = useLocation();
-  const { image, category, description, price, title, userId } = location.state || {}; 
+  const { image, category, description, price, title, userId, id } = location.state || {}; 
   // console.log("ProductDesPage:",userId);
     
 
@@ -18,6 +18,7 @@ const ProductDesPage = () => {
         price={price} 
         title={title}
         userId={userId}
+        id={id}
       />
     </div>
   );

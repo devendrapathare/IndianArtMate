@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './ProfileFeed.css';
 import { usePostContext } from '../../../context/PostContext/PostContext';
 import { useNavigate } from 'react-router-dom';
-const ProfileFeed = ({ image,category,description,price,title,userId }) => {
+import { CartContext } from '../../../context/CartContext/CartContext';
+const ProfileFeed = ({ image,category,description,price,title,userId,id }) => {
 
   const{ url } = usePostContext()
-  // console.log("url:",url)
   const navigate = useNavigate()
+  
   const handlePostClick = () =>{
     navigate('/productDes',{state:
       {image:`${url}/images/${image}`,
@@ -14,7 +15,8 @@ const ProfileFeed = ({ image,category,description,price,title,userId }) => {
       description,
       price,
       title,
-      userId
+      userId,
+      id
     }})
   } 
   // console.log("ProfileFeed:",userId);

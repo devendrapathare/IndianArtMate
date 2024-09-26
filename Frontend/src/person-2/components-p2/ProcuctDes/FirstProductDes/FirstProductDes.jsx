@@ -1,21 +1,25 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import './FirstProductDes.css'
 import images_for_categories, { assets } from '../../../../assets/assets'
 import { useAuthContext } from '../../../context/AuthContext/AuthContext'
 import { usePostContext } from '../../../context/PostContext/PostContext'
+import { CartContext } from '../../../context/CartContext/CartContext'
+import { useNavigate } from "react-router-dom";
 
-const FirstProductDes = ({ image,category,description,price,title,userId }) => {
+const FirstProductDes = ({ image,category,description,price,title,userId, id }) => {
 
   const { singleUserData } = usePostContext()
   const { authUser } = useAuthContext()
-  console.log("FirstProductDes:",authUser.respectors.length);
-  // console.log("FirstProductDesk:",userId);
-  // console.log("FirstProductDesk:",singleUserData);
-  // console.log("FirstProductDesk:",singleUserData);
-
+  const { cartItems,addItemToCart,removeItemFromCart } = useContext(CartContext)
   const respectorsCount = singleUserData.respectors?.length || authUser.respectors?.length || 0 ;
-
   const maxDescriptionLength = 150;
+  console.log("ff",cartItems);
+  
+  
+  const navigate = useNavigate();
+  const handleNavigate = () => {
+    navigate('/cart');
+  }
 
   return (
     <div className='FirstProuctDes-container'>
@@ -67,8 +71,19 @@ const FirstProductDes = ({ image,category,description,price,title,userId }) => {
         ) : (
           <div className="buttons">
             <button className="hire-me">Hire Me</button>
-            <button className="buy-btn">Buy Now</button>
-            <button className="add-to-cart-btn">Add to Cart</button>
+            {!cartItems[id]
+            ?
+            <button onClick={() => addItemToCart(id)} className="buy-btn">Buy Now</button>
+            :
+            <div className='add-to-cart-edit'>
+              <div className="minus-plus">
+              <img onClick={()=>removeItemFromCart(id)} src={assets.minus_icon} alt="Add to Cart" />
+              <p>Quantity: <span>{cartItems[id]}</span></p>
+              <img onClick={() => addItemToCart(id)} src={assets.plus_icon} alt="Remove From Cart" />
+              </div>
+              <button onClick={()=>handleNavigate()} className="add-to-cart-btn">Go to Cart</button>
+            </div>
+          }
           </div>
         )}
       </div>
