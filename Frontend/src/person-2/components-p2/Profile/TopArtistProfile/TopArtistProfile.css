@@ -5,7 +5,7 @@
     margin: 20px auto; /* Center the section and add vertical margin */
     max-width: 1200px; /* Limit the maximum width */
     overflow-y: auto; /* Enable vertical scrolling */
-    max-height: 500px; /* Set maximum height to trigger scrollbar */
+    height: 100vh;
 }
 
 /* Custom scrollbar for webkit browsers */

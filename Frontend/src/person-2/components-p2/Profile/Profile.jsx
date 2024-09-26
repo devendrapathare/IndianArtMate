@@ -8,9 +8,10 @@ import TopArtistProfileDisplay from '../ProfileDisplay/TopArtistProfileDisplay/T
 import UploadPost from '../UploadPost/UploadPost';
 
 const Profile = ({ isOwnProfile, userId }) => {
-  const [showUploadPost, setShowUploadPost] = useState(isOwnProfile); 
+  const [showUploadPost, setShowUploadPost] = useState(true); 
 
 
+<<<<<<< HEAD
   useEffect(() => {
     if (!isOwnProfile) {
       setShowUploadPost(false); 
@@ -21,11 +22,14 @@ const Profile = ({ isOwnProfile, userId }) => {
 
 
 
+=======
+>>>>>>> 38a3753250e608921a441f6155e69ae2749c1803
   return (
     <div className='profile-container'>
      <ProfileInfo setshowUploadPost={setShowUploadPost} isOwnProfile={isOwnProfile} userId={userId} />
 
       {/* {showUploadPost ?<ProfilefeedDisplay />:<UploadPost/>} */}
+<<<<<<< HEAD
       {
   isOwnProfile ? (
     showUploadPost ? (
@@ -42,6 +46,9 @@ const Profile = ({ isOwnProfile, userId }) => {
   )
 }
 
+=======
+      {!showUploadPost ?<UploadPost/>:<ProfilefeedDisplay isOwnProfile={isOwnProfile} current_id = {userId} />}
+>>>>>>> 38a3753250e608921a441f6155e69ae2749c1803
       <TopArtistProfileDisplay userId={userId} /> 
     </div>
   );

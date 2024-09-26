@@ -54,8 +54,12 @@ const userSchema = new mongoose.Schema({
     profile_type: {
         type: String, 
         default : ''
+    },
+    cartData: {
+        type: Object,
+        default: {}
     }
-}, { timestamps: true });
+}, { timestamps: true,minimize: false });
 
 const User = mongoose.model("User", userSchema, "users");
 

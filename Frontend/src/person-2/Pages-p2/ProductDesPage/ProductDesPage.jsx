@@ -5,7 +5,9 @@ import { useLocation } from 'react-router-dom';
 
 const ProductDesPage = () => {
   const location = useLocation();
-  const { image, category, description, price, title } = location.state || {};   
+  const { image, category, description, price, title, userId, id } = location.state || {}; 
+  // console.log("ProductDesPage:",userId);
+    
 
   return (
     <div className='ProductDesPage-container'>
@@ -14,7 +16,9 @@ const ProductDesPage = () => {
         category={category} 
         description={description} 
         price={price} 
-        title={title} 
+        title={title}
+        userId={userId}
+        id={id}
       />
     </div>
   );

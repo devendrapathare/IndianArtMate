@@ -9,13 +9,13 @@ const ProfilePage = ({current_id}) => {
   const { authUser } = useAuthContext();
   const userId = authUser?._id;  
   const isOwnProfile = current_id && userId === current_id; 
-  console.log("isOwnProfile:",isOwnProfile)
-  console.log("current_id:",current_id)
+  // console.log("isOwnProfile:",isOwnProfile)
+  // console.log("current_id:",current_id)
 
   return (
     <div>
       <ProfileDisplay isOwnProfile={isOwnProfile} userId={current_id} />
-      {console.log("current_id:",current_id)}
+      {/* {console.log("current_id:",current_id)} */}
     </div>
   );
 };

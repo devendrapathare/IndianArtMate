@@ -1,14 +1,17 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './ProcuctDes.css'
 import FirstProductDes from './FirstProductDes/FirstProductDes'
 import SecondProductDesDisplay from './SecondProcuctDes/SecondProductDesDisplay/SecondProductDesDisplay'
 import ThirdProductDes from'./ThirdProductDes/ThirdProductDes'
+import { usePostContext } from '../../context/PostContext/PostContext'
+import {  useAuthContext } from '../../context/AuthContext/AuthContext'
 
-const ProcuctDes = ({ image,category,description,price,title }) => {
+const ProcuctDes = ({ image,category,description,price,title,userId,id }) => {
+
   
   return (
     <div className='ProductDes-container'>
-      <FirstProductDes image={image} category={category} description={description} price={price} title={title} />
+      <FirstProductDes image={image} category={category} description={description} price={price} title={title} userId={userId} id={id} />
       <div className="using-hr"></div>
       <SecondProductDesDisplay />
       <div className="using-hr"></div>

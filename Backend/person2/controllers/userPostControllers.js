@@ -28,6 +28,7 @@ const userPostData = async (req,res) =>{
 
 const listPostData = async (req,res) =>{
     try {
+<<<<<<< HEAD
         const userId = req.query.userId; 
         let posts;
 
@@ -38,28 +39,29 @@ const listPostData = async (req,res) =>{
         }
 
         res.status(200).json({ success: true, data: posts });
+=======
+
+        const posts = await userPosts.find({})
+        res.status(200).json({success:true,data:posts})
+        
+>>>>>>> 38a3753250e608921a441f6155e69ae2749c1803
     } catch (error) {
-        console.error("Error fetching posts:", error);
-        res.status(500).json({ error: "Server error" });
+        console.log("Error in userPostController.js listPostData", error.message);
+        res.status(500).json({ error: "Error in userPostController.js " })
     }
 }
 
 const listLogedInUserPostData = async (req, res) => {
     try {
-        const userId = req.query.userId;
-
-        if (!userId) {
-            return res.status(400).json({ error: "userId is required" });
-        }
-
-        const objectId = mongoose.Types.ObjectId.isValid(userId) ? mongoose.Types.ObjectId(userId) : null;
+        const userId = req.params.userId;
+        // const userId = "66e7e4093b0079974ff4dd57";
+        // console.log("userback",userId);
         
-        if (!objectId) {
-            return res.status(400).json({ error: "Invalid userId" });
-        }
 
-        const posts = await userPosts.find({ userId: objectId });
+        // Assuming userPosts is a model from your database
+        const posts = await userPosts.find({ userId: userId });
 
+        // Respond with the posts data
         res.status(200).json({ success: true, data: posts });
     } catch (error) {
         console.log("Error in userPostController.js listLogedInUserPostData", error.message);

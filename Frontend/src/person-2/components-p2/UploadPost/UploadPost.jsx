@@ -20,7 +20,7 @@ const UploadPost = () => {
     const { authUser } = useAuthContext();
 
     const { fetchPostList,posts } = usePostContext(); 
-    console.log("post",posts);
+    // console.log("post",posts);
     
 
     useEffect(() => {

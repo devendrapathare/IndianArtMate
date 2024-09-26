@@ -123,6 +123,12 @@
     bottom: 5px;
 }
 
+.owner-respecters span{
+    color: white;
+    font-size: 26px;
+    font-weight: 500;
+}
+
 .buttons{
     display: flex;
     align-items: center;
@@ -155,4 +161,51 @@
 .buttons button:active {
     background-color: #6D3F00; 
     transform: scale(0.95); 
+}
+
+.impressions{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.impressions p{
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.add-to-cart-edit {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.add-to-cart-edit p {
+    font-size: 15px;
+    font-weight: 400;
+    margin: 0; 
+}
+
+.add-to-cart-edit p span {
+    font-size: 20px;
+    font-weight: 400;
+    color: #A65E00;
+}
+
+.minus-plus {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    height: 3rem;
+    width: 16rem;
+    gap: 25px;
+    border: 2px solid black;
+    border-radius: 25px; 
+    background-color: #bfae8c;
+}
+
+.minus-plus img {
+    max-width: 100%; 
+    max-height: 100%;
 }

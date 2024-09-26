@@ -1,23 +1,27 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './ProfileFeed.css';
 import { usePostContext } from '../../../context/PostContext/PostContext';
 import { useNavigate } from 'react-router-dom';
-const ProfileFeed = ({ image,category,description,price,title }) => {
+import { CartContext } from '../../../context/CartContext/CartContext';
+const ProfileFeed = ({ image,category,description,price,title,userId,id }) => {
 
   const{ url } = usePostContext()
-  console.log("url:",url)
   const navigate = useNavigate()
+  
   const handlePostClick = () =>{
     navigate('/productDes',{state:
       {image:`${url}/images/${image}`,
       category,
       description,
       price,
-      title
+      title,
+      userId,
+      id
     }})
-  }
-  console.log(image,category,description,price,title);
+  } 
+  // console.log("ProfileFeed:",userId);
   
+    
   return (
     <div className='ProfileFeed-container'>
         <div className="profileFeed-feed">

@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import './ProfileInfo.css';
 import { useNavigate } from 'react-router-dom';
-import { useAuthContext } from '../../../../person-2/context/AuthContext/AuthContext';
 import axios from 'axios';
+import { usePostContext } from '../../../context/PostContext/PostContext';
 
 const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
     const [userData, setUserData] = useState(null); 
     const [image, setImage] = useState(null); 
-    const { authUser } = useAuthContext();
+    const {posts,loggedInUserPosts} = usePostContext()
+    const numOfPosts = posts.filter(post => post.userId === userId).length
+    // console.log("done11",loggedInUserPosts);
+    
+    
+    
     
     const navigate = useNavigate();
 
@@ -85,14 +90,19 @@ const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
             </div>
 
             <div className="middle">
+<<<<<<< HEAD
                 <p>Posts: <span>200</span></p>
+=======
+                {/* Display user's post count, respecters, and respecting */}
+                <p>Posts: <span>{numOfPosts}</span></p>
+>>>>>>> 38a3753250e608921a441f6155e69ae2749c1803
                 <p>Respecters: <span>{userData.respectors?.length || 0}</span></p>
                 <p>Respecting: <span>{userData.respecting?.length || 0}</span></p>
             </div>
 
             <div className="lower">
                 {/* Display user's bio */}
-                <p className="bio">{userData.bio || 'Hey, I am Krish Mishra from DMCE and currently in the third year of college.'}</p>
+                <p className="bio">{userData.bio || 'Write About You Here'}</p>
             </div>
 
             <div className="profileInfo-buttons">

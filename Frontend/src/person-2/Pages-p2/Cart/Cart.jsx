@@ -1,11 +1,13 @@
 import React, { useContext } from 'react'
 import './Cart.css'
-import { useNavigate } from 'react-router-dom'
 import { assets } from '../../../assets/assets'
+import { CartContext } from '../../context/CartContext/CartContext'
+import { usePostContext } from '../../context/PostContext/PostContext'
 
 const Cart = () => {
 
-  const navigate = useNavigate()
+  const { cartItems, removeItemFromCart, getTotalCartAmount } = useContext(CartContext)
+  const { posts, url } = usePostContext()
 
   return (
     <div className='cart'>
@@ -20,50 +22,23 @@ const Cart = () => {
         </div>
         <br />
         <hr />
-        <div>
-          <div className="cart-items-title cart-items-item">
-            <img src={assets.profileTest} alt="" />
-            <p>Saree</p>
-            <p>500rs</p>
-            <p>25</p>
-            <p>900</p>
-            <p  className='cross'>X</p>
-          </div>
-          <hr />
-        </div>
-        <div>
-          <div className="cart-items-title cart-items-item">
-            <img src={assets.profileTest} alt="" />
-            <p>Saree</p>
-            <p>500rs</p>
-            <p>25</p>
-            <p>900</p>
-            <p  className='cross'>X</p>
-          </div>
-          <hr />
-        </div>
-        <div>
-          <div className="cart-items-title cart-items-item">
-            <img src={assets.profileTest} alt="" />
-            <p>Saree</p>
-            <p>500rs</p>
-            <p>25</p>
-            <p>900</p>
-            <p  className='cross'>X</p>
-          </div>
-          <hr />
-        </div>
-        <div>
-          <div className="cart-items-title cart-items-item">
-            <img src={assets.profileTest} alt="" />
-            <p>Saree</p>
-            <p>500rs</p>
-            <p>25</p>
-            <p>900</p>
-            <p  className='cross'>X</p>
-          </div>
-          <hr />
-        </div>
+        {posts.map((item) => {
+          if (cartItems[item._id] > 0) {
+            return (
+              <div key={item._id}>
+                <div className="cart-items-title cart-items-item">
+                  <img src={url + "/images/" + item.image} alt="" />
+                  <p>{item.title}</p>
+                  <p>₹{item.price}</p>
+                  <p>{cartItems[item._id]}</p>
+                  <p>₹{item.price * cartItems[item._id]}</p>
+                  <p onClick={() => removeItemFromCart(item._id)} className='cross'>X</p>
+                </div>
+                <hr />
+              </div>
+            )
+          }
+        })}
       </div>
       <div className="cart-bottom">
         <div className="cart-total">
@@ -71,12 +46,16 @@ const Cart = () => {
           <div>
             <div className="cart-total-details">
               <p>SubTotal</p>
-              <p>Total</p>
+              <p>{getTotalCartAmount()}</p>
             </div>
             <hr />
             <div className="cart-total-details">
               <p>Delivery Fee</p>
-              <p>Total Amount</p>
+              <p>{getTotalCartAmount() === 0
+                ? 0
+                : getTotalCartAmount() > 499
+                  ? 'Free'
+                  : 40}</p>
             </div>
             <hr />
             <div className="cart-total-details">

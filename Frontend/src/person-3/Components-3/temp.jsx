@@ -4,6 +4,8 @@ import { useParams } from 'react-router-dom'
 
 const Temp = () => {
     const {id} = useParams()
+    // console.log('temp:',id);
+    
   return (
     <div>
       <ProfilePage current_id={id}/>

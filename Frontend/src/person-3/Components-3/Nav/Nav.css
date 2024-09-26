@@ -102,3 +102,17 @@
 .nav-profile-dropdown li:hover{
     color: #d09b45;
 }
+
+.cart-dot{
+    position: relative;
+}
+
+.cart-dot .dot{
+    position: absolute;
+    min-width: 10px;
+    min-height: 10px;
+    background-color: tomato;
+    border-radius: 5px;
+    top: 16px;
+    right: 24px;
+}

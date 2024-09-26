@@ -38,6 +38,8 @@ import police_icon from './Images/police.png';
 import logout_icon from './Images/logout.png'
 import upload_photo from './Images/upload-file.png'
 import empty_box from './Images/box.png'
+import minus_icon from './Images/minus.png'
+import plus_icon from './Images/add.png'
 
 export const like_dislike_images = {
   like,
@@ -161,6 +163,8 @@ export const assets = {
     logout_icon,
     upload_photo,
     empty_box,
+    minus_icon,
+    plus_icon,
 }
 
 export const forSecondProductDes = [
