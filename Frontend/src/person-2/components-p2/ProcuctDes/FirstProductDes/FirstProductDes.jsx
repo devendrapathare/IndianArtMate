@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react'
 import './FirstProductDes.css'
-import images_for_categories, { assets } from '../../../../assets/assets'
+import  { assets } from '../../../../assets/assets'
 import { useAuthContext } from '../../../context/AuthContext/AuthContext'
 import { usePostContext } from '../../../context/PostContext/PostContext'
 import { CartContext } from '../../../context/CartContext/CartContext'
@@ -14,6 +14,7 @@ const FirstProductDes = ({ image,category,description,price,title,userId, id }) 
   const respectorsCount = singleUserData.respectors?.length || authUser.respectors?.length || 0 ;
   const maxDescriptionLength = 150;
   console.log("ff",cartItems);
+  // console.log("BuyerId",userId);
   
   
   const navigate = useNavigate();

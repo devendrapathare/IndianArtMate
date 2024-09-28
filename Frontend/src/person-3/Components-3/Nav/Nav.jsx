@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import './Nav.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../../../person-2/context/AuthContext/AuthContext';
 import { assets } from '../../../assets/assets';
 import UseLogout from '../../../person-2/hooks/UseLogout/UseLogout';
@@ -11,6 +11,8 @@ const Nav = ({ setshowLogin }) => {
   const { authUser } = useAuthContext();
   // console.log(authUser);
   const { logout } = UseLogout();
+
+  const navigate = useNavigate()
 
  const { getTotalCartAmount } = useContext(CartContext)
 
@@ -40,6 +42,16 @@ const Nav = ({ setshowLogin }) => {
             <div className='navbar-profile'>
               <img src={authUser.profilePic} alt="Profile" />
               <ul className="nav-profile-dropdown">
+                <li>
+                  <img
+                    src={assets.order_delivery}
+                    alt="myOrders"
+                    onClick={logout}
+                    style={{ cursor: 'pointer' }}
+                  />
+                  <p onClick={()=>navigate('/myOrders')} style={{ cursor: 'pointer' }}>MyOrders</p>
+                </li>
+                <hr />
                 <li>
                   <img
                     src={assets.logout_icon}

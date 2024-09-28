@@ -14,6 +14,10 @@ import ProductDesPage from './person-2/Pages-p2/ProductDesPage/ProductDesPage';
 import { Toaster } from 'react-hot-toast';
 import { useAuthContext } from './person-2/context/AuthContext/AuthContext';
 import Temp from './person-3/Components-3/temp';
+import PlaceOrder from './person-2/Pages-p2/PlaceOrder/PlaceOrder';
+import MyOrders from './person-2/Pages-p2/MyOrders/MyOrders';
+import Verify from './person-2/Pages-p2/Verify/Verify';
+import ReceivedOrder from './person-2/Pages-p2/ReceivedOrder/ReceivedOrder';
 
 function App() {
     const { authUser } = useAuthContext();
@@ -34,6 +38,10 @@ function App() {
                     <Route path="/productDes" element={<ProductDesPage />} />
                     <Route path="/UpdateProfilePage" element={<UpdateProfilePage />} />
                     <Route path = "/temp/:id" element={<Temp/>}/>
+                    <Route path = "/order" element={<PlaceOrder />}/>
+                    <Route path = "/myOrders" element={<MyOrders />}/>
+                    <Route path = "/verify" element={<Verify />}/>
+                    <Route path = "/receivedOrders" element={<ReceivedOrder />}/>
                 </Routes>
                 <Toaster />
             </div>

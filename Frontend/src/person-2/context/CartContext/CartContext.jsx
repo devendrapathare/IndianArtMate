@@ -60,7 +60,7 @@ const CartContextProvider = (props) =>{
             setcartItems(cartData);
             
             // Log the entire data object
-            console.log("data", response.data);
+            // console.log("data", response.data);
         } catch (error) {
             console.error("Error fetching cart data:", error);
         }
@@ -77,7 +77,7 @@ const CartContextProvider = (props) =>{
         return totalAmount;
     }
     
-    console.log("dataherer",cartItems);
+    // console.log("dataherer",cartItems);
 
     useEffect(() => {
         async function loadData() {
@@ -98,6 +98,7 @@ const CartContextProvider = (props) =>{
         removeItemFromCart,
         fetchCartData,
         getTotalCartAmount,
+        token,
     }
 
     return(

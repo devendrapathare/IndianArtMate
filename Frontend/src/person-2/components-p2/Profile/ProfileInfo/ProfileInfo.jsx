@@ -10,10 +10,7 @@ const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
     const {posts,loggedInUserPosts} = usePostContext()
     const numOfPosts = posts.filter(post => post.userId === userId).length
     // console.log("done11",loggedInUserPosts);
-    
-    
-    
-    
+      
     const navigate = useNavigate();
 
     const handleUpdateProfileClick = () => {
@@ -99,6 +96,7 @@ const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
                     <button onClick={() => setshowUploadPost(false)} className="profileIcon-respect-button">My Uploads</button>
                 )}
                 <button className="profileIcon-update-profile-button profileIcon-respect-button">Story</button>
+                <button onClick={()=>navigate('/receivedOrders')} className="profileIcon-respect-button">Received Orders</button>
             </div>
         </div>
     );
