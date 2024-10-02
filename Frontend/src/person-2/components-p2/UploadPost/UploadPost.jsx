@@ -1,27 +1,29 @@
-import React, { useRef, useState, useEffect, useContext } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import './UploadPost.css';
 import { useAuthContext } from '../../context/AuthContext/AuthContext';
-import axios from 'axios'
-import toast from 'react-hot-toast'
-import { usePostContext } from '../../context/PostContext/PostContext'
+import axios from 'axios';
+import toast from 'react-hot-toast';
+import { usePostContext } from '../../context/PostContext/PostContext';
 
 const UploadPost = () => {
     const [image, setImage] = useState(null);
+
     const [data, setData] = useState({
         title: '',
         description: '',
         category: 'Painting',
         price: '',
-        userId: '' 
+        userId: '',
+        duration: 24 
     });
-    
+
+    const [isBiddingActive, setIsBiddingActive] = useState(false);
+
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const fileInputRef = useRef(null);
     const { authUser } = useAuthContext();
-
-    const { fetchPostList,posts } = usePostContext(); 
-    // console.log("post",posts);
-    
+    const { fetchPostList } = usePostContext(); 
 
     useEffect(() => {
         if (authUser && authUser._id) {
@@ -29,22 +31,46 @@ const UploadPost = () => {
         }
     }, [authUser]);
 
+    const handleToggleChange = () => {
+        setIsBiddingActive(prev => !prev);
+    };
 
     const handleTextClick = () => {
         fileInputRef.current.click();
     };
 
     const onChangeHandler = (event) => {
-        const name = event.target.name;
-        const value = event.target.value;
-        setData(prevData => ({ ...prevData, [name]: value }));
+        const { name, value } = event.target;
+        let updatedValue = value;
+
+        if(name === 'price' || name === 'duration'){
+            updatedValue = Number(value);
+        }
+
+        setData(prevData => ({ ...prevData, [name]: updatedValue }));
     };
 
+    useEffect(() => {
+        return () => {
+            if (image) {
+                URL.revokeObjectURL(image);
+            }
+        };
+    }, [image]);
 
     const handleSubmit = async (event) => {
-
+        event.preventDefault();
+        setIsSubmitting(true);
         try {
-            console.log("Submitting data:", data,image);
+            console.log("Submitting data:", data, image, isBiddingActive);
+
+            if (!image) {
+                toast.error('Please upload an image.');
+                setIsSubmitting(false);
+                return;
+            }
+
+            // Create FormData for image upload
             const formData = new FormData();
             formData.append('image', image);
             formData.append('title', data.title);
@@ -52,28 +78,71 @@ const UploadPost = () => {
             formData.append('category', data.category);
             formData.append('price', Number(data.price));
             formData.append('userId', data.userId); 
-            const response = await axios.post('/api/post/uploadPost',formData)
-            if(response.data.success){
-                setdata({
-                    // image: image,
-                    title: '',
-                    description: '',
-                    category: 'Painting',
-                    price: '',
-                    userId: ''
-                })               
-                setImage(false)
-                toast.success(response.data.message)
-                fetchPostList()
-              }
-              else{
-                toast.error(response.data.message)
-              }
+            formData.append('duration', Number(data.duration)); // Include duration
+
+            const uploadResponse = await axios.post('/api/post/uploadPost', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+
+            if(uploadResponse.data.success){
+                
+
+                console.log("isBiddingActive:",isBiddingActive)
+                if(isBiddingActive){
+                    console.log("yaa its working1")
+                    const respectorsResponse = await axios.get(`http://localhost:5000/users/${authUser._id}`);
+                    if(respectorsResponse.data.success){
+                        const respectors = respectorsResponse.data.user.respectors; // Adjust based on actual response structure
+
+                        console.log("yaa its working")
+                        // Validate that respectors is an array
+                        if(!Array.isArray(respectors)){
+                            toast.error('Respectors data is invalid.');
+                            setIsSubmitting(false);
+                            console.log("yaa its working")
+                            return;
+                        }
+                        // Start bidding
+                        const biddingData = {
+                            postId: uploadResponse.data.postId,
+                            startingPrice: Number(data.price), 
+                            duration: Number(data.duration),
+                            respectors: respectors
+                        };
+
+                        const biddingResponse = await axios.post('http://localhost:5000/api/bidding/start', biddingData, {
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        });
+
+                        if(biddingResponse.data.success){
+                            toast.success(biddingResponse.data.message);
+                        }
+                        else{
+                            toast.error(biddingResponse.data.message);
+                        }
+                    }
+                    else{
+                        toast.error('Failed to fetch respectors.');
+                    }
+                }
+
+            }
+            else{
+                toast.error(uploadResponse.data.error);
+            }
+
         } catch (error) {
             console.error("Error submitting data:", error);
+            toast.error('An error occurred while uploading the post.');
+        } finally {
+            setIsSubmitting(false);
         }
     };
-    
+
     return (
         <div className='UploadPost-container'>
             <form onSubmit={handleSubmit}>
@@ -94,36 +163,54 @@ const UploadPost = () => {
                             id="image"
                             hidden
                             required
+                            accept="image/*"
                         />
                     </div>
-                    <button onClick={handleTextClick} >Click Here to Upload</button>
+                    <button type="button" onClick={handleTextClick} >Click Here to Upload</button>
                 </div>
 
                 <div className="information-fields">
                     <div className="add-product-name flex-col">
                         <p>Art Name</p>
                         <input 
-                        type="text"
-                        name="title" 
-                        placeholder='Type Here'
-                        onChange={onChangeHandler}
-                        value={data.title}
+                            type="text"
+                            name="title" 
+                            placeholder='Type Here'
+                            onChange={onChangeHandler}
+                            value={data.title}
+                            required
                         />
                     </div>
                     <div className="add-product-description flex-col">
                         <p>Art Description</p>
                         <textarea 
-                        name="description" 
-                        rows='6' 
-                        placeholder='Write Content here' 
-                        required
-                        onChange={onChangeHandler}
+                            name="description" 
+                            rows='3' 
+                            placeholder='Write Content here' 
+                            required
+                            onChange={onChangeHandler}
+                            value={data.description}
                         ></textarea>
                     </div>
+
+                    {/* Duration Input */}
+                    <div className="add-duration flex-col">
+                        <p>Auction Duration (Hours)</p>
+                        <input 
+                            type="number" 
+                            name="duration" 
+                            placeholder='Enter Duration in Hours' 
+                            onChange={onChangeHandler}
+                            value={data.duration}
+                            min="1"
+                            required
+                        />
+                    </div>
+
                     <div className="add-category-price">
                         <div className="add-category flex-col">
                             <p>Art Category</p>
-                            <select onChange={onChangeHandler} name="category">
+                            <select onChange={onChangeHandler} name="category" value={data.category}>
                                 <option value="Painting">Painting</option>
                                 <option value="Sculpture">Sculpture</option>
                                 <option value="Textile Arts">Textile Arts</option>
@@ -133,24 +220,41 @@ const UploadPost = () => {
                                 <option value="Ceramics">Ceramics</option>
                                 <option value="Textile Printing">Textile Printing</option>
                             </select>
-
                         </div>
                         <div className="add-price flex-col">
-                            <p>Art Price</p>
+                            <p>Art Price (₹)</p>
                             <input 
-                            type="Number" 
-                            name="price" 
-                            placeholder='Enter Amount' 
-                            onChange={onChangeHandler}
+                                type="number" 
+                                name="price" 
+                                placeholder='Enter Amount' 
+                                onChange={onChangeHandler}
+                                value={data.price}
+                                min="0"
+                                required
                             />
                         </div>
                     </div>
-                    <button  type='submit' className='add-button'>Share</button>
+                    
+                    {/* Toggle for starting bidding */}
+                    <div className="start-bidding-toggle flex-col">
+                        <label className="toggle-label">
+                            <input 
+                                type="checkbox" 
+                                checked={isBiddingActive}
+                                onChange={handleToggleChange}
+                            />
+                            {/* <span className="toggle-switch"></span> */}
+                            Start Bidding
+                        </label>
+                    </div>
+
+                    <button type='submit' className='add-button' disabled={isSubmitting}>
+                        {isSubmitting ? 'Submitting...' : 'Share'}
+                    </button>
                 </div>
             </form>
-
         </div>
     )
 }
 
-export default UploadPost
+export default UploadPost;

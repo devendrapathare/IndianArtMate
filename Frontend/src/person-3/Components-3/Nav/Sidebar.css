@@ -1,0 +1,170 @@
+/* Sidebar container */
+.sidebar {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #FFF9D7;
+    overflow-x: hidden;
+    transition: width 0.3s ease;
+    padding-top: 60px;
+    z-index: 999;
+    overflow-y: auto; /* Enable vertical scrolling */
+    border: 2px solid black;
+}
+
+/* Sidebar Scrollbar Styling */
+.sidebar::-webkit-scrollbar {
+    width: 8px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+}
+
+/* Sidebar open state */
+.sidebar-open {
+    width: 380px;
+}
+
+/* Sidebar close button */
+.close-btn {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    font-size: 36px;
+    background: none;
+    border: none;
+    color: #191919;
+    cursor: pointer;
+}
+
+/* Sidebar profile section */
+.sidebar-profile {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+.sidebar-profile img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.sidebar-profile p {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+}
+
+/* Sidebar navigation links */
+.sidebar a {
+    padding: 10px 20px;
+    text-decoration: none;
+    font-size: 18px;
+    color: #333;
+    display: block;
+    transition: color 0.3s ease;
+}
+
+.sidebar a:hover,
+.sidebar button.login-btn:hover {
+    color: #FFD700; /* Yellow color for hover */
+}
+
+/* Notifications Section */
+.notifications-section {
+    padding: 20px;
+    color: #333;
+}
+
+.notifications-section h3 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: #222;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+}
+
+.notifications-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.notifications-section li {
+    background-color: #fff;
+    margin-bottom: 15px;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.notifications-section li p {
+    margin: 5px 0;
+    font-size: 1rem;
+    color: #555;
+}
+
+.notifications-section li p:first-child {
+    font-weight: bold;
+    color: #222;
+}
+
+.notifications-section li p:last-child {
+    font-size: 0.9rem;
+    color: #777;
+}
+
+/* Notification loading and empty states */
+.notifications-section p {
+    font-size: 1rem;
+    color: #777;
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Sidebar toggle hover */
+.sidebar a:hover {
+    color: #FFD700;
+}
+
+/* Responsive styling for smaller screens */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+    }
+}
+
+
+.sidebar-navigation {
+    display: flex;
+    justify-content: space-around;
+    margin: 10px 0;
+  }
+  
+  .nav-button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .nav-button:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .nav-button.active {
+    background-color: brown;
+    color: white;
+  }
+  

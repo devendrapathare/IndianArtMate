@@ -15,20 +15,23 @@ const userPostData = async (req,res) =>{
 
     try {
 
-        await post.save()
+        const savedPost = await post.save();
 
-        res.status(201).json({message: "Post created successfully"})
+        res.status(201).json({
+            success: true,
+            message: "Post created successfully",
+            postId: savedPost._id 
+        });
 
 
     } catch (error) {
         console.log("Error in userPostController.js userPostData ", error.message);
-        res.status(500).json({ error: "Error in userPostController.js " })
+        res.status(500).json({success:false, error: "Error in userPostController.js " })
     }  
 }
 
 const listPostData = async (req,res) =>{
     try {
-<<<<<<< HEAD
         const userId = req.query.userId; 
         let posts;
 
@@ -39,12 +42,6 @@ const listPostData = async (req,res) =>{
         }
 
         res.status(200).json({ success: true, data: posts });
-=======
-
-        const posts = await userPosts.find({})
-        res.status(200).json({success:true,data:posts})
-        
->>>>>>> 38a3753250e608921a441f6155e69ae2749c1803
     } catch (error) {
         console.log("Error in userPostController.js listPostData", error.message);
         res.status(500).json({ error: "Error in userPostController.js " })
@@ -54,11 +51,6 @@ const listPostData = async (req,res) =>{
 const listLogedInUserPostData = async (req, res) => {
     try {
         const userId = req.params.userId;
-        // const userId = "66e7e4093b0079974ff4dd57";
-        // console.log("userback",userId);
-        
-
-        // Assuming userPosts is a model from your database
         const posts = await userPosts.find({ userId: userId });
 
         // Respond with the posts data
@@ -69,48 +61,18 @@ const listLogedInUserPostData = async (req, res) => {
     }
 };
 
-export const for_like = async (req, res) => {
-    const { postId } = req.params;
-    const { userId } = req.body;
-  
-    try {
-      const post = await userPosts.findById(postId);
-  
-      if (!post.like.includes(userId)) {
-        post.like.push(userId);
-        post.disLike = post.disLike.filter(id => id !== userId); // Remove from dislikes if the user had disliked before
-      } else {
-        // Remove the like if the user had already liked
-        post.like = post.like.filter(id => id !== userId);
-      }
-  
-      await post.save();
-      res.status(200).json(post);
-    } catch (err) {
-      res.status(500).json({ error: 'Something went wrong' });
-    }
-  }
+const get_post_data_by_post_id = async(req,res)=>{
+    try{
+        const postID = req.params.id
 
-export const for_dislike = async (req, res) => {
-    const { postId } = req.params;
-    const { userId } = req.body;
-  
-    try {
-      const post = await userPosts.findById(postId);
-  
-      if (!post.disLike.includes(userId)) {
-        post.disLike.push(userId);
-        post.like = post.like.filter(id => id !== userId); // Remove from likes if the user had liked before
-      } else {
-        // Remove the dislike if the user had already disliked
-        post.disLike = post.disLike.filter(id => id !== userId);
-      }
-  
-      await post.save();
-      res.status(200).json(post);
-    } catch (err) {
-      res.status(500).json({ error: 'Something went wrong' });
-    }
-  }
+        const posts = await userPosts.findById(postID);
+        res.status(200).json({ success: true, data: posts });
 
-export { userPostData,listPostData,listLogedInUserPostData }
+    }catch (error) {
+        console.log("Error in userPostController.js listLogedInUserPostData", error.message);
+        res.status(500).json({ error: "Error in userPostController.js" });
+    }
+}
+
+
+export { userPostData,listPostData,listLogedInUserPostData ,get_post_data_by_post_id }

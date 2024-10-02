@@ -7,34 +7,6 @@ import { assets } from '../../../../assets/assets';
 const ProfilefeedDisplay = ({ isOwnProfile, current_id }) => {
     const [viewerPosts, setViewerPosts] = useState([]);
     const [loading, setLoading] = useState(true);
-<<<<<<< HEAD
-   
-    useEffect(() => {
-      const fetchUserPosts = async () => {
-          setLoading(true);
-          try {
-              const response = await fetch(`http://localhost:5000/fetchPostsByUserId/${current_id}`);
-              if (!response.ok) {
-                throw new Error('Network response was not ok');
-              }
-              const data = await response.json();
-              if (data && Array.isArray(data.data)) {
-                  setViewerPosts(data.data);
-              } else {
-                  console.warn("No posts found or data structure is incorrect", data);
-                  setViewerPosts([]);
-              }
-          } catch (error) {
-              console.error("Error fetching viewer posts:", error);
-          } finally {
-              setLoading(false);
-          }
-      };
-  
-      if (current_id) {
-          fetchUserPosts();
-          console.log("this is wjay i  got:",viewerPosts)
-=======
     const isMounted = useRef(true);
 
 
@@ -62,20 +34,13 @@ const ProfilefeedDisplay = ({ isOwnProfile, current_id }) => {
 
         if (current_id) {
             fetchUserPosts();
-            //   console.log("this is wjay i  got:",viewerPosts)
-            //   console.log("this is:",loggedInUserPosts)
-
+            
         }
     }, [current_id]);
->>>>>>> 38a3753250e608921a441f6155e69ae2749c1803
 
     const containerClass = viewerPosts.length > 0 ? 'ProfilefeedDisplay-container' : 'EmptyProfilefeedDisplay-container';
     return (
-<<<<<<< HEAD
-        <>
-=======
         <div>
->>>>>>> 38a3753250e608921a441f6155e69ae2749c1803
             {loading ? (
                 <h1>Loading...</h1>
             ) : (
@@ -94,14 +59,16 @@ const ProfilefeedDisplay = ({ isOwnProfile, current_id }) => {
                             />
                         ))
                     ) : (
-                        <div className='ProfilefeedDisplay-empty'>
-                            <img src={assets.empty_box} alt="" />
+                        <div className="ProfilefeedDisplay-empty">
+                            <img src={assets.empty_box} alt="No posts" />
                             <h1>No posts available</h1>
-                        </div>)}
+                        </div>
+                    )}
                 </div>
             )}
-        </>
+        </div>
     );
-};
+}
+    
 
 export default ProfilefeedDisplay;

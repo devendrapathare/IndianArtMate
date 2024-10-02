@@ -3,15 +3,18 @@ import './ProfileInfo.css';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { usePostContext } from '../../../context/PostContext/PostContext';
+import { useAuthContext } from '../../../context/AuthContext/AuthContext';
+// import 
 
 const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
     const [userData, setUserData] = useState(null); 
     const [image, setImage] = useState(null); 
-    const {posts,loggedInUserPosts} = usePostContext()
+    const {posts,loggedInUserPosts,url} = usePostContext()
     const numOfPosts = posts.filter(post => post.userId === userId).length
-    // console.log("done11",loggedInUserPosts);
-    
-    
+    const { authUser } = useAuthContext();
+  
+    const LogggedInUserId = authUser?._id; 
+  
     
     
     const navigate = useNavigate();
@@ -20,31 +23,79 @@ const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
         navigate('/UpdateProfilePage');
     };
 
-    useEffect(() => {
+    const handleShowRespec = (whatTodo) =>{
+        navigate(`/myProfileDetails/${whatTodo}/${userId}`)
+    }
 
+    const [hasRespected, setHasRespected] = useState(false);
+
+    const handleRespectToggle = async (userId) => {
+        try {
+            const response = await axios.post(`${url}/setRespect/${LogggedInUserId}`, {
+                userId
+            });
+    
+            console.log("LoggedInUserId:", LogggedInUserId);
+            console.log("userId:", userId);
+            console.log(response);
+    
+            // Toggle respect state and update userData state to reflect the new counts
+            setHasRespected(!hasRespected);
+    
+            const updatedUserData = !hasRespected ? {
+                // Adding respect
+                ...userData,
+                respectors: [...userData.respectors, LogggedInUserId],
+                respecting: userData.respecting.includes(userId)
+                    ? userData.respecting
+                    : [...userData.respecting, userId],
+            } : {
+                // Removing respect
+                ...userData,
+                respectors: userData.respectors.filter(id => id !== LogggedInUserId),
+                respecting: userData.respecting.filter(id => id !== userId),
+            };
+    
+            // Update userData state
+            setUserData(updatedUserData);
+    
+            // Update localStorage with the updated userData
+            // localStorage.setItem('user-info', JSON.stringify(updatedUserData));
+    
+        } catch (e) {
+            console.error(e);
+        }
+    };
+    
+    
+    useEffect(() => {
         const fetchUserProfile = async () => {
           try {
             const response = await fetch(`http://localhost:5000/users/${userId}`);
             if (!response.ok) throw new Error('Network response was not ok');
+            
             const data = await response.json();
+            
+            // Since the user data is wrapped in `data.user`, access it accordingly
+            const user = data.user;
+            setUserData(user);
       
             let fullImageUrl;
-            setUserData(data);
-          
-          if (data.profilePic.startsWith('http')) {
-            fullImageUrl = data.profilePic;
-          } else {
-            fullImageUrl = `http://localhost:5000/profilePics${data.profilePic.split('/profilePic')[1]}`;
-          }
+            // Check if the profilePic is a full URL or needs to be constructed
+            if (user.profilePic.startsWith('http')) {
+              fullImageUrl = user.profilePic;
+            } else {
+              fullImageUrl = `http://localhost:5000/profilePics${user.profilePic.split('/profilePic')[1]}`;
+            }
             setImage(fullImageUrl);
-            console.log("Profile Pic URL image:", image);
           } catch (error) {
             console.error('Error fetching user data:', error);
           }
         };
-      
+    
         fetchUserProfile();
-      }, [userId]);
+    }, [userId, hasRespected]); 
+
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -81,7 +132,14 @@ const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
             </div>
 
             <div className="profileInfo-buttons">
-                <button className="profileIcon-respect-button">Respect</button>
+                {!isOwnProfile && (
+                    <button 
+                    onClick={() => handleRespectToggle(userId)} 
+                    className="profileIcon-respect-button"
+                    >
+                    {hasRespected ? 'Remove Respect' : 'Respect'}
+                    </button>
+                )}
                 {isOwnProfile && (
                     <button onClick={handleUpdateProfileClick} className="profileIcon-update-profile-button profileIcon-respect-button">
                         Update Profile
@@ -90,14 +148,15 @@ const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
             </div>
 
             <div className="middle">
-<<<<<<< HEAD
-                <p>Posts: <span>200</span></p>
-=======
-                {/* Display user's post count, respecters, and respecting */}
                 <p>Posts: <span>{numOfPosts}</span></p>
->>>>>>> 38a3753250e608921a441f6155e69ae2749c1803
-                <p>Respecters: <span>{userData.respectors?.length || 0}</span></p>
-                <p>Respecting: <span>{userData.respecting?.length || 0}</span></p>
+                <div onClick={()=>{handleShowRespec('Respectors')}}>
+                
+                    <p><u>Respectors</u>: <span>{userData.respectors?.length || 0}</span></p>
+                </div>
+                <div onClick={()=>{handleShowRespec('Respecting')}}>
+            
+                    <p><u>Respecting</u>: <span>{userData.respecting?.length || 0}</span></p>
+                </div>
             </div>
 
             <div className="lower">

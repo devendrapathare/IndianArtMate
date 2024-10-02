@@ -14,6 +14,7 @@ import ProductDesPage from './person-2/Pages-p2/ProductDesPage/ProductDesPage';
 import { Toaster } from 'react-hot-toast';
 import { useAuthContext } from './person-2/context/AuthContext/AuthContext';
 import Temp from './person-3/Components-3/temp';
+import Show_resp_respting from './person-3/Components-3/Show_resp_respting';
 
 function App() {
     const { authUser } = useAuthContext();
@@ -34,6 +35,8 @@ function App() {
                     <Route path="/productDes" element={<ProductDesPage />} />
                     <Route path="/UpdateProfilePage" element={<UpdateProfilePage />} />
                     <Route path = "/temp/:id" element={<Temp/>}/>
+                    {/* <Route path = "/myProfileDetails/:whatToDo/:userId" element={<ProfilePage current_id = {userId}/>}/> */}
+                    <Route path = "/myProfileDetails/:whatToDo/:userId" element={<Show_resp_respting/>}/>
                 </Routes>
                 <Toaster />
             </div>

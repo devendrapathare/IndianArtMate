@@ -77,7 +77,7 @@ const CartContextProvider = (props) =>{
         return totalAmount;
     }
     
-    console.log("dataherer",cartItems);
+    // console.log("dataherer",cartItems);
 
     useEffect(() => {
         async function loadData() {
@@ -91,7 +91,6 @@ const CartContextProvider = (props) =>{
     }, [])
     
     
-
     const contextValue = {
         cartItems,
         addItemToCart,

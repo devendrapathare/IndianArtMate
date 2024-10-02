@@ -8,12 +8,18 @@ import store_rout from './person_3/routes/StoreRoutes.js'
 import profile_rout from './person_3/routes/ProfileRoutes.js'
 import profile_pic_router from './person_3/routes/Profile_pic_routes.js'
 import cartRoutes  from './person2/routes/cartRoutes.js'
+import like_dislike_controlls from './person_3/routes/setLikeDislikeroutes.js'
+import setRespectingRoutes from './person_3/routes/setRespectingRoutes.js'
+import biddingRoutes from './person_3/routes/biddingRoutes.js'
+import hiringRoutes from './person_3/routes/HiringRouter.js' 
 
 const app = express();
 
 dotenv.config();
 
 const PORT = process.env.PORT || 5000;
+
+
 
 app.use(express.json());
 app.use(cors());
@@ -31,7 +37,10 @@ app.use(store_rout)
 app.use(profile_rout)
 app.use('/profilePics', express.static('uploads/profilePic'));
 app.use(profile_pic_router)
-
+app.use("/posts",like_dislike_controlls)
+app.use(setRespectingRoutes)
+app.use('/api/bidding', biddingRoutes);
+app.use('/api/hiring', hiringRoutes);
 
 
 app.listen(PORT, () => {

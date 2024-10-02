@@ -88,7 +88,13 @@
 
 .add-category-price{
     display: flex;
+    justify-content: space-evenly;
+    align-items: center;
     gap: 30px;
+}
+.add-category-price button{
+    margin-top: 40px;
+    height: 50px;
 }
 
 .add-category-price select, .add-category-price input{
@@ -117,4 +123,40 @@
 
 .add-button:hover, .add-image-upload button:hover{
     background-color: #6f3d00;
+}
+
+.toggle-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.toggle-switch {
+    position: relative;
+    width: 50px;
+    height: 24px;
+    background-color: #ccc;
+    border-radius: 12px;
+    margin-right: 10px;
+    transition: background-color 0.3s;
+}
+
+.toggle-switch::after {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    border-radius: 50%;
+    top: 2px;
+    left: 2px;
+    transition: transform 0.3s;
+}
+
+input[type="checkbox"]:checked + .toggle-switch {
+    background-color: #4caf50;
+}
+
+input[type="checkbox"]:checked + .toggle-switch::after {
+    transform: translateX(26px);
 }

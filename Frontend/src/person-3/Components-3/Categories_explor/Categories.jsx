@@ -1,9 +1,8 @@
 import React, { useState, useContext, useEffect } from 'react';
 import './Categories.css';
 import { like_dislike_images } from '../../../assets/assets';
-import { PostContext } from '../../../person-2/context/PostContext/PostContext';
 import axios from 'axios';
-// import { useAuthContext } from '../../../../../person-2/context/AuthContext/AuthContext'; 
+import { PostContext } from '../../../person-2/context/PostContext/PostContext';
 import { useAuthContext } from '../../../person-2/context/AuthContext/AuthContext'; 
 
 
@@ -24,8 +23,11 @@ const Categories = () => {
 
   const handleLikeDislike = async (postId, actionType) => {
     try {
-      const response = await axios.post(`http://localhost:5000/api/posts/${postId}/${actionType}`, { userId });
+      console.log("clicled")
+      const response = await axios.post(`http://localhost:5000/posts/${postId}/${actionType}`, { userId });
       fetchPostList(); // Refresh the posts to reflect the updated likes/dislikes
+      console.log("cliclek")
+
     } catch (error) {
       console.error('Error updating like/dislike:', error);
     }
@@ -58,7 +60,7 @@ const Categories = () => {
                       className='respons' 
                       src={like_dislike_images.like} 
                       alt="Like"
-                      onClick={() => handleLikeDislike(post.id, 'like')} // Call handleLikeDislike for like
+                      onClick={() => handleLikeDislike(post._id, 'like')} // Call handleLikeDislike for like
                     />
                     <p>{post.like?.length}</p>
                   </div>
@@ -67,7 +69,7 @@ const Categories = () => {
                       className='respons' 
                       src={like_dislike_images.dislike} 
                       alt="Dislike"
-                      onClick={() => handleLikeDislike(post.id, 'dislike')} // Call handleLikeDislike for dislike
+                      onClick={() => handleLikeDislike(post._id, 'dislike')} // Call handleLikeDislike for dislike
                     />
                     <p>{post.disLike?.length}</p>
                   </div>
