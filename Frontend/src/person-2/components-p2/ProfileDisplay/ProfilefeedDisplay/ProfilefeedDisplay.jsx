@@ -20,7 +20,8 @@ const ProfilefeedDisplay = ({ isOwnProfile, current_id }) => {
                 }
                 const data = await response.json();
                 if (data && Array.isArray(data.data)) {
-                    setViewerPosts(data.data);
+                    const sortedPosts = data.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                    setViewerPosts(sortedPosts);
                 } else {
                     console.log("No posts found or data structure is incorrect", data);
                     setViewerPosts([]);

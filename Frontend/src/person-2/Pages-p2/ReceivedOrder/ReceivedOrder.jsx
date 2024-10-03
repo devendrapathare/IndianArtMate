@@ -85,7 +85,7 @@ const ReceivedOrder = () => {
                                 <p className="order-item-phone">{order.address.phone}</p>
                             </div>
                             <p className='items'>Items: {order.items.filter(item => item.userId === authUser._id).length}</p>
-                            <p className='items'>₹{order.items.filter(item => item.userId === authUser._id).reduce((total, item) => total + item.price * item.quantity, 0)}</p>
+                            <p className='items'>₹{order.items.filter(item => item.userId === authUser._id).reduce((total, item) =>item.price * item.quantity, 0)}</p>
                             <select 
                                 className='items' 
                                 onChange={(event) => orderStatusHandler(event, order._id)} 
