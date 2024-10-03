@@ -17,15 +17,19 @@ const LeftProfileUpdate = () => {
         if (!response.ok) throw new Error('Network response was not ok');
         const data = await response.json();
   
+        const user = data.user; // Access the 'user' object
+  
         let fullImageUrl;
-      
-      if (data.profilePic.startsWith('http')) {
-        fullImageUrl = data.profilePic;
-      } else {
-        fullImageUrl = `http://localhost:5000/profilePics${data.profilePic.split('/profilePic')[1]}`;
-      }
+        
+        if (user.profilePic.startsWith('http')) {
+          fullImageUrl = user.profilePic;
+        } else {
+          // Updated to use the 'uploads' folder
+          fullImageUrl = `http://localhost:5000/uploads${user.profilePic.split('/uploads')[1]}`;
+        }
+  
         setImage(fullImageUrl);
-        console.log("Profile Pic URL image:", image);
+        console.log("Profile Pic URL image:", fullImageUrl); // Updated to log 'fullImageUrl' directly
       } catch (error) {
         console.error('Error fetching user data:', error);
       }

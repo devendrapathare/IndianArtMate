@@ -20,7 +20,7 @@ const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
     const navigate = useNavigate();
 
     const handleUpdateProfileClick = () => {
-        navigate('/UpdateProfilePage');
+        navigate(`/UpdateProfilePage`);
     };
 
     const handleShowRespec = (whatTodo) =>{
@@ -59,8 +59,6 @@ const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
             // Update userData state
             setUserData(updatedUserData);
     
-            // Update localStorage with the updated userData
-            // localStorage.setItem('user-info', JSON.stringify(updatedUserData));
     
         } catch (e) {
             console.error(e);
@@ -76,12 +74,10 @@ const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
             
             const data = await response.json();
             
-            // Since the user data is wrapped in `data.user`, access it accordingly
             const user = data.user;
             setUserData(user);
       
             let fullImageUrl;
-            // Check if the profilePic is a full URL or needs to be constructed
             if (user.profilePic.startsWith('http')) {
               fullImageUrl = user.profilePic;
             } else {
@@ -94,7 +90,8 @@ const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
         };
     
         fetchUserProfile();
-    }, [userId, hasRespected]); 
+    // }, [userId, hasRespected]); 
+    }, [userId]); 
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
@@ -141,7 +138,7 @@ const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
                     </button>
                 )}
                 {isOwnProfile && (
-                    <button onClick={handleUpdateProfileClick} className="profileIcon-update-profile-button profileIcon-respect-button">
+                    <button onClick={()=>{handleUpdateProfileClick()}} className="profileIcon-update-profile-button profileIcon-respect-button">
                         Update Profile
                     </button>
                 )}

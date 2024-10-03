@@ -29,7 +29,8 @@ const MainProfileUpdate = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(`http://localhost:5000/users/${userId}`);
-        const userData = response.data;
+        const userData = response.data.user; // Access the 'user' object from the response
+  
         setUser(userData); 
         setFormData({
           userName: userData.userName || '',
@@ -37,7 +38,7 @@ const MainProfileUpdate = () => {
           email: userData.email || '',
           addressLine1: userData.addressLine1 || '',
           addressLine2: userData.addressLine2 || '',
-          profile_type: userData.profile_type || '',  // Fetching profile_type from API
+          profile_type: userData.profile_type || '',  // Fetching profile_type from the 'user' object
         });
       } catch (e) {
         console.log("Error fetching data:", e);
@@ -45,7 +46,7 @@ const MainProfileUpdate = () => {
     };
     fetchData();
   }, [userId]);
-
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });

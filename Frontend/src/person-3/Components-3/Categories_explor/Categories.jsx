@@ -14,7 +14,7 @@ const Categories = () => {
   const userId = authUser?._id; 
 
   useEffect(() => {
-    fetchPostList(); // Fetching posts on component mount
+    fetchPostList(); 
   }, [fetchPostList]);
 
   const handleShowMore = () => {
@@ -25,7 +25,7 @@ const Categories = () => {
     try {
       console.log("clicled")
       const response = await axios.post(`http://localhost:5000/posts/${postId}/${actionType}`, { userId });
-      fetchPostList(); // Refresh the posts to reflect the updated likes/dislikes
+      fetchPostList(); 
       console.log("cliclek")
 
     } catch (error) {
@@ -60,7 +60,7 @@ const Categories = () => {
                       className='respons' 
                       src={like_dislike_images.like} 
                       alt="Like"
-                      onClick={() => handleLikeDislike(post._id, 'like')} // Call handleLikeDislike for like
+                      onClick={() => handleLikeDislike(post._id, 'like')} 
                     />
                     <p>{post.like?.length}</p>
                   </div>
@@ -69,7 +69,7 @@ const Categories = () => {
                       className='respons' 
                       src={like_dislike_images.dislike} 
                       alt="Dislike"
-                      onClick={() => handleLikeDislike(post._id, 'dislike')} // Call handleLikeDislike for dislike
+                      onClick={() => handleLikeDislike(post._id, 'dislike')} 
                     />
                     <p>{post.disLike?.length}</p>
                   </div>

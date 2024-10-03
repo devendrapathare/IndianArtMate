@@ -17,24 +17,30 @@ const MyProfileDetails = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(`http://localhost:5000/users/${userId}`);
-
+  
         if (!response.ok) {
           throw new Error(`Error: ${response.statusText}`);
         }
-
-        const data = await response.json();
-        setArtiesData(data);
-
+  
+        const result = await response.json();
+        const userData = result.user; // Adjusted to get the 'user' from the response
+  
+        if (!userData) {
+          throw new Error('User data not found');
+        }
+  
+        setArtiesData(userData);
+  
         // Fetch respectors' data
-        const respectorsPromises = data.respectors.map(id => getData(id));
+        const respectorsPromises = userData.respectors.map(id => getData(id));
         const respectors = await Promise.all(respectorsPromises);
         setRespectorsData(respectors);
-
+  
         // Fetch respecting's data
-        const respectingPromises = data.respecting.map(id => getData(id));
+        const respectingPromises = userData.respecting.map(id => getData(id));
         const respecting = await Promise.all(respectingPromises);
         setRespectingData(respecting);
-
+  
         setLoading(false);
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -42,26 +48,27 @@ const MyProfileDetails = () => {
         setLoading(false);
       }
     };
-
+  
     fetchData();
   }, [userId]);
-
+  
   const getData = async (userId) => {
     try {
       const response = await fetch(`http://localhost:5000/users/${userId}`);
-
+  
       if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
       }
-
-      const data = await response.json();
-      return data; // Return the fetched data
+  
+      const result = await response.json();
+      return result.user; // Return the 'user' object from the response
     } catch (error) {
       console.error('Error fetching user data:', error);
       setError(error.message);
       return null; // Return null in case of error
     }
   };
+  
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
@@ -85,7 +92,7 @@ const MyProfileDetails = () => {
               <img src={respector.profilePic} alt={`${respector.name}'s Profile`} width="50" />
               <div>
                 <strong>Name:</strong> {respector.userName} <br />
-                <strong>Respectors Count:</strong> {respector.respectors.length} <br />
+                <strong>Respectors:</strong> {respector.respectors.length} <br />
               </div>
               <Link to={`/temp/${respector._id}`}>
                 <button className="button">View Profile</button>
@@ -105,7 +112,7 @@ const MyProfileDetails = () => {
               <img src={respecting.profilePic} alt={`${respecting.userName}'s Profile`} width="50" />
               <div>
                 <strong>Name:</strong> {respecting.userName} <br />
-                <strong>Respectors Count:</strong> {respecting.respectors.length} <br />
+                <strong>Respectors:</strong> {respecting.respectors.length} <br />
               </div>
               <Link to={`/temp/${respecting._id}`}>
                 <button className="button">View Profile</button>
