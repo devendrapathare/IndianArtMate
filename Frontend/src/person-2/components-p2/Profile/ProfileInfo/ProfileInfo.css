@@ -5,6 +5,8 @@
     background: #FFF9D7; 
     margin: 20px;
     padding: 1rem 2rem;
+    height: 114vh;
+    border-radius: 8px;
 }
 
 .profileInfo-profile-icon {

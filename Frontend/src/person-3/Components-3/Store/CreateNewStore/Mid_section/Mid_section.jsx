@@ -66,7 +66,7 @@ const Mid_section = () => {
   }
 
   return (
-    <>
+    <div className='container'>
       <div className="mid-secton-top">
         <h2><u>Your Store Arties</u></h2>
         <button id='mid-secton-top_btn'>Hire Arties</button>
@@ -99,7 +99,7 @@ const Mid_section = () => {
           <div>No arties currently</div>
         )}
       </div>
-    </>
+    </div>
   );
   
 };

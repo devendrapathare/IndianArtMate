@@ -28,10 +28,10 @@ const applyHire = async (req, res) => {
 const fetchHiringData = async (req, res) => {
     try {
         const ContributerId = req.params.userId;
-        console.log("userId",ContributerId);
+        // console.log("userId",ContributerId);
         let HiringData = await hireModel.find({ContributerId})
         res.status(200).json({success:true,message: "Cart data fetched successfully",HiringData})
-        console.log("HiringData",HiringData);
+        // console.log("HiringData",HiringData);
         
     } catch (error) {
         res.status(500).json({success:false,message:error.message})
@@ -41,7 +41,7 @@ const fetchHiringData = async (req, res) => {
 
 const updataHiring = async (req, res) => {
     try {
-        console.log(req.body);
+        // console.log(req.body);
         
         const updatadHireStatus = await hireModel.findByIdAndUpdate(req.body.HireId, { hiringState: req.body.hiringState });
         console.log("staus",updatadHireStatus);
