@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom';
 
 const ProductDesPage = () => {
   const location = useLocation();
-  const { image, category, description, price, title, userId, id } = location.state || {}; 
+  const { image, category, description, price, title, userId, id ,isOwner = null } = location.state || {}; 
   // console.log("ProductDesPage:",userId);
     
 
@@ -19,6 +19,7 @@ const ProductDesPage = () => {
         title={title}
         userId={userId}
         id={id}
+        isOwner = {isOwner}
       />
     </div>
   );

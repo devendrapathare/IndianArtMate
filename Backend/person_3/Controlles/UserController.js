@@ -3,20 +3,21 @@ import userPosts from "../../person2/models/postModels.js";
 
 
 export const fetch_any_user_data_by_id = async (req, res) => {
-    try {
-        const userId = req.params.userId;
-        const user = await Arti.findById(userId);
+  try {
+      const userId = req.params.userId;
+      const user = await Arti.findById(userId);
 
-        if (!user || user.length === 0) {
-            return res.status(404).json({ message: "No user found" });
-        }
+      if (!user) {
+          return res.status(404).json({ success: false, message: "No user found" });
+      }
 
-        return res.status(200).json(user);
-    } catch (error) {
-        console.error("Error fetching users:", error);
-        return res.status(500).json({ error: "Failed to fetch users" });
-    }
-}
+      return res.status(200).json({ success: true, user });
+  } catch (error) {
+      console.error("Error fetching user:", error);
+      return res.status(500).json({ success: false, message: "Failed to fetch user" });
+  }
+};
+
 
 export const update_profile =  async (req, res) => {
     const userId = req.params.id;
@@ -73,11 +74,6 @@ export  const fetchPostsByUserId = async (req, res) => {
           return res.status(400).json({ error: "userId is required" });
       }
 
-      // const objectId = mongoose.Types.ObjectId.isValid(userId) ? mongoose.Types.ObjectId(userId) : null;
-
-      // if (!objectId) {
-      //     return res.status(400).json({ error: "Invalid userId format" });
-      // }
 
       const posts = await userPosts.find({ userId: userId });
 

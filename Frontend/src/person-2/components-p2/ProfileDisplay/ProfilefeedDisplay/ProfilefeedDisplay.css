@@ -7,6 +7,7 @@
     height: 120vh;
     overflow: auto;
     border-radius: 8px;
+    border: 2px solid black;
 }
 
 .EmptyProfilefeedDisplay-container{
@@ -40,6 +41,7 @@
 
 /* For WebKit browsers (Chrome, Safari) */
 .ProfilefeedDisplay-container::-webkit-scrollbar {
+   
     width: 12px;
 }
 

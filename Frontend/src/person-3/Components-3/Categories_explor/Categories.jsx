@@ -1,28 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import './Categories.css';
-import images from '../../../assets/assets'; 
 import { like_dislike_images } from '../../../assets/assets';
+import axios from 'axios';
+import { PostContext } from '../../../person-2/context/PostContext/PostContext';
+import { useAuthContext } from '../../../person-2/context/AuthContext/AuthContext'; 
 
-const imageData = [
-  { id: 1, src: images.img1, likes: 1000, dislikes: 100, name: 'Shaswat' },
-  { id: 2, src: images.img2, likes: 1500, dislikes: 150, name: 'Krish' },
-  { id: 3, src: images.img3, likes: 2000, dislikes: 50, name: 'Biswal' },
-  { id: 4, src: images.img4, likes: 1100, dislikes: 60, name: 'Hari' },
-  { id: 5, src: images.img5, likes: 900, dislikes: 70, name: 'Ram' },
-  { id: 6, src: images.img6, likes: 1300, dislikes: 80, name: 'Krishna' },
-  { id: 7, src: images.img7, likes: 1400, dislikes: 90, name: 'Goku' },
-  { id: 8, src: images.img8, likes: 1700, dislikes: 40, name: 'Naruto' },
-  { id: 9, src: images.img9, likes: 1200, dislikes: 100, name: 'Kakashi' },
-];
 
 const Categories = () => {
   const [showAll, setShowAll] = useState(false);
+  const { posts, fetchPostList } = useContext(PostContext); // Using posts from context
+  const { authUser } = useAuthContext();
+  
+  const userId = authUser?._id; 
+
+  useEffect(() => {
+    fetchPostList(); 
+  }, [fetchPostList]);
 
   const handleShowMore = () => {
-    setShowAll(prev=>!prev); 
+    setShowAll(prev => !prev);
   };
 
-  const visibleImages = showAll ? imageData : imageData.slice(0, 6);
+  const handleLikeDislike = async (postId, actionType) => {
+    try {
+      console.log("clicled")
+      const response = await axios.post(`http://localhost:5000/posts/${postId}/${actionType}`, { userId });
+      fetchPostList(); 
+      console.log("cliclek")
+
+    } catch (error) {
+      console.error('Error updating like/dislike:', error);
+    }
+  };
+
+  const visiblePosts = showAll ? posts : posts.slice(0, 6);
 
   return (
     <div className='cat'>
@@ -32,21 +43,35 @@ const Categories = () => {
           <h2>Painting Handloom and Handcraft</h2>
         </div>
         <div className="mid">
-          {visibleImages.map((image) => (
-            <div className="card" key={image.id}>
-              <img id='main-card-img' src={image.src} alt={`Category ${image.id}`} />
+          {visiblePosts.map((post) => (
+            <div className="card" key={post._id}>
+              <img
+                id='main-card-img'
+                src={`http://localhost:5000/images/${post.image}`} 
+                alt={post.title}
+              />
               <div className="card-bottom">
                 <div className="arties-name">
-                  <p>Made by: <span><b><u>{image.name}</u></b></span></p>
+                  <p>Made by: <span><b><u>shashwat</u></b></span></p> 
                 </div>
                 <div className="card-bottom-right">
                   <div className="like imgs">
-                    <img className='respons' src={like_dislike_images.like} alt="Like" />
-                    <p>{image.likes}</p>
+                    <img
+                      className='respons' 
+                      src={like_dislike_images.like} 
+                      alt="Like"
+                      onClick={() => handleLikeDislike(post._id, 'like')} 
+                    />
+                    <p>{post.like?.length}</p>
                   </div>
                   <div className="dislike imgs">
-                    <img className='respons' src={like_dislike_images.dislike} alt="Dislike" />
-                    <p>{image.dislikes}</p>
+                    <img
+                      className='respons' 
+                      src={like_dislike_images.dislike} 
+                      alt="Dislike"
+                      onClick={() => handleLikeDislike(post._id, 'dislike')} 
+                    />
+                    <p>{post.disLike?.length}</p>
                   </div>
                 </div>
               </div>
@@ -58,7 +83,7 @@ const Categories = () => {
             <button className='explore-button' onClick={handleShowMore}>
               Show More
             </button>
-          ):(
+          ) : (
             <button className='explore-button' onClick={handleShowMore}>
               Show Less
             </button>

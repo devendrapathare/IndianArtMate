@@ -14,6 +14,19 @@ const userPostSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+
+    like: {
+    type: [mongoose.Schema.Types.ObjectId],  
+    ref: "User",
+    default: [] 
+    },
+
+    disLike: {
+    type: [mongoose.Schema.Types.ObjectId],  
+    ref: "User",
+    default: []  
+    },
+
     description: {
         type: String,
         required: true

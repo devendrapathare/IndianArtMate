@@ -1,47 +1,93 @@
 import React, { useEffect, useState } from 'react';
 import './LeftProfileUpdate.css';
-import axios from 'axios'; // Import axios for making API calls
-import { useAuthContext } from '../../../../person-2/context/AuthContext/AuthContext'; // Assuming this is where auth context is located
+import { useAuthContext } from '../../../../person-2/context/AuthContext/AuthContext';
 
 const LeftProfileUpdate = () => {
   const { authUser } = useAuthContext();
-  const userId = authUser?._id; // Get the user ID from the auth context
+  const userId = authUser?._id;
+  console.log("leftid",userId)
 
-  const [image, setImage] = useState(null); // State to store the current or uploaded image
+  const [image, setImage] = useState(null);
+  const [file, setFile] = useState(null); 
 
-  // Fetch user data from API
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/users/${userId}`); // Fetch the user data from API
-        setImage(response.data.profilePic); // Set the profile picture from the response
+        const response = await fetch(`http://localhost:5000/users/${userId}`);
+        if (!response.ok) throw new Error('Network response was not ok');
+        const data = await response.json();
+  
+        const user = data.user; // Access the 'user' object
+  
+        let fullImageUrl;
+        
+        if (user.profilePic.startsWith('http')) {
+          fullImageUrl = user.profilePic;
+        } else {
+          // Updated to use the 'uploads' folder
+          fullImageUrl = `http://localhost:5000/uploads${user.profilePic.split('/uploads')[1]}`;
+        }
+  
+        setImage(fullImageUrl);
+        console.log("Profile Pic URL image:", fullImageUrl); // Updated to log 'fullImageUrl' directly
       } catch (error) {
         console.error('Error fetching user data:', error);
       }
     };
-
+  
     fetchUserProfile();
   }, [userId]);
+  
+  
 
-  // Handle image upload
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
+    const selectedFile = e.target.files[0];
+    if (selectedFile) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImage(reader.result); // Set the uploaded image as the new image
+        setImage(reader.result);  
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(selectedFile);
+      setFile(selectedFile); 
     }
   };
+
+  const handleImageUpload = async () => {
+    if (!file) return;
+  
+    const formData = new FormData();
+    formData.append('profilePic', file);
+  
+    try {
+      const response = await fetch(`http://localhost:5000/users/${userId}/profile-pic`, {
+        method: 'POST',
+        body: formData,
+      });
+  
+      if (!response.ok) throw new Error('Failed to upload image');
+      const data = await response.json();
+  
+      const newImageUrl = `http://localhost:5000/profilePics${data.profilePic.split('/profilePic')[1]}`;
+      setImage(newImageUrl);
+      const userData = JSON.parse(localStorage.getItem('user-info'));
+            userData.profilePic = data.profilePic; 
+
+            localStorage.setItem('user-info', JSON.stringify(userData));
+
+  
+      alert('Profile picture updated successfully');
+    } catch (error) {
+      console.error('Error uploading profile picture:', error);
+    }
+  };
+  
 
   return (
     <div className='LeftProfileUpdate-container'>
       <div className='profile-header'>
-        <p>Change Profile</p>
+        <p>Profile Pic</p>
       </div>
       <div className="LeftProfileUpdate-image">
-        {/* Show the current profile picture or uploaded image */}
         <img src={image || ''} alt="Profile" />
         <input
           type="file"
@@ -53,6 +99,7 @@ const LeftProfileUpdate = () => {
         <button onClick={() => document.getElementById('file-input').click()}>
           Change Photo
         </button>
+        <button onClick={handleImageUpload}>Save Photo</button>
       </div>
     </div>
   );

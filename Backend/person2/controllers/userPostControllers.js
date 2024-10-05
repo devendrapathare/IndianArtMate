@@ -15,23 +15,33 @@ const userPostData = async (req,res) =>{
 
     try {
 
-        await post.save()
+        const savedPost = await post.save();
 
-        res.status(201).json({message: "Post created successfully"})
+        res.status(201).json({
+            success: true,
+            message: "Post created successfully",
+            postId: savedPost._id 
+        });
 
 
     } catch (error) {
         console.log("Error in userPostController.js userPostData ", error.message);
-        res.status(500).json({ error: "Error in userPostController.js " })
+        res.status(500).json({success:false, error: "Error in userPostController.js " })
     }  
 }
 
 const listPostData = async (req,res) =>{
     try {
+        const userId = req.query.userId; 
+        let posts;
 
-        const posts = await userPosts.find({})
-        res.status(200).json({success:true,data:posts})
-        
+        if (userId) {
+            posts = await userPosts.find({ userId: userId }); 
+        } else {
+            posts = await userPosts.find(); 
+        }
+
+        res.status(200).json({ success: true, data: posts });
     } catch (error) {
         console.log("Error in userPostController.js listPostData", error.message);
         res.status(500).json({ error: "Error in userPostController.js " })
@@ -41,11 +51,6 @@ const listPostData = async (req,res) =>{
 const listLogedInUserPostData = async (req, res) => {
     try {
         const userId = req.params.userId;
-        // const userId = "66e7e4093b0079974ff4dd57";
-        // console.log("userback",userId);
-        
-
-        // Assuming userPosts is a model from your database
         const posts = await userPosts.find({ userId: userId });
 
         // Respond with the posts data
@@ -56,5 +61,18 @@ const listLogedInUserPostData = async (req, res) => {
     }
 };
 
+const get_post_data_by_post_id = async(req,res)=>{
+    try{
+        const postID = req.params.id
 
-export { userPostData,listPostData,listLogedInUserPostData }
+        const posts = await userPosts.findById(postID);
+        res.status(200).json({ success: true, data: posts });
+
+    }catch (error) {
+        console.log("Error in userPostController.js listLogedInUserPostData", error.message);
+        res.status(500).json({ error: "Error in userPostController.js" });
+    }
+}
+
+
+export { userPostData,listPostData,listLogedInUserPostData ,get_post_data_by_post_id }

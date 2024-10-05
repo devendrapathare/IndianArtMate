@@ -91,7 +91,6 @@ const CartContextProvider = (props) =>{
     }, [])
     
     
-
     const contextValue = {
         cartItems,
         addItemToCart,

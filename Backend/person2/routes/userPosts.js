@@ -1,5 +1,5 @@
 import express from "express";
-import { listLogedInUserPostData, listPostData, userPostData } from "../controllers/userPostControllers.js";
+import { listLogedInUserPostData, listPostData, userPostData ,get_post_data_by_post_id } from "../controllers/userPostControllers.js";
 import multer from 'multer'
 
 const router = express.Router() 
@@ -15,6 +15,8 @@ const upload = multer({storage:storage})
 
 router.post('/uploadPost',upload.single('image'),userPostData)
 router.get('/listPost',listPostData)
+router.get('/listlogedIUserPost',listLogedInUserPostData)
 router.get('/listlogedInUserPost/:userId',listLogedInUserPostData)
+router.get('/getPostDataByID/:id',get_post_data_by_post_id)
 
 export default router

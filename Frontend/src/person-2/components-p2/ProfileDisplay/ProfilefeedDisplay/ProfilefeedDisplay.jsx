@@ -35,9 +35,7 @@ const ProfilefeedDisplay = ({ isOwnProfile, current_id }) => {
 
         if (current_id) {
             fetchUserPosts();
-            //   console.log("this is wjay i  got:",viewerPosts)
-            //   console.log("this is:",loggedInUserPosts)
-
+            
         }
     }, [current_id]);
 
@@ -62,14 +60,16 @@ const ProfilefeedDisplay = ({ isOwnProfile, current_id }) => {
                             />
                         ))
                     ) : (
-                        <div className='ProfilefeedDisplay-empty'>
-                            <img src={assets.empty_box} alt="" />
+                        <div className="ProfilefeedDisplay-empty">
+                            <img src={assets.empty_box} alt="No posts" />
                             <h1>No posts available</h1>
-                        </div>)}
+                        </div>
+                    )}
                 </div>
             )}
         </div>
     );
-};
+}
+    
 
 export default ProfilefeedDisplay;

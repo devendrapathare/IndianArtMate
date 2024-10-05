@@ -18,6 +18,7 @@ import PlaceOrder from './person-2/Pages-p2/PlaceOrder/PlaceOrder';
 import MyOrders from './person-2/Pages-p2/MyOrders/MyOrders';
 import Verify from './person-2/Pages-p2/Verify/Verify';
 import ReceivedOrder from './person-2/Pages-p2/ReceivedOrder/ReceivedOrder';
+import Show_resp_respting from './person-3/Components-3/Show_resp_respting';
 
 function App() {
     const { authUser } = useAuthContext();
@@ -42,6 +43,8 @@ function App() {
                     <Route path = "/myOrders" element={<MyOrders />}/>
                     <Route path = "/verify" element={<Verify />}/>
                     <Route path = "/receivedOrders" element={<ReceivedOrder />}/>
+                    {/* <Route path = "/myProfileDetails/:whatToDo/:userId" element={<ProfilePage current_id = {userId}/>}/> */}
+                    <Route path = "/myProfileDetails/:whatToDo/:userId" element={<Show_resp_respting/>}/>
                 </Routes>
                 <Toaster />
             </div>

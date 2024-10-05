@@ -10,7 +10,7 @@ const TopArtistProfileDisplay = () => {
                 <p>More Artists Profile</p>
             </div>
             <div className="mapping">
-                <TopArtistProfile  />
+                <TopArtistProfile   />
             </div>
         </div>
     )

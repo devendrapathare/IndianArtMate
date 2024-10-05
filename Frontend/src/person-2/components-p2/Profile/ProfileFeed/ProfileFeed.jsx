@@ -19,9 +19,9 @@ const ProfileFeed = ({ image,category,description,price,title,userId,id }) => {
       id
     }})
   } 
-  // console.log("ProfileFeed:",userId);
+  // console.log("ProfileFeed:",url+"/images/"+image);
+  // console.log(image);
   
-    
   return (
     <div className='ProfileFeed-container'>
         <div className="profileFeed-feed">

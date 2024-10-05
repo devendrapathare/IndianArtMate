@@ -39,4 +39,4 @@ const ArtiSchema = new Schema({
 
 const Arti = mongoose.model('Arti', ArtiSchema,'artiest');
 
-module.exports = Arti;
+export default Arti;
