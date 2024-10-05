@@ -29,7 +29,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   const NavigationForWinner = (userId) => {
     console.log("userId:", userId);
     navigate(`/temp/${userId}`);
-  };  
+  };
 
   useEffect(() => {
     const fetchBiddingNotifications = async () => {
@@ -153,16 +153,33 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
     }
   };
 
+  let imageUrl = authUser.profilePic;
+  const desiredPath = 'https://avatar.iran.liara.run/public/';
+  console.log(imageUrl);
+
+  if (imageUrl.startsWith(desiredPath)) {
+    imageUrl = authUser.profilePic;
+  } else {
+    const fullPath = authUser.profilePic;
+    const wantedpath = fullPath.replace('/uploads/profilePic', '');
+    imageUrl = `${url}/profilePics${wantedpath}`
+  }
+
   return (
     <>
       <div className={`sidebar ${isOpen ? 'sidebar-open' : ''}`}>
-        <button className="close-btn" onClick={toggleSidebar}>
-          &times;
-        </button>
+        <hr />
+        <div className="top-work">
         <div className='sidebar-profile'>
-          <img src={`${url}authUser.profilePic`} alt="Profile" />
+          <img src={imageUrl} alt="ProfilePic" />
         </div>
-
+        <div className="close-button">
+          <p className="close-btn" onClick={toggleSidebar}>
+            X
+          </p>
+        </div>
+        </div>
+        <hr />
         {/* New Navigation Buttons */}
         <div className="sidebar-navigation">
           <button
