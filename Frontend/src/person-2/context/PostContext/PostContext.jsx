@@ -13,17 +13,20 @@ const PostContextProvider = ({ children }) => {
     
     
     const fetchPostList = async (userId) => {
-        try {
-            const response = await axios.get('/api/post/listPost', {
-                params: { userId } // Pass the userId as a query parameter
-            });
-            const sortedPosts = response.data.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-            setPosts(sortedPosts);
-            // console.log('fetchpostlist',sortedPosts);
-        } catch (error) {
-            console.error("Error fetching posts:", error);
+        // if(authUser){
+
+            try {
+                const response = await axios.get('/api/post/listPost', {
+                    params: { userId } // Pass the userId as a query parameter
+                });
+                const sortedPosts = response.data.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                setPosts(sortedPosts);
+                // console.log('fetchpostlist',sortedPosts);
+            } catch (error) {
+                console.error("Error fetching posts:", error);
+            }
+        // };
         }
-    };
 
     const fetchLoggedInUserPostList = async () => {
         if (!authUser?._id) return; // Early return if authUser is not set

@@ -3,37 +3,145 @@ import './Categories.css';
 import { like_dislike_images } from '../../../assets/assets';
 import axios from 'axios';
 import { PostContext } from '../../../person-2/context/PostContext/PostContext';
-import { useAuthContext } from '../../../person-2/context/AuthContext/AuthContext'; 
-
+import { useAuthContext } from '../../../person-2/context/AuthContext/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const Categories = () => {
   const [showAll, setShowAll] = useState(false);
-  const { posts, fetchPostList } = useContext(PostContext); // Using posts from context
-  const { authUser } = useAuthContext();
+  const { posts, fetchPostList } = useContext(PostContext);
+  const { authUser } = useAuthContext(); // Check if the user is logged in
+  const [userNames, setUserNames] = useState({});
+  const [filteredPosts, setFilteredPosts] = useState([]);
+  const navigate = useNavigate();
+  const [count, setCount] = useState(0)
+
+  const userId = authUser?._id;
+
+  const fetchUserName = async (userId, postId) => {
+    // if(authUser){
+
+      try {
+        const response = await fetch(`http://localhost:5000/users/${userId}`);
+        if (!response.ok) throw new Error('Network response was not ok');
+        
+        const data = await response.json();
+        const userName = data.user.userName;
   
-  const userId = authUser?._id; 
-
-  useEffect(() => {
-    fetchPostList(); 
-  }, [fetchPostList]);
-
-  const handleShowMore = () => {
-    setShowAll(prev => !prev);
+        setUserNames((prevUserNames) => ({
+          ...prevUserNames,
+          [postId]: userName,
+        }));
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    // }
   };
 
-  const handleLikeDislike = async (postId, actionType) => {
-    try {
-      console.log("clicled")
-      const response = await axios.post(`http://localhost:5000/posts/${postId}/${actionType}`, { userId });
-      fetchPostList(); 
-      console.log("cliclek")
-
-    } catch (error) {
-      console.error('Error updating like/dislike:', error);
+  const GotoPost = async (image, category, description, price, title, userId, id) => {
+    if (authUser) {
+      navigate('/productDes', {
+        state: {
+          image: `http://localhost:5000/images/${image}`,
+          category,
+          description,
+          price,
+          title,
+          userId,
+          id,
+        },
+      });
+    } else {
+      alert('Please log in to view post details.');
     }
   };
 
-  const visiblePosts = showAll ? posts : posts.slice(0, 6);
+  const fetchBiddingData = async (postId) => {
+    // if (authUser) {
+
+      console.log("postId:", postId);
+      console.log("im im in", postId);
+      try {
+        const response = await axios.get(`http://localhost:5000/api/bidding/biddingData/${postId}`);
+        console.log("response.data:", response.data);
+  
+        if (response.data.userId) {
+          return response.data;
+        } else {
+          return null;
+        }
+      } catch (error) {
+        console.error('Error fetching bidding data:', error);
+        return null;
+      }
+    // }else{
+    //   return false
+    // }
+  };
+  const isBiddingActive = (endTime) => {
+    const currentTime = new Date();
+    const biddingEndTime = new Date(endTime);
+    return currentTime <= biddingEndTime;
+  };
+  
+
+  useEffect(() => {
+    const filterPostsWithoutBidding = async () => {
+      const filtered = [];
+    
+      for (const post of posts) {
+        console.log("post:", post._id);
+        const biddingData = await fetchBiddingData(post._id);
+        console.log("biddingData:",biddingData)
+        // console.log("isBiddingActive:",isBiddingActive(biddingData.endTime))
+        if (!biddingData || !isBiddingActive(biddingData.endTime)) {
+          filtered.push(post);
+        }
+        
+      }
+    
+      console.log("Filtered list:", filtered.length);
+    
+      setFilteredPosts(filtered);
+      setCount((prev) => prev + 1);
+    };
+    
+    if (posts.length >= count) {
+      filterPostsWithoutBidding();
+    }
+  
+  }, [posts]);
+
+
+  useEffect(() => {
+    fetchPostList();
+  }, [fetchPostList]);
+
+  useEffect(() => {
+    filteredPosts.forEach((post) => {
+      if (!userNames[post._id]) {
+        fetchUserName(post.userId, post._id);
+      }
+    });
+  }, [filteredPosts, userNames]);
+
+  const handleShowMore = () => {
+    setShowAll((prev) => !prev);
+  };
+
+  const handleLikeDislike = async (postId, actionType) => {
+    if (authUser) {
+      try {
+        const response = await axios.post(`http://localhost:5000/posts/${postId}/${actionType}`, { userId });
+        fetchPostList();
+      } catch (error) {
+        console.error('Error updating like/dislike:', error);
+      }
+    } else {
+      alert('Please log in to like or dislike a post.');
+    }
+  };
+
+  const visiblePosts = showAll ? filteredPosts : filteredPosts.slice(0, 6);
 
   return (
     <div className='cat'>
@@ -44,32 +152,38 @@ const Categories = () => {
         </div>
         <div className="mid">
           {visiblePosts.map((post) => (
-            <div className="card" key={post.id}>
+            <div
+              onClick={() =>
+                GotoPost(post.image, post.category, post.description, post.price, post.title, post.userId, post._id)
+              }
+              className="card"
+              key={post._id}
+            >
               <img
                 id='main-card-img'
-                src={`http://localhost:5000/images/${post.image}`} 
+                src={`http://localhost:5000/images/${post.image}`}
                 alt={post.title}
               />
               <div className="card-bottom">
                 <div className="arties-name">
-                  <p>Made by: <span><b><u>shashwat</u></b></span></p> 
+                  <p>Made by: <span><b><u>{userNames[post._id] || 'Loading...'}</u></b></span></p>
                 </div>
                 <div className="card-bottom-right">
                   <div className="like imgs">
                     <img
-                      className='respons' 
-                      src={like_dislike_images.like} 
+                      className='respons'
+                      src={like_dislike_images.like}
                       alt="Like"
-                      onClick={() => handleLikeDislike(post._id, 'like')} 
+                      onClick={() => handleLikeDislike(post._id, 'like')}
                     />
                     <p>{post.like?.length}</p>
                   </div>
                   <div className="dislike imgs">
                     <img
-                      className='respons' 
-                      src={like_dislike_images.dislike} 
+                      className='respons'
+                      src={like_dislike_images.dislike}
                       alt="Dislike"
-                      onClick={() => handleLikeDislike(post._id, 'dislike')} 
+                      onClick={() => handleLikeDislike(post._id, 'dislike')}
                     />
                     <p>{post.disLike?.length}</p>
                   </div>

@@ -10,6 +10,7 @@ import toast from 'react-hot-toast';
 const FirstProductDes = ({ image, category, description, price, title, userId, id, isOwner }) => {
   const { authUser } = useAuthContext();
   console.log("userID:",userId)
+  console.log("userID_id:",id)
   const { cartItems, addItemToCart, removeItemFromCart } = useContext(CartContext);
   const [userData, setUserData] = useState({});
   const [biddingData, setBiddingData] = useState(null);
@@ -23,7 +24,6 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
       const ownerId = authUser?._id;
       const receiverId = userId;
   
-      // Validate that ownerId and receiverId are not the same
       if (!ownerId) {
         toast.error('You must be logged in to hire.');
         return;
@@ -52,23 +52,30 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
     };
 
   useEffect(() => {
+    
     const fetchUserData = async () => {
+      if(authUser){
       try {
-        const response = await axios.get(`http://localhost:5000/users/${userId}`);
-        if (response.data) {
-          setUserData(response.data.user);
+          const response = await axios.get(`http://localhost:5000/users/${userId}`);
+          if (response.data) {
+            setUserData(response.data.user);
+          }
+        } catch (error) {
+          console.error('Error fetching user data:', error.message);
         }
-      } catch (error) {
-        console.error('Error fetching user data:', error.message);
       }
-    };
+      };
     fetchUserData();
   }, [userId]);
 
-  const getTheHighestBidderData = async (id) => {
-    const response = await axios.get(`http://localhost:5000/users/${id}`);
-    if (response.data) {
-      setHighestBidder(response.data);
+  const getTheHighestBidderData = async (userId) => {
+    if(authUser){
+
+      console.log("from first:",userId)
+      const response = await axios.get(`http://localhost:5000/users/${userId}`);
+      if (response.data.success) {
+        setHighestBidder(response.data.user);
+      }
     }
   };
 
@@ -89,7 +96,7 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
     };
 
     fetchBiddingData();
-  }, [id]);
+  }, [userId]);
 
   const currentTime = new Date();
   const endTime = biddingData?.endTime ? new Date(biddingData.endTime) : null;
@@ -118,7 +125,8 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
         setBiddingData((prevData) => ({
           ...prevData,
           highestPriceReceivedDueToBidding: userBid,
-          highestBiddingAmountSetBy: authUser.userName
+          highestBiddingAmountSetBy: authUser?._id
+          // highestBiddingAmountSetBy: authUser.userName
         }));
         toast.success('Bid placed successfully!');
       } else {
@@ -226,7 +234,7 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
         )}
 
         <hr />
-        {authUser._id === userId ? (
+        {authUser?._id === userId ? (
           <div className="impressions buttons">
             {/* Add any specific buttons for the owner here if needed */}
           </div>

@@ -27,28 +27,31 @@ const Nav = ({ setshowLogin }) => {
   
   useEffect(() => {
     const fetchUserProfile = async () => {
-      try {
-        const response = await fetch(`http://localhost:5000/users/${userId}`);
-        if (!response.ok) throw new Error('Network response was not ok');
-        const data = await response.json();
-  
-        const user = data.user; 
-        let fullImageUrl;
-  
-        console.log("user from nav:", user);
-        
-        if (user.profilePic.startsWith('http')) {
-          fullImageUrl = user.profilePic;
-        } else {
-          console.log("in else");
-          fullImageUrl = `http://localhost:5000/uploads${user.profilePic.split('/uploads')[1]}`;
+      if(authUser){
+
+        try {
+          const response = await fetch(`http://localhost:5000/users/${userId}`);
+          if (!response.ok) throw new Error('Network response was not ok');
+          const data = await response.json();
+    
+          const user = data.user; 
+          let fullImageUrl;
+    
+          console.log("user from nav:", user);
+          
+          if (user.profilePic.startsWith('http')) {
+            fullImageUrl = user.profilePic;
+          } else {
+            console.log("in else");
+            fullImageUrl = `http://localhost:5000/uploads${user.profilePic.split('/uploads')[1]}`;
+          }
+    
+          setImage(fullImageUrl);
+        } catch (error) {
+          console.error('Error fetching user data:', error);
         }
-  
-        setImage(fullImageUrl);
-      } catch (error) {
-        console.error('Error fetching user data:', error);
+        };
       }
-    };
   
     const intervalId = setInterval(() => {
       fetchUserProfile();
@@ -63,7 +66,7 @@ const Nav = ({ setshowLogin }) => {
     <>
       <div className='nav'>
         <div className="right common">
-          {authUser && ( // Sidebar button should only be available if the user is logged in
+          {authUser && ( 
             <button className="sidebar-toggle-btn" onClick={toggleSidebar}>
               &#9776;
             </button>
@@ -102,7 +105,7 @@ const Nav = ({ setshowLogin }) => {
           )}
         </div>
       </div>
-      {authUser && ( // Sidebar will only render if user is logged in
+      {authUser && ( 
         <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       )}
     </>

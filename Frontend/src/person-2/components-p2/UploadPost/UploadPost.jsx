@@ -90,21 +90,22 @@ const UploadPost = () => {
                 
 
                 console.log("isBiddingActive:",isBiddingActive)
+                fetchPostList()
                 if(isBiddingActive){
                     console.log("yaa its working1")
                     const respectorsResponse = await axios.get(`http://localhost:5000/users/${authUser._id}`);
                     if(respectorsResponse.data.success){
-                        const respectors = respectorsResponse.data.user.respectors; // Adjust based on actual response structure
+                        const respectors = respectorsResponse.data.user.respectors; 
 
                         console.log("yaa its working")
-                        // Validate that respectors is an array
+                       
                         if(!Array.isArray(respectors)){
                             toast.error('Respectors data is invalid.');
                             setIsSubmitting(false);
                             console.log("yaa its working")
                             return;
                         }
-                        // Start bidding
+                        
                         const biddingData = {
                             postId: uploadResponse.data.postId,
                             startingPrice: Number(data.price), 
@@ -124,6 +125,7 @@ const UploadPost = () => {
                         else{
                             toast.error(biddingResponse.data.message);
                         }
+                       
                     }
                     else{
                         toast.error('Failed to fetch respectors.');
@@ -243,7 +245,6 @@ const UploadPost = () => {
                                 checked={isBiddingActive}
                                 onChange={handleToggleChange}
                             />
-                            {/* <span className="toggle-switch"></span> */}
                             Start Bidding
                         </label>
                     </div>

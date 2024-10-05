@@ -35,10 +35,10 @@ app.use("/images",express.static('uploads'))
 
 app.use(store_rout)
 app.use(profile_rout)
-app.use('/profilePics', express.static('uploads/profilePic'));
 app.use(profile_pic_router)
-app.use("/posts",like_dislike_controlls)
 app.use(setRespectingRoutes)
+app.use("/posts",like_dislike_controlls)
+app.use('/profilePics', express.static('uploads/profilePic'));
 app.use('/api/bidding', biddingRoutes);
 app.use('/api/hiring', hiringRoutes);
 

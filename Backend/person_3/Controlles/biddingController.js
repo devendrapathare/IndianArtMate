@@ -31,8 +31,8 @@ const startBidding = async (req, res) => {
     }
 
     const startTime = new Date();
-    // const endTime = new Date(startTime.getTime() + duration * 60 * 60 * 1000); 
-    const endTime = new Date(startTime.getTime() + duration * 3 * 1000); 
+    const endTime = new Date(startTime.getTime() + duration * 60 * 60 * 1000); 
+    // const endTime = new Date(startTime.getTime() + duration * 3 * 1000); 
 
     
       const newBiddingNoti = new BiddingSchemaNoti({
@@ -122,13 +122,11 @@ const getBiddingNotifications = async (req, res) => {
 
 const getBiddingByPostId = async (req, res) => {
   try {
-    const { postId } = req.params; // Get postId from request parameters
-
-    // Fetch bidding data from the database
+    const { postId } = req.params; 
     const biddingData = await BiddingSchemaNoti.findOne({ postId });
 
     if (!biddingData) {
-      return res.status(404).json({ message: 'Bidding data not found' });
+      return res.json({ message: 'Bidding data not found' });
     }
 
     res.status(200).json(biddingData);
@@ -222,7 +220,6 @@ const endBidding = async (req, res) => {
 
     const winnerId = bidding.highestBiddingAmountSetBy;
 
-    // Update the bidding status to 'ended' and store winner info
     bidding.status = 'ended';
     bidding.winnerId = winnerId;
     bidding.endedAt = new Date();
