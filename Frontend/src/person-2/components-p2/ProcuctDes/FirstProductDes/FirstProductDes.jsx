@@ -85,14 +85,14 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
   
       // Check if the profile picture URL matches the desired path
       if (currentImageUrl.startsWith(desiredPath)) {
-        currentImageUrl = authUser.profilePic;  // Use the authenticated user's profile picture
+        currentImageUrl = userData.profilePic;  // Use the authenticated user's profile picture
       } else {
-        const fullPath = authUser.profilePic;
+        const fullPath = userData.profilePic;
         const wantedpath = fullPath.replace('/uploads/profilePic', '');  // Adjust the path as needed
         currentImageUrl = `${url}/profilePics${wantedpath}`;  // Construct the desired URL
       }
   
-      setImageUrl(currentImageUrl);  // Set the new image URL
+      setImageUrl(currentImageUrl);  
     }
   }, [userData.profilePic, authUser.profilePic]);
 
