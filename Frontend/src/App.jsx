@@ -15,6 +15,8 @@ import { Toaster } from 'react-hot-toast';
 import { useAuthContext } from './person-2/context/AuthContext/AuthContext';
 import Temp from './person-3/Components-3/temp';
 import Show_resp_respting from './person-3/Components-3/Show_resp_respting';
+import ProfileFeed from './person-2/components-p2/Profile/ProfileFeed/ProfileFeed';
+import ProfilefeedDisplay from './person-2/components-p2/ProfileDisplay/ProfilefeedDisplay/ProfilefeedDisplay';
 
 function App() {
     const { authUser } = useAuthContext();

@@ -44,3 +44,19 @@ export const setRespect = async (req, res) => {
         res.status(500).json({ message: "Internal Server Error" });
     }
 };
+
+export const checkRespect = async (req, res) => {
+    const { loggedInUserId, userId } = req.params;
+    
+    try {
+        const user = await User.findById(userId); // User being viewed
+        
+        // Check if the loggedInUserId exists in the respectors array of the viewed profile
+        const hasRespected = user.respectors.includes(loggedInUserId);
+        
+        res.status(200).json({ hasRespected });
+    } catch (error) {
+        console.error("Error checking respect status:", error);
+        res.status(500).json({ message: "Failed to check respect status" });
+    }
+}

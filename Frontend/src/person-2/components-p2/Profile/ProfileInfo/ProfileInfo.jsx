@@ -27,10 +27,22 @@ const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
 
     const [hasRespected, setHasRespected] = useState(false);
 
-    useEffect(()=>{
-        console.log("in useEffect")
-        handleRespectToggle(userId)
-    },[])
+    // useEffect(()=>{
+    //     console.log("in useEffect")
+    //     handleRespectToggle(userId)
+    // },[])
+    useEffect(() => {
+        const fetchRespectStatus = async () => {
+            try {
+                const response = await axios.get(`${url}/checkRespect/${LogggedInUserId}/${userId}`);
+                setHasRespected(response.data.hasRespected);
+            } catch (e) {
+                console.error(e);
+            }
+        };
+    
+        fetchRespectStatus();
+    }, [userId]);
 
     const handleRespectToggle = async (userId) => {
         try {
@@ -156,7 +168,6 @@ const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
             </div>
 
             <div className="lower">
-                {/* Display user's bio */}
                 <p className="bio">{userData.bio || 'Write About You Here'}</p>
             </div>
 

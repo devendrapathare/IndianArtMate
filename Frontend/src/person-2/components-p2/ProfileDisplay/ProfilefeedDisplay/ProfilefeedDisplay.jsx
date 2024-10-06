@@ -5,6 +5,7 @@ import { usePostContext } from '../../../context/PostContext/PostContext';
 import { assets } from '../../../../assets/assets';
 
 const ProfilefeedDisplay = ({ isOwnProfile, current_id }) => {
+    // const { whatToDo, userId } = useParams();
     const [viewerPosts, setViewerPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const isMounted = useRef(true);

@@ -4,6 +4,8 @@ import { useAuthContext } from '../../context/AuthContext/AuthContext';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { usePostContext } from '../../context/PostContext/PostContext';
+// import { useNavigate } from 'react-router-dom';
+
 
 const UploadPost = () => {
     const [image, setImage] = useState(null);
@@ -20,10 +22,18 @@ const UploadPost = () => {
     const [isBiddingActive, setIsBiddingActive] = useState(false);
 
     const [isSubmitting, setIsSubmitting] = useState(false);
+    // const navigate = useNavigate();
+
 
     const fileInputRef = useRef(null);
     const { authUser } = useAuthContext();
-    const { fetchPostList } = usePostContext(); 
+    const { fetchPostList, fetchLoggedInUserPostList, url } = usePostContext(); 
+
+    // const NavigationForPosts = (isOwner,userId) => {
+    //     // console.log("userId:", userId);
+    //     navigate(`/myFeed/${isOwner}/${userId}`);
+    //   };
+    
 
     useEffect(() => {
         if (authUser && authUser._id) {
@@ -63,14 +73,13 @@ const UploadPost = () => {
         setIsSubmitting(true);
         try {
             console.log("Submitting data:", data, image, isBiddingActive);
-
+    
             if (!image) {
                 toast.error('Please upload an image.');
                 setIsSubmitting(false);
                 return;
             }
-
-            // Create FormData for image upload
+    
             const formData = new FormData();
             formData.append('image', image);
             formData.append('title', data.title);
@@ -79,64 +88,55 @@ const UploadPost = () => {
             formData.append('price', Number(data.price));
             formData.append('userId', data.userId); 
             formData.append('duration', Number(data.duration)); // Include duration
-
-            const uploadResponse = await axios.post('/api/post/uploadPost', formData, {
+    
+            const uploadResponse = await axios.post(`${url}/api/post/uploadPost`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-
+    
             if(uploadResponse.data.success){
                 
-
-                console.log("isBiddingActive:",isBiddingActive)
-                fetchPostList()
+                await fetchLoggedInUserPostList();  
+                // NavigationForPosts(true,authUser._id)
+    
                 if(isBiddingActive){
-                    console.log("yaa its working1")
                     const respectorsResponse = await axios.get(`http://localhost:5000/users/${authUser._id}`);
                     if(respectorsResponse.data.success){
                         const respectors = respectorsResponse.data.user.respectors; 
-
-                        console.log("yaa its working")
-                       
+                        
                         if(!Array.isArray(respectors)){
                             toast.error('Respectors data is invalid.');
                             setIsSubmitting(false);
-                            console.log("yaa its working")
                             return;
                         }
-                        
+    
                         const biddingData = {
                             postId: uploadResponse.data.postId,
                             startingPrice: Number(data.price), 
                             duration: Number(data.duration),
                             respectors: respectors
                         };
-
+    
                         const biddingResponse = await axios.post('http://localhost:5000/api/bidding/start', biddingData, {
                             headers: {
                                 'Content-Type': 'application/json'
                             }
                         });
-
+    
                         if(biddingResponse.data.success){
                             toast.success(biddingResponse.data.message);
-                        }
-                        else{
+                        } else {
                             toast.error(biddingResponse.data.message);
                         }
-                       
-                    }
-                    else{
+                    } else {
                         toast.error('Failed to fetch respectors.');
                     }
                 }
-
-            }
-            else{
+            } else {
                 toast.error(uploadResponse.data.error);
             }
-
+            window.location.reload();
         } catch (error) {
             console.error("Error submitting data:", error);
             toast.error('An error occurred while uploading the post.');

@@ -13,28 +13,25 @@ const Categories = () => {
   const [userNames, setUserNames] = useState({});
   const [filteredPosts, setFilteredPosts] = useState([]);
   const navigate = useNavigate();
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
 
   const userId = authUser?._id;
 
   const fetchUserName = async (userId, postId) => {
-    // if(authUser){
+    try {
+      const response = await fetch(`http://localhost:5000/users/${userId}`);
+      if (!response.ok) throw new Error('Network response was not ok');
+      
+      const data = await response.json();
+      const userName = data.user.userName;
 
-      try {
-        const response = await fetch(`http://localhost:5000/users/${userId}`);
-        if (!response.ok) throw new Error('Network response was not ok');
-        
-        const data = await response.json();
-        const userName = data.user.userName;
-  
-        setUserNames((prevUserNames) => ({
-          ...prevUserNames,
-          [postId]: userName,
-        }));
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      }
-    // }
+      setUserNames((prevUserNames) => ({
+        ...prevUserNames,
+        [postId]: userName,
+      }));
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
   };
 
   const GotoPost = async (image, category, description, price, title, userId, id) => {
@@ -56,50 +53,36 @@ const Categories = () => {
   };
 
   const fetchBiddingData = async (postId) => {
-    // if (authUser) {
-
-      console.log("postId:", postId);
-      console.log("im im in", postId);
-      try {
-        const response = await axios.get(`http://localhost:5000/api/bidding/biddingData/${postId}`);
-        console.log("response.data:", response.data);
+    try {
+      const response = await axios.get(`http://localhost:5000/api/bidding/biddingData/${postId}`);
   
-        if (response.data.userId) {
-          return response.data;
-        } else {
-          return null;
-        }
-      } catch (error) {
-        console.error('Error fetching bidding data:', error);
+      if (response.data.userId) {
+        return response.data;
+      } else {
         return null;
       }
-    // }else{
-    //   return false
-    // }
+    } catch (error) {
+      console.error('Error fetching bidding data:', error);
+      return null;
+    }
   };
+
   const isBiddingActive = (endTime) => {
     const currentTime = new Date();
     const biddingEndTime = new Date(endTime);
     return currentTime <= biddingEndTime;
   };
-  
 
   useEffect(() => {
     const filterPostsWithoutBidding = async () => {
       const filtered = [];
     
       for (const post of posts) {
-        console.log("post:", post._id);
         const biddingData = await fetchBiddingData(post._id);
-        console.log("biddingData:",biddingData)
-        // console.log("isBiddingActive:",isBiddingActive(biddingData.endTime))
         if (!biddingData || !isBiddingActive(biddingData.endTime)) {
           filtered.push(post);
         }
-        
       }
-    
-      console.log("Filtered list:", filtered.length);
     
       setFilteredPosts(filtered);
       setCount((prev) => prev + 1);
@@ -108,9 +91,7 @@ const Categories = () => {
     if (posts.length >= count) {
       filterPostsWithoutBidding();
     }
-  
   }, [posts]);
-
 
   useEffect(() => {
     fetchPostList();
@@ -124,21 +105,52 @@ const Categories = () => {
     });
   }, [filteredPosts, userNames]);
 
-  const handleShowMore = () => {
-    setShowAll((prev) => !prev);
-  };
-
+  // Handle like/dislike and update the state instantly
   const handleLikeDislike = async (postId, actionType) => {
     if (authUser) {
       try {
-        const response = await axios.post(`http://localhost:5000/posts/${postId}/${actionType}`, { userId });
-        fetchPostList();
+        await axios.post(`http://localhost:5000/posts/${postId}/${actionType}`, { userId });
+  
+        setFilteredPosts((prevPosts) =>
+          prevPosts.map((post) => {
+            if (post._id === postId) {
+              if (actionType === 'like') {
+                // If user has liked the post, remove them from dislike array (if present) and add to like array
+                const updatedLikes = post.like.includes(userId)
+                  ? post.like.filter((id) => id !== userId)
+                  : [...post.like, userId];
+                const updatedDislikes = post.disLike.includes(userId)
+                  ? post.disLike.filter((id) => id !== userId)
+                  : post.disLike; // Remove from dislikes if in the dislike array
+                
+                return { ...post, like: updatedLikes, disLike: updatedDislikes };
+              } else if (actionType === 'dislike') {
+                // If user has disliked the post, remove them from like array (if present) and add to dislike array
+                const updatedDislikes = post.disLike.includes(userId)
+                  ? post.disLike.filter((id) => id !== userId)
+                  : [...post.disLike, userId];
+                const updatedLikes = post.like.includes(userId)
+                  ? post.like.filter((id) => id !== userId)
+                  : post.like; // Remove from likes if in the like array
+                
+                return { ...post, like: updatedLikes, disLike: updatedDislikes };
+              }
+            }
+            return post;
+          })
+        );
       } catch (error) {
         console.error('Error updating like/dislike:', error);
+        alert('Failed to update. Please try again.');
       }
     } else {
       alert('Please log in to like or dislike a post.');
     }
+  };
+  
+
+  const handleShowMore = () => {
+    setShowAll((prev) => !prev);
   };
 
   const visiblePosts = showAll ? filteredPosts : filteredPosts.slice(0, 6);
@@ -153,9 +165,6 @@ const Categories = () => {
         <div className="mid">
           {visiblePosts.map((post) => (
             <div
-              onClick={() =>
-                GotoPost(post.image, post.category, post.description, post.price, post.title, post.userId, post._id)
-              }
               className="card"
               key={post._id}
             >
@@ -163,6 +172,9 @@ const Categories = () => {
                 id='main-card-img'
                 src={`http://localhost:5000/images/${post.image}`}
                 alt={post.title}
+                onClick={() =>
+                  GotoPost(post.image, post.category, post.description, post.price, post.title, post.userId, post._id)
+                }
               />
               <div className="card-bottom">
                 <div className="arties-name">
