@@ -155,7 +155,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 
   let imageUrl = authUser.profilePic;
   const desiredPath = 'https://avatar.iran.liara.run/public/';
-  console.log(imageUrl);
+  // console.log(imageUrl);
 
   if (imageUrl.startsWith(desiredPath)) {
     imageUrl = authUser.profilePic;
