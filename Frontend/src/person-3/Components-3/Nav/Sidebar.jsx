@@ -129,9 +129,12 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
       const response = await axios.get(`http://localhost:5000/api/post/getPostDataByID/${postId}`);
       if (response.data.success) {
         const post = response.data.data;
-        const { image, category, description, price, title, userId: post_UID, _id: id } = post;
-        console.log("userId....:", post_UID)
+        const { image, category, description, price, title, userId, _id: id } = post;
+        console.log("userId....:",userId)
+        console.log("userId---id....:",id)
         const imageUrl = `http://localhost:5000/images/${image}`;
+
+        isOwnerBid = authUser?._id === userId
 
         navigate('/productDes', {
           state: {
@@ -140,7 +143,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
             description,
             price,
             title,
-            userId: post_UID,
+            userId,
             id,
             isOwner: isOwnerBid,
           },
@@ -162,7 +165,10 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   } else {
     const fullPath = authUser.profilePic;
     const wantedpath = fullPath.replace('/uploads/profilePic', '');
+    console.log("wantedpath:",wantedpath)
     imageUrl = `${url}/profilePics${wantedpath}`
+    console.log("wantedpath_2:",imageUrl)
+
   }
 
   return (

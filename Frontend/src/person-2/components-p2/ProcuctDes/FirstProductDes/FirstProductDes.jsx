@@ -7,10 +7,13 @@ import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { HireContext } from '../../../context/HireContext/HIreContext';
+import { usePostContext } from '../../../../person-2/context/PostContext/PostContext';
+
 
 const FirstProductDes = ({ image, category, description, price, title, userId, id, isOwner }) => {
   const { authUser } = useAuthContext();
-  // console.log("userID:",userId)
+  console.log("userID:",userId)
+  console.log("userID_id:",id)
   const { cartItems, addItemToCart, removeItemFromCart } = useContext(CartContext);
   const [userData, setUserData] = useState({});
   const [biddingData, setBiddingData] = useState(null);
@@ -18,7 +21,10 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
   const navigate = useNavigate();
   const respectorsCount = userData.respectors?.length || 0;
   const [highestBidder, setHighestBidder] = useState(null);
+  const [imageUrl, setImageUrl] = useState('');
   const [isHired, setIsHired] = useState(false);
+  const { url } = usePostContext()
+
 
   const { applyHire } = useContext(HireContext)
 
@@ -54,23 +60,50 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
 
 
   useEffect(() => {
+    
     const fetchUserData = async () => {
+      if(authUser){
       try {
-        const response = await axios.get(`http://localhost:5000/users/${userId}`);
-        if (response.data) {
-          setUserData(response.data.user);
+          const response = await axios.get(`http://localhost:5000/users/${userId}`);
+          if (response.data) {
+            setUserData(response.data.user);
+          }
+        } catch (error) {
+          console.error('Error fetching user data:', error.message);
         }
-      } catch (error) {
-        console.error('Error fetching user data:', error.message);
       }
-    };
+      };
     fetchUserData();
   }, [userId]);
 
-  const getTheHighestBidderData = async (id) => {
-    const response = await axios.get(`http://localhost:5000/users/${id}`);
-    if (response.data) {
-      setHighestBidder(response.data);
+
+
+  useEffect(() => {
+    if (userData.profilePic) {
+      let currentImageUrl = userData.profilePic;
+      const desiredPath = 'https://avatar.iran.liara.run/public/';
+  
+      // Check if the profile picture URL matches the desired path
+      if (currentImageUrl.startsWith(desiredPath)) {
+        currentImageUrl = authUser.profilePic;  // Use the authenticated user's profile picture
+      } else {
+        const fullPath = authUser.profilePic;
+        const wantedpath = fullPath.replace('/uploads/profilePic', '');  // Adjust the path as needed
+        currentImageUrl = `${url}/profilePics${wantedpath}`;  // Construct the desired URL
+      }
+  
+      setImageUrl(currentImageUrl);  // Set the new image URL
+    }
+  }, [userData.profilePic, authUser.profilePic]);
+
+  const getTheHighestBidderData = async (userId) => {
+    if(authUser){
+
+      console.log("from first:",userId)
+      const response = await axios.get(`http://localhost:5000/users/${userId}`);
+      if (response.data.success) {
+        setHighestBidder(response.data.user);
+      }
     }
   };
 
@@ -91,7 +124,7 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
     };
 
     fetchBiddingData();
-  }, [id]);
+  }, [userId]);
 
   const currentTime = new Date();
   const endTime = biddingData?.endTime ? new Date(biddingData.endTime) : null;
@@ -120,7 +153,8 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
         setBiddingData((prevData) => ({
           ...prevData,
           highestPriceReceivedDueToBidding: userBid,
-          highestBiddingAmountSetBy: authUser.userName
+          highestBiddingAmountSetBy: authUser?._id
+          // highestBiddingAmountSetBy: authUser.userName
         }));
         toast.success('Bid placed successfully!');
       } else {
@@ -169,7 +203,7 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
           <p>Designed by</p>
           <div  className="owner-profile">
             <div className="owner-img">
-              <img src={userData.profilePic} alt="Owner Profile" />
+              <img src={imageUrl} alt="Owner Profile" />
             </div>
             <div className="owner-detail">
               <div className="owner-name">
@@ -230,7 +264,7 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
         )}
 
         <hr />
-        {authUser._id === userId ? (
+        {authUser?._id === userId ? (
           <div className="impressions buttons">
             {/* Add any specific buttons for the owner here if needed */}
           </div>

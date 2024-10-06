@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { usePostContext } from '../../../context/PostContext/PostContext';
 import { useAuthContext } from '../../../context/AuthContext/AuthContext';
-// import 
+
 
 const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
     const [userData, setUserData] = useState(null); 
@@ -18,9 +18,7 @@ const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
     const LogggedInUserId = authUser?._id; 
   
     
-    
     const navigate = useNavigate();
-
     const handleUpdateProfileClick = () => {
         navigate(`/UpdateProfilePage`);
     };
@@ -30,6 +28,23 @@ const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
     }
 
     const [hasRespected, setHasRespected] = useState(false);
+
+    // useEffect(()=>{
+    //     console.log("in useEffect")
+    //     handleRespectToggle(userId)
+    // },[])
+    useEffect(() => {
+        const fetchRespectStatus = async () => {
+            try {
+                const response = await axios.get(`${url}/checkRespect/${LogggedInUserId}/${userId}`);
+                setHasRespected(response.data.hasRespected);
+            } catch (e) {
+                console.error(e);
+            }
+        };
+    
+        fetchRespectStatus();
+    }, [userId]);
 
     const handleRespectToggle = async (userId) => {
         try {
@@ -41,24 +56,20 @@ const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
             console.log("userId:", userId);
             console.log(response);
     
-            // Toggle respect state and update userData state to reflect the new counts
             setHasRespected(!hasRespected);
     
             const updatedUserData = !hasRespected ? {
-                // Adding respect
                 ...userData,
                 respectors: [...userData.respectors, LogggedInUserId],
                 respecting: userData.respecting.includes(userId)
                     ? userData.respecting
                     : [...userData.respecting, userId],
             } : {
-                // Removing respect
                 ...userData,
                 respectors: userData.respectors.filter(id => id !== LogggedInUserId),
                 respecting: userData.respecting.filter(id => id !== userId),
             };
     
-            // Update userData state
             setUserData(updatedUserData);
     
     
@@ -92,8 +103,8 @@ const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
         };
     
         fetchUserProfile();
-    // }, [userId, hasRespected]); 
-    }, [userId]); 
+    }, [userId, hasRespected]); 
+    
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
@@ -136,7 +147,7 @@ const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
                     onClick={() => handleRespectToggle(userId)} 
                     className="profileIcon-respect-button"
                     >
-                    {hasRespected ? 'Remove Respect' : 'Respect'}
+                    {hasRespected ? 'Remove Respect' : 'Respect' }
                     </button>
                 )}
                 {isOwnProfile && (
@@ -159,17 +170,18 @@ const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
             </div>
 
             <div className="lower">
-                {/* Display user's bio */}
                 <p className="bio">{userData.bio || 'Write About You Here'}</p>
             </div>
 
             <div className="profileInfo-buttons">
-                {isOwnProfile && (
-                    <button onClick={() => setshowUploadPost(false)} className="profileIcon-respect-button">Upload</button>
-                )}
-                <button className="profileIcon-update-profile-button profileIcon-respect-button">Story</button>
-                <button onClick={()=>navigate('/receivedOrders')} className="profileIcon-respect-button">Received Orders</button>
-            </div>
+    {isOwnProfile && (
+        <>
+            <button onClick={() => setshowUploadPost(false)} className="profileIcon-respect-button">Upload</button>
+            <button onClick={() => navigate('/receivedOrders')} className="profileIcon-respect-button">Received Orders</button>
+        </>
+    )}
+    {/* <button className="profileIcon-update-profile-button profileIcon-respect-button">Story</button> */}
+</div>
         </div>
     );
 };

@@ -7,7 +7,7 @@ const Homepage = () => {
     <div>
         <Landing/>
         <Categories/>
-        <Story/>
+        {/* <Story/> */}
     </div>
   )
 }

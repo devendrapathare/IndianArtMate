@@ -1,9 +1,11 @@
-import { forEach } from 'lodash';
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import './Show_resp_respting.css'; // Import the CSS file
 import ProfileInfo from '../../person-2/components-p2/Profile/ProfileInfo/ProfileInfo';
 import Hire_me from './Hire_me';
+// import { usePostContext } from '../../../../person-2/context/PostContext/PostContext';
+import { usePostContext } from '../../person-2/context/PostContext/PostContext';
+
 
 const MyProfileDetails = () => {
   const { whatToDo, userId } = useParams();
@@ -12,6 +14,19 @@ const MyProfileDetails = () => {
   const [respectingData, setRespectingData] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { url } = usePostContext()
+
+
+  const modifyImageUrl = (profilePic) => {
+    const desiredPath = 'https://avatar.iran.liara.run/public/';
+    
+    if (profilePic.startsWith(desiredPath)) {
+      return profilePic; // Use the existing URL if it's from the desired path
+    } else {
+      const fullPath = profilePic.replace('/uploads/profilePic', ''); // Adjust the path as needed
+      return `${url}/profilePics${fullPath}`; // Construct the desired URL
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -61,35 +76,31 @@ const MyProfileDetails = () => {
       }
   
       const result = await response.json();
-      return result.user; // Return the 'user' object from the response
+      const user = result.user;
+
+      if (user) {
+        user.profilePic = modifyImageUrl(user.profilePic); // Modify the profile picture URL
+      }
+
+      return user; // Return the 'user' object from the response
     } catch (error) {
       console.error('Error fetching user data:', error);
       setError(error.message);
       return null; // Return null in case of error
     }
   };
-  
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
   return (
     <div className="container_res">
-      {/* <h2>Profile Details</h2> */}
-      {/* <div className="user-data">
-        <img src={artiesData.profilePic} alt="Your Profile" width="50" />
-        <div className="user-info">
-          <h3>Your Data</h3>
-          <p>Name: {artiesData.name}</p>
-        </div>
-      </div> */}
-
       <div>
         <h3>Respectors</h3>
         {respectorsData.length > 0 ? (
           respectorsData.map((respector, index) => (
             <div key={index} className="respector">
-              <img src={respector.profilePic} alt={`${respector.name}'s Profile`} width="50" />
+              <img src={respector.profilePic} alt={`${respector.userName}'s Profile`} width="50" />
               <div>
                 <strong>Name:</strong> {respector.userName} <br />
                 <strong>Respectors:</strong> {respector.respectors.length} <br />
@@ -124,7 +135,6 @@ const MyProfileDetails = () => {
         )}
       </div>
     </div>
-   
   );
 };
 

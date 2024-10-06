@@ -29,30 +29,33 @@ const Nav = ({ setshowLogin }) => {
 
   useEffect(() => {
     const fetchUserProfile = async () => {
-      try {
-        const response = await fetch(`http://localhost:5000/users/${userId}`);
-        if (!response.ok) throw new Error('Network response was not ok');
-        const data = await response.json();
+      if(authUser){
 
-        const user = data.user;
-        let fullImageUrl;
-
-        // console.log("user from nav:", user);
-
-        if (user.profilePic.startsWith('http')) {
-          fullImageUrl = user.profilePic;
-        } else {
-          console.log("in else");
-          fullImageUrl = `http://localhost:5000/profilePics${user.profilePic.split('/profilePic')[1]}`;
+        try {
+          const response = await fetch(`http://localhost:5000/users/${userId}`);
+          if (!response.ok) throw new Error('Network response was not ok');
+          const data = await response.json();
+  
+          const user = data.user;
+          let fullImageUrl;
+  
+          // console.log("user from nav:", user);
+  
+          if (user.profilePic.startsWith('http')) {
+            fullImageUrl = user.profilePic;
+          } else {
+            console.log("in else");
+            fullImageUrl = `http://localhost:5000/profilePics${user.profilePic.split('/profilePic')[1]}`;
+          }
+  
+          setImage(fullImageUrl);
+          // console.log(image);
+  
+        } catch (error) {
+          console.error('Error fetching user data:', error);
         }
-
-        setImage(fullImageUrl);
-        // console.log(image);
-
-      } catch (error) {
-        console.error('Error fetching user data:', error);
+      };
       }
-    };
 
     const intervalId = setInterval(() => {
       fetchUserProfile();
@@ -67,7 +70,7 @@ const Nav = ({ setshowLogin }) => {
     <>
       <div className='nav'>
         <div className="right common">
-          {authUser && ( // Sidebar button should only be available if the user is logged in
+          {authUser && ( 
             <button className="sidebar-toggle-btn" onClick={toggleSidebar}>
               &#9776;
             </button>
@@ -91,9 +94,9 @@ const Nav = ({ setshowLogin }) => {
               <div className="nav-icon">
                 <Link to='/ProfilePage'><img className='img' src={assets.profile_icon} alt="My Profile" onClick={() => onNavClick('profile')} /></Link>
               </div>
-              <div className="nav-icon">
+              {/* <div className="nav-icon">
                 <Link to='/myChats'><img className='img' src={assets.chat_icon} alt="My Chats" onClick={() => onNavClick('chats')} /></Link>
-              </div>
+              </div> */}
               {/* <Link to='/myStore'><h2 onClick={() => onNavClick('store')}>My Store</h2></Link>
               <Link to='/ProfilePage'><h2 onClick={() => onNavClick('profile')}>My Profile</h2></Link>
               <Link to='/myChats'><h2 onClick={() => onNavClick('chats')}>My Chats</h2></Link> */}
@@ -129,7 +132,7 @@ const Nav = ({ setshowLogin }) => {
           )}
         </div>
       </div>
-      {authUser && ( // Sidebar will only render if user is logged in
+      {authUser && ( 
         <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       )}
     </>

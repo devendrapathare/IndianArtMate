@@ -1,79 +1,100 @@
-
-
 .container_res {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 20px;
-    display: flex;
-    justify-content: space-around;
-  }
-  
-  .container_res  h2 {
-    text-align: center;
-    color: #333;
-    margin-bottom: 20px;
-  }
-  
-  .container_res h3 {
-    margin-top: 20px;
-    color: #444;
-    border-bottom: 2px solid #eee;
-    padding-bottom: 5px;
-    margin-bottom: 20px;
-  }
-  
-  .user-data {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-  
-  .user-data img {
-    border-radius: 50%;
-    margin-right: 15px;
-    border: 2px solid #ccc;
-  }
-  
-  .user-info {
-    background-color: #f9f9f9;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-  }
-  
-  .respector {
-    margin-bottom: 20px;
-    border: 1px solid #ddd;
-    padding: 15px;
-    border-radius: 8px;
-    background-color: #FFF9D7;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .respector img {
-    border-radius: 50%;
-    margin-right: 15px;
-    border: 2px solid #ccc;
-  }
-  
-  .button {
-    background-color: brown;
-    color: white;
-    border: none;
-    margin-left: 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-  }
-  
-  .button:hover {
-    background-color: rgb(93, 37, 37);
-  }
-  
+  max-width: 1200px; /* Increased for better spacing */
+  margin: 0 auto;
+  padding: 40px; /* Increased padding for a more spacious look */
+  display: flex;
+  justify-content: space-between;
+  gap: 40px; /* Added gap between sections for better spacing */
+}
 
-  
+.container_res h2 {
+  text-align: center;
+  color: #333;
+  font-size: 28px;
+  margin-bottom: 30px; /* Increased spacing below the heading */
+}
+
+.container_res h3 {
+  font-size: 24px; /* Increased heading size */
+  color: #444;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px; /* Increased padding for better separation */
+  margin-bottom: 30px;
+}
+
+.user-data {
+  display: flex;
+  align-items: center;
+  margin-bottom: 25px; /* Adjusted spacing */
+}
+
+.user-data img {
+  border-radius: 50%;
+  width: 60px; /* Adjusted width for consistency */
+  height: 60px;
+  margin-right: 20px;
+  border: 2px solid #ccc;
+}
+
+.user-info {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px; /* Slightly rounded corners for a softer look */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Increased shadow for better depth */
+  margin-bottom: 25px;
+  transition: box-shadow 0.3s ease; /* Smooth shadow transition */
+}
+
+.user-info:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Slight hover effect */
+}
+
+.respector {
+  margin-bottom: 25px;
+  border: 1px solid #ddd;
+  padding: 20px; /* Increased padding for better spacing */
+  border-radius: 10px;
+  background-color: #FFF9D7;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+}
+
+.respector:hover {
+  transform: translateY(-5px); /* Subtle hover lift */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Added shadow on hover */
+}
+
+.respector img {
+  border-radius: 50%;
+  width: 50px; /* Uniform size for all images */
+  height: 50px;
+  margin-right: 20px;
+  border: 2px solid #ccc;
+}
+
+.button {
+  background-color: brown;
+  color: white;
+  border: none;
+  padding: 10px 20px; /* Adjusted padding for better button size */
+  margin-left: 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  transition: background-color 0.3s ease; /* Smooth background color transition */
+}
+
+.button:hover {
+  background-color: rgb(93, 37, 37);
+}
+
+.no-data {
+  font-size: 16px;
+  color: #888;
+  text-align: center;
+  margin-top: 20px; /* Added some margin for spacing */
+}
+

@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import './Mid_section.css';
 import { useAuthContext } from '../../../../../person-2/context/AuthContext/AuthContext'; 
+import { useNavigate } from 'react-router-dom';
+
 import { HireContext } from '../../../../../person-2/context/HireContext/HIreContext';
 import { usePostContext } from '../../../../../person-2/context/PostContext/PostContext'; // Import usePostContext
 
@@ -11,6 +13,8 @@ const Mid_section = () => {
   const { authUser } = useAuthContext();
   const { fetchHiring } = useContext(HireContext);
   const { url } = usePostContext(); 
+  const navigate = useNavigate();
+
 
   // Map through fetchHiring and include _id
   const projectOwnerDetails = fetchHiring.map(item => {
@@ -19,6 +23,12 @@ const Mid_section = () => {
   }).filter(Boolean);
   
   const userId = authUser?._id; 
+
+  function gotoProfile(artistId){
+    console.log("from store:",artistId)
+    navigate(`/temp/${artistId}`);
+
+  }
 
   useEffect(() => {
     const fetchStoreData = async () => {
@@ -97,9 +107,9 @@ const Mid_section = () => {
                   <div className="email">
                     <p id='Contact_info'>Email: {artist.email}</p>
                   </div>
-                  <div className="chat">
-                    <button id="arti-chat">Chat</button>
-                  </div>
+                  {/* <div className="chat">
+                    <button onClick={()=>{gotoProfile(artist._id)}} id="arti-chat">View Profile</button>
+                  </div> */}
                 </div>
                 <hr />
               </React.Fragment>

@@ -5,6 +5,7 @@ import { usePostContext } from '../../../context/PostContext/PostContext';
 import { assets } from '../../../../assets/assets';
 
 const ProfilefeedDisplay = ({ isOwnProfile, current_id }) => {
+    // const { whatToDo, userId } = useParams();
     const [viewerPosts, setViewerPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const isMounted = useRef(true);
@@ -42,12 +43,15 @@ const ProfilefeedDisplay = ({ isOwnProfile, current_id }) => {
     const containerClass = viewerPosts.length > 0 ? 'ProfilefeedDisplay-container' : 'EmptyProfilefeedDisplay-container';
     return (
         <div>
+             {console.log("viewerPosts:",viewerPosts)}
             {loading ? (
                 <h1>Loading...</h1>
             ) : (
+               
                 <div className={containerClass}>
                     {viewerPosts.length > 0 ? (
                         viewerPosts.map((item) => (
+                           
                             <ProfileFeed
                                 key={item._id}
                                 id={item._id}
@@ -57,10 +61,12 @@ const ProfilefeedDisplay = ({ isOwnProfile, current_id }) => {
                                 price={item.price}
                                 title={item.title}
                                 userId={item.userId}
-                            />
-                        ))
-                    ) : (
-                        <div className="ProfilefeedDisplay-empty">
+                                />
+                                
+                            ))
+                        ) : (
+                            <div className="ProfilefeedDisplay-empty">
+                           
                             <img src={assets.empty_box} alt="No posts" />
                             <h1>No posts available</h1>
                         </div>

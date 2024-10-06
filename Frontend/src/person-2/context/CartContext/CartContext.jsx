@@ -66,16 +66,26 @@ const CartContextProvider = (props) =>{
         }
     };
 
-    const getTotalCartAmount = () =>{
+    const getTotalCartAmount = () => {
         let totalAmount = 0;
+    
         for (const item in cartItems) {
-            if (cartItems[item] > 0 ) {
-                let itemInfo =  posts.find((product) => product._id === item );
-                totalAmount += itemInfo.price * cartItems[item];
+            if (cartItems[item] > 0) {
+                // Find the product information from the posts array
+                const itemInfo = posts.find((product) => product._id === item);
+    
+                // Check if itemInfo exists and has a price
+                if (itemInfo && itemInfo.price) {
+                    totalAmount += itemInfo.price * cartItems[item];
+                } else {
+                    console.warn(`Product with ID ${item} not found or has no price.`);
+                }
             }
         }
+    
         return totalAmount;
-    }
+    };
+    
     
     // console.log("dataherer",cartItems);
 
