@@ -108,7 +108,7 @@ const PostContextProvider = ({ children }) => {
             });
             const sortedPosts = response.data.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
             setPosts(sortedPosts);
-            console.log('Fetched posts:', sortedPosts);
+            // console.log('Fetched posts:', sortedPosts);
         } catch (error) {
             console.error("Error fetching posts:", error);
         }
@@ -121,7 +121,7 @@ const PostContextProvider = ({ children }) => {
             const response = await axios.get(`${url}/api/post/listlogedInUserPost/${authUser._id}`);
             const sortedPosts = response.data.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
             setLoggedInUserPosts(sortedPosts);
-            console.log("Fetched logged-in user posts:", sortedPosts); 
+            // console.log("Fetched logged-in user posts:", sortedPosts); 
         } catch (error) {
             console.error("Error fetching logged-in user posts:", error);
         }

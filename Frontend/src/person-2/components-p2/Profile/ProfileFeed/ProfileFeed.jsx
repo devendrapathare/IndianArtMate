@@ -3,10 +3,13 @@ import './ProfileFeed.css';
 import { usePostContext } from '../../../context/PostContext/PostContext';
 import { useNavigate } from 'react-router-dom';
 import { CartContext } from '../../../context/CartContext/CartContext';
-const ProfileFeed = ({ image,category,description,price,title,userId,id }) => {
+const ProfileFeed = ({ image,category,description,price,title,userId,id,like,disLike }) => {
 
   const{ url } = usePostContext()
   const navigate = useNavigate()
+  // console.log(disLike.length);
+  const totalLike = like.length;  
+  const totaldisLike = disLike.length;  
   
   const handlePostClick = () =>{
     navigate('/productDes',{state:
@@ -16,7 +19,9 @@ const ProfileFeed = ({ image,category,description,price,title,userId,id }) => {
       price,
       title,
       userId,
-      id
+      id,
+      totalLike,
+      totaldisLike
     }})
   } 
   // console.log("ProfileFeed:",url+"/images/"+image);

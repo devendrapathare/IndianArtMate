@@ -119,8 +119,8 @@
     min-height: 10px;
     background-color: #e9a046;
     border-radius: 5px;
-    top: 14px;
-    right: 20px;
+    bottom: 50px;
+    right: 1px;
 }
 
 .nav-icon {

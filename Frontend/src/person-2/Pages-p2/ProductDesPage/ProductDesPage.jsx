@@ -5,9 +5,9 @@ import { useLocation } from 'react-router-dom';
 
 const ProductDesPage = () => {
   const location = useLocation();
-  const { image, category, description, price, title, userId, id ,isOwner = null } = location.state || {}; 
-  console.log("ProductDesPage:",userId);
-  console.log("ProductDesPageid:",id);
+  const { image, category, description, price, title, userId, id ,isOwner,totalLike,totaldisLike = null } = location.state || {}; 
+  // console.log("ProductDesPage:",userId);
+  // console.log("ProductDesPageid:",totaldisLike);
     
 
   return (
@@ -21,6 +21,8 @@ const ProductDesPage = () => {
         userId={userId}
         id={id}
         isOwner = {isOwner}
+        totalLike={totalLike}
+        totaldisLike={totaldisLike}
       />
     </div>
   );

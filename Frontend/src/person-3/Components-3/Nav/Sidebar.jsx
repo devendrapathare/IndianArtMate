@@ -165,9 +165,9 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   } else {
     const fullPath = authUser.profilePic;
     const wantedpath = fullPath.replace('/uploads/profilePic', '');
-    console.log("wantedpath:",wantedpath)
+    // console.log("wantedpath:",wantedpath)
     imageUrl = `${url}/profilePics${wantedpath}`
-    console.log("wantedpath_2:",imageUrl)
+    // console.log("wantedpath_2:",imageUrl)
 
   }
 
