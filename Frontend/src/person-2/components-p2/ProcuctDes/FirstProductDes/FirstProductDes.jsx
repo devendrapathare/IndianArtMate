@@ -6,6 +6,9 @@ import { CartContext } from '../../../context/CartContext/CartContext';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { HireContext } from '../../../context/HireContext/HIreContext';
+import { usePostContext } from '../../../../person-2/context/PostContext/PostContext';
+
 
 const FirstProductDes = ({ image, category, description, price, title, userId, id, isOwner }) => {
   const { authUser } = useAuthContext();
@@ -18,38 +21,43 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
   const navigate = useNavigate();
   const respectorsCount = userData.respectors?.length || 0;
   const [highestBidder, setHighestBidder] = useState(null);
+  const [imageUrl, setImageUrl] = useState('');
+  const [isHired, setIsHired] = useState(false);
+  const { url } = usePostContext()
+
+
+  const { applyHire } = useContext(HireContext)
 
     
     const handleHireMe = async () => {
-      const ownerId = authUser?._id;
-      const receiverId = userId;
-  
-      if (!ownerId) {
+      const ProjectOwnerId = authUser?._id;
+      const ContributerId = userId;
+      console.log("owner",ProjectOwnerId);
+      console.log("receiver",ContributerId);
+      console.log("userData",userData);
+      console.log("authUser",authUser);
+      
+      // Validate that ownerId and receiverId are not the same
+      if (!ProjectOwnerId) {
         toast.error('You must be logged in to hire.');
         return;
       }
   
-      if (ownerId === receiverId) {
+      if (ProjectOwnerId === ContributerId) {
         toast.error('You cannot hire yourself.');
         return;
       }
   
       try {
-        const response = await axios.post('http://localhost:5000/api/hiring', {
-          ownerId,
-          receiverId,
-        });
-  
-        if (response.data.success) {
-          toast.success('Hiring request sent successfully!');
-        } else {
-          toast.error(response.data.message || 'Failed to send hiring request.');
-        }
+        applyHire(ProjectOwnerId,ContributerId,authUser,userData)
+        setIsHired(true); 
       } catch (error) {
         console.error('Error sending hiring request:', error);
         toast.error(error.response?.data?.message || 'An error occurred.');
       }
     };
+
+
 
   useEffect(() => {
     
@@ -67,6 +75,26 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
       };
     fetchUserData();
   }, [userId]);
+
+
+
+  useEffect(() => {
+    if (userData.profilePic) {
+      let currentImageUrl = userData.profilePic;
+      const desiredPath = 'https://avatar.iran.liara.run/public/';
+  
+      // Check if the profile picture URL matches the desired path
+      if (currentImageUrl.startsWith(desiredPath)) {
+        currentImageUrl = authUser.profilePic;  // Use the authenticated user's profile picture
+      } else {
+        const fullPath = authUser.profilePic;
+        const wantedpath = fullPath.replace('/uploads/profilePic', '');  // Adjust the path as needed
+        currentImageUrl = `${url}/profilePics${wantedpath}`;  // Construct the desired URL
+      }
+  
+      setImageUrl(currentImageUrl);  // Set the new image URL
+    }
+  }, [userData.profilePic, authUser.profilePic]);
 
   const getTheHighestBidderData = async (userId) => {
     if(authUser){
@@ -149,7 +177,9 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
       <div className="FirstProductDes-img">
         <img src={image} alt={title} />
         <center>
-        <button onClick={handleHireMe}>Hire me</button>
+        <button onClick={handleHireMe} disabled={isHired}>
+            {isHired ? 'Sent' : 'Hire me'}
+          </button>        
         </center>
       </div>
       <div className="FirstProductDes-main-info">
@@ -173,7 +203,7 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
           <p>Designed by</p>
           <div  className="owner-profile">
             <div className="owner-img">
-              <img src={userData.profilePic} alt="Owner Profile" />
+              <img src={imageUrl} alt="Owner Profile" />
             </div>
             <div className="owner-detail">
               <div className="owner-name">

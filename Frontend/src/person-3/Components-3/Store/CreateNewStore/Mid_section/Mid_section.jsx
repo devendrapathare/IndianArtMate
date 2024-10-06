@@ -1,19 +1,39 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './Mid_section.css';
 import { useAuthContext } from '../../../../../person-2/context/AuthContext/AuthContext'; 
+import { useNavigate } from 'react-router-dom';
+
+import { HireContext } from '../../../../../person-2/context/HireContext/HIreContext';
+import { usePostContext } from '../../../../../person-2/context/PostContext/PostContext'; // Import usePostContext
 
 const Mid_section = () => {
   const [storeData, setStoreData] = useState(null);
-  const [artiesData, setArtiesData] = useState([]); // State for artist data
+  const [artiesData, setArtiesData] = useState([]); 
   const [error, setError] = useState(null); 
   const { authUser } = useAuthContext();
+  const { fetchHiring } = useContext(HireContext);
+  const { url } = usePostContext(); 
+  const navigate = useNavigate();
+
+
+  // Map through fetchHiring and include _id
+  const projectOwnerDetails = fetchHiring.map(item => {
+    const owner = item.ProjectOwnerDetails[0];
+    return owner ? { ...owner, _id: item._id, hiringState: item.hiringState } : null;
+  }).filter(Boolean);
   
   const userId = authUser?._id; 
+
+  function gotoProfile(artistId){
+    console.log("from store:",artistId)
+    navigate(`/temp/${artistId}`);
+
+  }
 
   useEffect(() => {
     const fetchStoreData = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/store_by_arti/${userId}`);
+        const response = await fetch(`${url}/store_by_arti/${userId}`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -22,7 +42,7 @@ const Mid_section = () => {
 
         // Fetch artist data for each artist ID
         const artistPromises = data.store.list_of_store_arties.map(artistId =>
-          fetch(`http://localhost:5000/users/${artistId}`).then(res => {
+          fetch(`${url}/users/${artistId}`).then(res => {
             if (!res.ok) {
               throw new Error(`Error fetching artist data: ${res.status}`);
             }
@@ -54,29 +74,54 @@ const Mid_section = () => {
   }
 
   return (
-    <>
+    <div className='container'>
       <div className="mid-secton-top">
         <h2><u>Your Store Arties</u></h2>
         <button id='mid-secton-top_btn'>Hire Arties</button>
       </div>
+      <hr />
       <div className='mid_section-bottom'>
-        {artiesData.length > 0 ? (
-          artiesData.map((artist) => (
-            <div key={artist._id} className="artist_card">
-              <div className="artist_card_right">
-                <p>Artiest Name : <u>{artist.userName}</u></p>
-                <p>Respecters: {artist.respectors?.length || 0}</p> 
-                <p id='Contact_info'>Email: {artist.email}</p>
-              </div>
-                <button id = "arti-chat">Chat</button>
-            </div>
-          ))
+        {projectOwnerDetails.length > 0 ? (
+          projectOwnerDetails.filter(artist => artist.hiringState === "Accepted").map((artist) => {
+            let imageUrl = artist.profilePic;
+            const desiredPath = 'https://avatar.iran.liara.run/public/'; 
+
+            if (imageUrl.startsWith(desiredPath)) {
+              imageUrl = artist.profilePic;
+            } else {
+              const fullPath = artist.profilePic;
+              const wantedPath = fullPath.replace('/uploads/profilePic', '');
+              imageUrl = `${url}/profilePics${wantedPath}`;
+            }
+  
+            return (
+              <React.Fragment key={artist._id}>
+                <div className="artist_card">
+                  <div className="artist_card_image">
+                    <img src={imageUrl} alt="ProfilePic" />
+                  </div>
+                  <div className="artist-name-respect">
+                    <p>{artist.userName}</p>
+                    <p><span>{artist.respectors?.length || 0}</span> Respecters</p>
+                  </div>
+                  <div className="email">
+                    <p id='Contact_info'>Email: {artist.email}</p>
+                  </div>
+                  {/* <div className="chat">
+                    <button onClick={()=>{gotoProfile(artist._id)}} id="arti-chat">View Profile</button>
+                  </div> */}
+                </div>
+                <hr />
+              </React.Fragment>
+            );
+          })
         ) : (
           <div>No arties currently</div>
         )}
       </div>
-    </>
+    </div>
   );
+  
 };
 
 export default Mid_section;

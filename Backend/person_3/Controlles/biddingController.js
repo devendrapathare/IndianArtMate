@@ -88,7 +88,7 @@ const getBiddingNotifications = async (req, res) => {
       const respectors = await User.find({ respecting: userId });
       const respectorIds = respectors.map(user => user._id);
 
-      console.log("respectorIds:",respectorIds)
+      // console.log("respectorIds:",respectorIds)
 
       // Fetch active biddings from users that the current user is respecting
       const activeBiddingsFromRespectedUsers = await BiddingSchemaNoti.find({
@@ -189,7 +189,7 @@ const getOwnerBiddings = async (req, res) => {
 
   try {
     const ownerBiddings = await BiddingSchemaNoti.find({ userId }).sort({ endTime: -1 });
-    console.log("ownerBiddings:",ownerBiddings)
+    // console.log("ownerBiddings:",ownerBiddings)
     res.status(200).json({
       success: true,
       message: "Biddings where user is the owner",

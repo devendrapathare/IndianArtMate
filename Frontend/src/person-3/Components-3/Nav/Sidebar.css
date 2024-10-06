@@ -11,7 +11,15 @@
     padding-top: 60px;
     z-index: 999;
     overflow-y: auto; /* Enable vertical scrolling */
-    border: 2px solid black;
+    /* border: 2px solid black; */
+}
+
+.top-work {
+    display: flex;
+    align-items: center; /* Center items vertically */
+    padding: 10px;
+    /* border: 2px solid black; */
+    height: 15%;
 }
 
 /* Sidebar Scrollbar Styling */
@@ -33,30 +41,42 @@
     width: 380px;
 }
 
-/* Sidebar close button */
-.close-btn {
-    position: absolute;
-    top: 20px;
-    right: 25px;
-    font-size: 36px;
-    background: none;
-    border: none;
-    color: #191919;
-    cursor: pointer;
+.close-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;  
+    margin-left: auto; 
+    padding: 0 20px;
 }
+
+.close-button p {
+    color: #8E4800; 
+    cursor: pointer; 
+    font-size: 22px;
+    font-weight: 800;
+}
+
 
 /* Sidebar profile section */
 .sidebar-profile {
     display: flex;
     align-items: center;
-    padding: 10px 20px;
+    border: 3px solid rgb(216, 82, 15);
+    border-radius: 50%;
+    height: 90%; /* Adjust as needed */
+    width: 20%; /* Adjust as needed */
+    overflow: hidden; /* Hide any overflow */
 }
 
 .sidebar-profile img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-right: 10px;
+    width: 100%;
+    height: 8%;
+}
+
+
+.sidebar-profile img {
+    width: 100%;
+    height: 100%;
 }
 
 .sidebar-profile p {
@@ -152,11 +172,18 @@
   }
   
   .nav-button {
-    padding: 10px 20px;
+    background-color: #8E4800;
+    color: #FFF9D7;
     border: none;
-    background-color: #f0f0f0;
+    border-radius: 4px;
+    padding: 5px 15px;
+    font-size: 0.875rem;
+    font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
   }
   
   .nav-button:hover {

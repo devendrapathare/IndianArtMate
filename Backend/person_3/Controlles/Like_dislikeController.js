@@ -2,14 +2,14 @@ import userPosts from "../../person2/models/postModels.js";
 
 function removeElement(array, elementToRemove) {
     array.forEach((item, index) => {
-        console.log("item", item.toString());
-        console.log("ele", elementToRemove);
+        // console.log("item", item.toString());
+        // console.log("ele", elementToRemove);
         
         if (item.toString() === elementToRemove) {
             array.splice(index, 1);
-            console.log("index:", index);
+            // console.log("index:", index);
         }
-        console.log("im out");
+        // console.log("im out");
     });
     return array;
 }

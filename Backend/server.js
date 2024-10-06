@@ -8,10 +8,11 @@ import store_rout from './person_3/routes/StoreRoutes.js'
 import profile_rout from './person_3/routes/ProfileRoutes.js'
 import profile_pic_router from './person_3/routes/Profile_pic_routes.js'
 import cartRoutes  from './person2/routes/cartRoutes.js'
+import orderRouter from './person2/routes/OrderRoutes.js'
 import like_dislike_controlls from './person_3/routes/setLikeDislikeroutes.js'
 import setRespectingRoutes from './person_3/routes/setRespectingRoutes.js'
 import biddingRoutes from './person_3/routes/biddingRoutes.js'
-import hiringRoutes from './person_3/routes/HiringRouter.js' 
+import HIringRouter from './person2/routes/HIringRouter.js'
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRouters)
 app.use("/api/post", userPosts)
 app.use("/api/cart",cartRoutes)
+app.use("/api/order",orderRouter)
 app.use("/images",express.static('uploads'))
 
 app.use(store_rout)
@@ -40,7 +42,7 @@ app.use(setRespectingRoutes)
 app.use("/posts",like_dislike_controlls)
 app.use('/profilePics', express.static('uploads/profilePic'));
 app.use('/api/bidding', biddingRoutes);
-app.use('/api/hiring', hiringRoutes);
+app.use('/api/hiring', HIringRouter);
 
 
 app.listen(PORT, () => {

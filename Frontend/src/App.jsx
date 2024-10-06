@@ -14,6 +14,10 @@ import ProductDesPage from './person-2/Pages-p2/ProductDesPage/ProductDesPage';
 import { Toaster } from 'react-hot-toast';
 import { useAuthContext } from './person-2/context/AuthContext/AuthContext';
 import Temp from './person-3/Components-3/temp';
+import PlaceOrder from './person-2/Pages-p2/PlaceOrder/PlaceOrder';
+import MyOrders from './person-2/Pages-p2/MyOrders/MyOrders';
+import Verify from './person-2/Pages-p2/Verify/Verify';
+import ReceivedOrder from './person-2/Pages-p2/ReceivedOrder/ReceivedOrder';
 import Show_resp_respting from './person-3/Components-3/Show_resp_respting';
 import ProfileFeed from './person-2/components-p2/Profile/ProfileFeed/ProfileFeed';
 import ProfilefeedDisplay from './person-2/components-p2/ProfileDisplay/ProfilefeedDisplay/ProfilefeedDisplay';
@@ -37,6 +41,10 @@ function App() {
                     <Route path="/productDes" element={<ProductDesPage />} />
                     <Route path="/UpdateProfilePage" element={<UpdateProfilePage />} />
                     <Route path = "/temp/:id" element={<Temp/>}/>
+                    <Route path = "/order" element={<PlaceOrder />}/>
+                    <Route path = "/myOrders" element={<MyOrders />}/>
+                    <Route path = "/verify" element={<Verify />}/>
+                    <Route path = "/receivedOrders" element={<ReceivedOrder />}/>
                     {/* <Route path = "/myProfileDetails/:whatToDo/:userId" element={<ProfilePage current_id = {userId}/>}/> */}
                     <Route path = "/myProfileDetails/:whatToDo/:userId" element={<Show_resp_respting/>}/>
                 </Routes>

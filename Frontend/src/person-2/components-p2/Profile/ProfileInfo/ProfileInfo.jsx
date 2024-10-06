@@ -11,6 +11,8 @@ const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
     const [image, setImage] = useState(null); 
     const {posts,loggedInUserPosts,url} = usePostContext()
     const numOfPosts = posts.filter(post => post.userId === userId).length
+    // console.log("done11",loggedInUserPosts);
+      
     const { authUser } = useAuthContext();
   
     const LogggedInUserId = authUser?._id; 
@@ -172,11 +174,14 @@ const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
             </div>
 
             <div className="profileInfo-buttons">
-                {isOwnProfile && (
-                    <button onClick={() => setshowUploadPost(false)} className="profileIcon-respect-button">Upload</button>
-                )}
-                <button className="profileIcon-update-profile-button profileIcon-respect-button">Story</button>
-            </div>
+    {isOwnProfile && (
+        <>
+            <button onClick={() => setshowUploadPost(false)} className="profileIcon-respect-button">Upload</button>
+            <button onClick={() => navigate('/receivedOrders')} className="profileIcon-respect-button">Received Orders</button>
+        </>
+    )}
+    {/* <button className="profileIcon-update-profile-button profileIcon-respect-button">Story</button> */}
+</div>
         </div>
     );
 };

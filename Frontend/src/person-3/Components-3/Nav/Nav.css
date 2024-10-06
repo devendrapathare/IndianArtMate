@@ -35,8 +35,10 @@
 
 .nav .left {
     display: flex;
-    justify-content: space-around;
-    align-items: center;   
+    justify-content: flex-end;
+    align-items: center; 
+    padding-right: 25px; 
+    gap: 40px; 
 }
 
 .nav .left a {
@@ -58,7 +60,6 @@
     height: 50px;
     right: 20px;
     width: 50px;
-    margin: 0 20px;
     border: 3px solid #FFD700;
     border-radius: 50%;
 }
@@ -121,3 +122,23 @@
     top: 14px;
     right: 20px;
 }
+
+.nav-icon {
+    height: 5%;
+    width: 5%;
+    display: flex;
+    /* flex-direction: column; */
+    justify-content: center;
+    align-items: center;
+}
+
+.img {
+    height: 80%;
+    width: 80%;
+}
+
+.nav-icon img:hover {
+    transform: scale(1.1); 
+}
+ 
+

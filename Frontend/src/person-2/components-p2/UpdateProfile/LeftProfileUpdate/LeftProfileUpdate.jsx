@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import './LeftProfileUpdate.css';
 import { useAuthContext } from '../../../../person-2/context/AuthContext/AuthContext';
+import { usePostContext } from '../../../../person-2/context/PostContext/PostContext';
+// import { usePostContext } from '../../../person-2/context/PostContext/PostContext';
+
 
 const LeftProfileUpdate = () => {
   const { authUser } = useAuthContext();
   const userId = authUser?._id;
   console.log("leftid",userId)
+  const { url } = usePostContext()
+
 
   const [image, setImage] = useState(null);
   const [file, setFile] = useState(null); 
@@ -19,17 +24,31 @@ const LeftProfileUpdate = () => {
   
         const user = data.user; // Access the 'user' object
   
-        let fullImageUrl;
+        // let fullImageUrl;
         
-        if (user.profilePic.startsWith('http')) {
-          fullImageUrl = user.profilePic;
+        // if (user.profilePic.startsWith('http')) {
+        //   fullImageUrl = user.profilePic;
+        // } else {
+        //   // Updated to use the 'uploads' folder
+        //   fullImageUrl = `http://localhost:5000/uploads${user.profilePic.split('/uploads')[1]}`;
+        // }
+        let imageUrl = authUser.profilePic;
+        const desiredPath = 'https://avatar.iran.liara.run/public/';
+        console.log(imageUrl);
+
+        if (imageUrl.startsWith(desiredPath)) {
+          imageUrl = authUser.profilePic;
         } else {
-          // Updated to use the 'uploads' folder
-          fullImageUrl = `http://localhost:5000/uploads${user.profilePic.split('/uploads')[1]}`;
+          const fullPath = authUser.profilePic;
+          const wantedpath = fullPath.replace('/uploads/profilePic', '');
+          console.log("wantedpath:",wantedpath)
+          imageUrl = `${url}/profilePics${wantedpath}`
+          console.log("wantedpath_2:",imageUrl)
+
         }
   
-        setImage(fullImageUrl);
-        console.log("Profile Pic URL image:", fullImageUrl); // Updated to log 'fullImageUrl' directly
+        setImage(imageUrl);
+        console.log("Profile Pic URL image:", imageUrl); // Updated to log 'fullImageUrl' directly
       } catch (error) {
         console.error('Error fetching user data:', error);
       }

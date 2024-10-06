@@ -1,0 +1,71 @@
+.Hire-me-container{
+    padding: 0 5px;
+}
+
+.Hire-me-components{
+    display: grid;
+    grid-template-columns: 0.75fr 1.5fr 2fr ;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.profile-pic {
+    width: 100%; 
+    height: 75%; 
+    border: 3px solid #8e4800;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.profile-pic img {
+    width: 100%;
+    height: 100%; 
+    object-fit: cover; 
+}
+
+.info{
+    padding-left: 10px;
+}
+
+.info p{
+    font-size: 14px;
+    font-weight: 500;
+    color: #8e4800;
+}
+
+.info p span{
+    color: red;
+    font-weight: 800;
+}
+
+.buttons{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 5px;
+}
+
+.buttons button{
+    background-color: #8E4800;
+    color: #FFF9D7;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 15px;
+    font-size: 0.875rem;
+    font-weight: bold;
+    cursor: pointer;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.buttons button:hover{
+    background-color: #6f3d00;
+}
+
+.buttons button:active{
+    transform: scale(0.98);
+}

@@ -40,6 +40,16 @@ import upload_photo from './Images/upload-file.png'
 import empty_box from './Images/box.png'
 import minus_icon from './Images/minus.png'
 import plus_icon from './Images/add.png'
+import background_image from './Images/background.jpg'
+import delivery_box from './Images/delivery-box.png'
+import order_delivery from './Images/order-delivery.png'
+
+import login_icon from './Images/profile.png'
+import home_icon from './Images/home.png'
+import cart_icon from './Images/shopping-cart.png'
+import store_icon from './Images/retail.png'
+import profile_icon from './Images/user.png'
+import chat_icon from './Images/chat.png'
 
 export const like_dislike_images = {
   like,
@@ -165,6 +175,16 @@ export const assets = {
     empty_box,
     minus_icon,
     plus_icon,
+    background_image,
+    delivery_box,
+    order_delivery,
+    login_icon,
+    home_icon,
+    cart_icon,
+    cart_icon,
+    store_icon,
+    profile_icon,
+    chat_icon,
 }
 
 export const forSecondProductDes = [

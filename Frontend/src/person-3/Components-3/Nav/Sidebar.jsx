@@ -5,6 +5,8 @@ import axios from 'axios';
 import { CartContext } from '../../../person-2/context/CartContext/CartContext';
 import { useNavigate } from 'react-router-dom';
 import Hire_me from '../Hire_me';
+import { usePostContext } from '../../../person-2/context/PostContext/PostContext';
+import HireMeDisplay from '../storeis/HireMeDisplay/HireMeDisplay';
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
   const { authUser } = useAuthContext();
@@ -18,6 +20,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   const [postTitles, setPostTitles] = useState({});
   const [artistNames, setArtistNames] = useState({});
   const navigate = useNavigate();
+  const { url } = usePostContext()
 
   const [activeTab, setActiveTab] = useState('bidding'); // New state for active tab
 
@@ -153,16 +156,36 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
     }
   };
 
+  let imageUrl = authUser.profilePic;
+  const desiredPath = 'https://avatar.iran.liara.run/public/';
+  console.log(imageUrl);
+
+  if (imageUrl.startsWith(desiredPath)) {
+    imageUrl = authUser.profilePic;
+  } else {
+    const fullPath = authUser.profilePic;
+    const wantedpath = fullPath.replace('/uploads/profilePic', '');
+    console.log("wantedpath:",wantedpath)
+    imageUrl = `${url}/profilePics${wantedpath}`
+    console.log("wantedpath_2:",imageUrl)
+
+  }
+
   return (
     <>
       <div className={`sidebar ${isOpen ? 'sidebar-open' : ''}`}>
-        <button className="close-btn" onClick={toggleSidebar}>
-          &times;
-        </button>
+        <hr />
+        <div className="top-work">
         <div className='sidebar-profile'>
-          <img src={authUser.profilePic} alt="Profile" />
+          <img src={imageUrl} alt="ProfilePic" />
         </div>
-
+        <div className="close-button">
+          <p className="close-btn" onClick={toggleSidebar}>
+            X
+          </p>
+        </div>
+        </div>
+        <hr />
         {/* New Navigation Buttons */}
         <div className="sidebar-navigation">
           <button
@@ -247,7 +270,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         ) : (
           // Hire_me Component Section
           <div className="hire-section">
-            <Hire_me />
+            <HireMeDisplay />
           </div>
         )}
       </div>

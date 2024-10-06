@@ -60,7 +60,7 @@ const CartContextProvider = (props) =>{
             setcartItems(cartData);
             
             // Log the entire data object
-            console.log("data", response.data);
+            // console.log("data", response.data);
         } catch (error) {
             console.error("Error fetching cart data:", error);
         }
@@ -107,6 +107,7 @@ const CartContextProvider = (props) =>{
         removeItemFromCart,
         fetchCartData,
         getTotalCartAmount,
+        token,
     }
 
     return(

@@ -1,7 +1,7 @@
 .ProductDes-container{
     width: 100%;
     height: 100%;
-    background: #FFF9D7; 
+    /* background: #FFF9D7;  */
     margin: 20px;
     border-radius: 8px;
     padding: 20px;
@@ -11,6 +11,7 @@
 }
 
 .using-hr {
+    
     width: 100%;
     height: 2px; 
     border: none;

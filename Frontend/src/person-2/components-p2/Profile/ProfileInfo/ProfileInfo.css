@@ -5,6 +5,8 @@
     background: #FFF9D7; 
     margin: 20px;
     padding: 1rem 2rem;
+    height: 114vh;
+    border-radius: 8px;
 }
 
 .profileInfo-profile-icon {
@@ -100,7 +102,7 @@
     font-size: 0.875rem;
     font-weight: bold;
     cursor: pointer;
-    height: 30px;
+    height: 35px;
     line-height: 30px;
     display: flex;
     align-items: center;
