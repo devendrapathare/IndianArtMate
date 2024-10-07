@@ -15,7 +15,6 @@ const Hire_me = ({ profilePic, userName, respectors, hireId }) => {
   const wantedPath = fullPath.replace('/uploads/profilePic', '');
 
   useEffect(() => {
-    // This will run when hireState changes
   }, [hireState]);
 
   const HireStateHandler = async (event, HireId) => {

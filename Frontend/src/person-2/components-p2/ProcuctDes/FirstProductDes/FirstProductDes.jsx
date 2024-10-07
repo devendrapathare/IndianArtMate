@@ -10,14 +10,14 @@ import { HireContext } from '../../../context/HireContext/HIreContext';
 import { usePostContext } from '../../../../person-2/context/PostContext/PostContext';
 
 
-const FirstProductDes = ({ image, category, description, price, title, userId, id, isOwner }) => {
+const FirstProductDes = ({ image, category, description, price, title, userId, id, isOwner, totalLike, totaldisLike }) => {
   const { authUser } = useAuthContext();
-  console.log("userID:",userId)
-  console.log("userID_id:",id)
+  // console.log("userID:",userId)
+  // console.log("userID_id:",totaldisLike)
   const { cartItems, addItemToCart, removeItemFromCart } = useContext(CartContext);
   const [userData, setUserData] = useState({});
   const [biddingData, setBiddingData] = useState(null);
-  const [userBid, setUserBid] = useState(''); 
+  const [userBid, setUserBid] = useState('');
   const navigate = useNavigate();
   const respectorsCount = userData.respectors?.length || 0;
   const [highestBidder, setHighestBidder] = useState(null);
@@ -28,42 +28,42 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
 
   const { applyHire } = useContext(HireContext)
 
-    
-    const handleHireMe = async () => {
-      const ProjectOwnerId = authUser?._id;
-      const ContributerId = userId;
-      console.log("owner",ProjectOwnerId);
-      console.log("receiver",ContributerId);
-      console.log("userData",userData);
-      console.log("authUser",authUser);
-      
-      // Validate that ownerId and receiverId are not the same
-      if (!ProjectOwnerId) {
-        toast.error('You must be logged in to hire.');
-        return;
-      }
-  
-      if (ProjectOwnerId === ContributerId) {
-        toast.error('You cannot hire yourself.');
-        return;
-      }
-  
-      try {
-        applyHire(ProjectOwnerId,ContributerId,authUser,userData)
-        setIsHired(true); 
-      } catch (error) {
-        console.error('Error sending hiring request:', error);
-        toast.error(error.response?.data?.message || 'An error occurred.');
-      }
-    };
+
+  const handleHireMe = async () => {
+    const ProjectOwnerId = authUser?._id;
+    const ContributerId = userId;
+    console.log("owner", ProjectOwnerId);
+    console.log("receiver", ContributerId);
+    console.log("userData", userData);
+    console.log("authUser", authUser);
+
+    // Validate that ownerId and receiverId are not the same
+    if (!ProjectOwnerId) {
+      toast.error('You must be logged in to hire.');
+      return;
+    }
+
+    if (ProjectOwnerId === ContributerId) {
+      toast.error('You cannot hire yourself.');
+      return;
+    }
+
+    try {
+      applyHire(ProjectOwnerId, ContributerId, authUser, userData)
+      setIsHired(true);
+    } catch (error) {
+      console.error('Error sending hiring request:', error);
+      toast.error(error.response?.data?.message || 'An error occurred.');
+    }
+  };
 
 
 
   useEffect(() => {
-    
+
     const fetchUserData = async () => {
-      if(authUser){
-      try {
+      if (authUser) {
+        try {
           const response = await axios.get(`http://localhost:5000/users/${userId}`);
           if (response.data) {
             setUserData(response.data.user);
@@ -72,7 +72,7 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
           console.error('Error fetching user data:', error.message);
         }
       }
-      };
+    };
     fetchUserData();
   }, [userId]);
 
@@ -80,26 +80,32 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
 
   useEffect(() => {
     if (userData.profilePic) {
-      let currentImageUrl = userData.profilePic;
+      let currentImageUrl = userData.profilePic || authUser.profilePic;
       const desiredPath = 'https://avatar.iran.liara.run/public/';
-  
+
       // Check if the profile picture URL matches the desired path
       if (currentImageUrl.startsWith(desiredPath)) {
-        currentImageUrl = userData.profilePic;  // Use the authenticated user's profile picture
+        currentImageUrl =  userData.profilePic || authUser.profilePic;
+        console.log(currentImageUrl);
+          // Use the authenticated user's profile picture
       } else {
-        const fullPath = userData.profilePic;
-        const wantedpath = fullPath.replace('/uploads/profilePic', '');  // Adjust the path as needed
+        const fullPath = authUser.profilePic || userData.profilePic;  
+        const wantedpath = fullPath.replace('/uploads/profilePic', ''); 
+        // Adjust the path as needed
         currentImageUrl = `${url}/profilePics${wantedpath}`;  // Construct the desired URL
       }
-  
-      setImageUrl(currentImageUrl);  
+      // console.log(currentImageUrl);
+      setImageUrl(currentImageUrl);  // Set the new image URL
     }
   }, [userData.profilePic, authUser.profilePic]);
 
-  const getTheHighestBidderData = async (userId) => {
-    if(authUser){
+  // console.log(imageUrl);
+  
 
-      console.log("from first:",userId)
+  const getTheHighestBidderData = async (userId) => {
+    if (authUser) {
+
+      console.log("from first:", userId)
       const response = await axios.get(`http://localhost:5000/users/${userId}`);
       if (response.data.success) {
         setHighestBidder(response.data.user);
@@ -171,16 +177,9 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
   };
 
   return (
-   
-   
     <div className='FirstProductDes-container'>
       <div className="FirstProductDes-img">
         <img src={image} alt={title} />
-        <center>
-        <button onClick={handleHireMe} disabled={isHired}>
-            {isHired ? 'Sent' : 'Hire me'}
-          </button>        
-        </center>
       </div>
       <div className="FirstProductDes-main-info">
         <div className="header-title">
@@ -188,9 +187,9 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
           <p>({category})</p>
         </div>
         <hr />
-        <div className="price">
+        <div className="price header-title">
           <p>₹{price}</p>
-          <div>
+          <div id='taxes'>
             <p>No hidden fees – all taxes are included!</p>
           </div>
         </div>
@@ -201,13 +200,13 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
         <hr />
         <div onClick={handleProfilePage} className="item-owner">
           <p>Designed by</p>
-          <div  className="owner-profile">
+          <div className="owner-profile">
             <div className="owner-img">
               <img src={imageUrl} alt="Owner Profile" />
             </div>
             <div className="owner-detail">
               <div className="owner-name">
-                <p>{userData.userName }</p>
+                <p>{userData.userName}</p>
               </div>
               <div className="owner-respecters">
                 <p><span>{respectorsCount}</span> Respecters</p>
@@ -220,7 +219,7 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
           <div className="bidding-section">
             <p>Current Highest Bid: ₹{biddingData?.highestPriceReceivedDueToBidding}</p>
             <p id="profileView" onClick={() => gotoProfile(highestBidder?._id)}>
-            Highest Bidder: {highestBidder?.userName || 'No bids yet'}
+              Highest Bidder: {highestBidder?.userName || 'No bids yet'}
             </p>
           </div>
         ) : isOwner === false ? (
@@ -247,30 +246,34 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
             <p>Bidding has ended or is not active yet.</p>
           )
         ) : (
-          <div className="buttons">
-            {!cartItems[id] ? (
-              <button onClick={() => addItemToCart(id)} className="buy-btn">Buy Now</button>
-            ) : (
-              <div className='add-to-cart-edit'>
-                <div className="minus-plus">
-                  <img onClick={() => removeItemFromCart(id)} src={assets.minus_icon} alt="Remove from Cart" />
-                  <p>Quantity: <span>{cartItems[id]}</span></p>
-                  <img onClick={() => addItemToCart(id)} src={assets.plus_icon} alt="Add to Cart" />
+          (authUser?._id === userId ? (
+            <div className="impressions">
+              <p>Likes <span>{totalLike}</span> </p>
+              <p>Dislikes <span>{totaldisLike}</span> </p>
+            </div>
+          ) : (
+            <div className="impressions">
+                <button onClick={handleHireMe} disabled={isHired}>
+                  {isHired ? 'Sent' : 'Hire me'}
+                </button>
+              {!cartItems[id] ? (
+                <button onClick={() => addItemToCart(id)} className="buy-btn">Buy Now</button>
+              ) : (
+                <div className='add-to-cart-edit'>
+                  <div className="minus-plus">
+                    <img onClick={() => removeItemFromCart(id)} src={assets.minus_icon} alt="Remove from Cart" />
+                    <p>Quantity: <span>{cartItems[id]}</span></p>
+                    <img onClick={() => addItemToCart(id)} src={assets.plus_icon} alt="Add to Cart" />
+                  </div>
+                  <button onClick={handleNavigate} className="add-to-cart-btn">Go to Cart</button>
                 </div>
-                <button onClick={handleNavigate} className="add-to-cart-btn">Go to Cart</button>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
+          ))
+
         )}
 
         <hr />
-        {authUser?._id === userId ? (
-          <div className="impressions buttons">
-            {/* Add any specific buttons for the owner here if needed */}
-          </div>
-        ) : (
-          <></>
-        )}
       </div>
     </div>
 

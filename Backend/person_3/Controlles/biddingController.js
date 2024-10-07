@@ -31,8 +31,8 @@ const startBidding = async (req, res) => {
     }
 
     const startTime = new Date();
-    const endTime = new Date(startTime.getTime() + duration * 60 * 60 * 1000); 
-    // const endTime = new Date(startTime.getTime() + duration * 3 * 1000); 
+    // const endTime = new Date(startTime.getTime() + duration * 60 * 60 * 1000); 
+    const endTime = new Date(startTime.getTime() + duration * 3 * 1000); 
 
     
       const newBiddingNoti = new BiddingSchemaNoti({

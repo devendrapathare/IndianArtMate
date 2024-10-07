@@ -31,7 +31,7 @@ const HireContextProvider = (props) =>{
 
     const fetchHiringData = async () => {
         try {
-            const response = await axios.get(`${url}/api/hiring/getHire/${authUser._id}`);
+            const response = await axios.get(`${url}/api/hiring/getHire/${authUser?._id}`);
             setfetchHiring(response.data.HiringData)
             // console.log("hiringdata",response.data.HiringData);
         } catch (error) {

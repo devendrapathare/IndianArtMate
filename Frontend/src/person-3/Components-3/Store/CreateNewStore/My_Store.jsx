@@ -12,7 +12,7 @@ const CreateStore = () => {
   const { authUser } = useAuthContext();
   
   const userId = authUser?._id; // Fetch the userId from authUser
-  console.log("User ID:", userId);
+  // console.log("User ID:", userId);
 
   const handleCreateStore = async (e) => {
     e.preventDefault(); 
@@ -55,7 +55,7 @@ const CreateStore = () => {
         const response = await fetch(`http://localhost:5000/check_store/${userId}`);
         if (response.ok) {
           const data = await response.json();
-          console.log('Data:', data);
+          // console.log('Data:', data);
           setStoreAvailable(data.hasStore);
         } else {
           console.error('Failed to fetch store data:', response.statusText);
@@ -82,7 +82,7 @@ const CreateStore = () => {
       <div className="store-left">
         <ProfileInfo setshowUploadPost={false} isOwnProfile={true} userId={userId} />
       </div>
-
+     
       <div className="store-mid">
         {!storeAvailable ? (
           <>
@@ -97,7 +97,10 @@ const CreateStore = () => {
                 required 
                 placeholder="Store Name"
               />
+              <center>
+
               <button type='submit'>Create Store</button>
+              </center>
             </form>
           </>
         ) : (

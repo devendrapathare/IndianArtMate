@@ -96,7 +96,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
             setLoadingWinners(prev => ({ ...prev, [_id]: true }));
 
             try {
-              console.log("in try");
+              // console.log("in try");
               const winnerResponse = await axios.get(`http://localhost:5000/users/${highestBiddingAmountSetBy}`);
               if (winnerResponse.data.success) {
                 setWinners(prev => ({
@@ -158,16 +158,16 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 
   let imageUrl = authUser.profilePic;
   const desiredPath = 'https://avatar.iran.liara.run/public/';
-  console.log(imageUrl);
+  // console.log(imageUrl);
 
   if (imageUrl.startsWith(desiredPath)) {
     imageUrl = authUser.profilePic;
   } else {
     const fullPath = authUser.profilePic;
     const wantedpath = fullPath.replace('/uploads/profilePic', '');
-    console.log("wantedpath:",wantedpath)
+    // console.log("wantedpath:",wantedpath)
     imageUrl = `${url}/profilePics${wantedpath}`
-    console.log("wantedpath_2:",imageUrl)
+    // console.log("wantedpath_2:",imageUrl)
 
   }
 

@@ -10,7 +10,7 @@ const TopArtistsList = memo(() => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const { authUser } = useAuthContext();
-  const { fetchSingleUserDetailById } = usePostContext();
+  const { fetchSingleUserDetailById,url } = usePostContext();
   
   const respecting = authUser?.respecting || []; 
   const respectors = authUser?.respectors || [];  
@@ -59,16 +59,30 @@ const TopArtistsList = memo(() => {
   return (
     <div className="top-artists-list">
     {
-
       artists
         .filter((artist) => artist._id !== userId)
-        .map((artist) => (
+        .map((artist) => {
+          let imageUrl = artist.profilePic;
+          const desiredPath = 'https://avatar.iran.liara.run/public/';
+          // console.log(imageUrl);
+        
+          if (imageUrl.startsWith(desiredPath)) {
+            imageUrl = artist.profilePic;
+          } else {
+            const fullPath = artist.profilePic;
+            const wantedpath = fullPath.replace('/uploads/profilePic', '');
+            // console.log("wantedpath:",wantedpath)
+            imageUrl = `${url}/profilePics${wantedpath}`
+            // console.log("wantedpath_2:",imageUrl)
+        
+          }
+          return(
           <div key={artist._id} className="artist-card">
-            <img src={artist.profilePic} alt={artist.userName} className="artist-profile-pic" />
+            <img src={imageUrl} alt={artist.userName} className="artist-profile-pic" />
             <p className="artist-name">{artist.userName}</p>
-            <button className="view-profile-button" onClick={() => handleViewProfile(artist._id)}>View Profile</button>
+            <button className="view-profile-button" onClick={() => handleViewProfile(artist._id)}>Profile</button>
           </div>
-        ))
+        )})
     }
   </div>
 );

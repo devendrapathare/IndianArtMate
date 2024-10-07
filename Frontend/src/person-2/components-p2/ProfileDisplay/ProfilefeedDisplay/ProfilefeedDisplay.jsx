@@ -9,13 +9,14 @@ const ProfilefeedDisplay = ({ isOwnProfile, current_id }) => {
     const [viewerPosts, setViewerPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const isMounted = useRef(true);
+    const { url } = usePostContext()
 
 
     useEffect(() => {
         const fetchUserPosts = async () => {
             setLoading(true);
             try {
-                const response = await fetch(`http://localhost:5000/fetchPostsByUserId/${current_id}`);
+                const response = await fetch(`${url}/fetchPostsByUserId/${current_id}`);
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
@@ -40,10 +41,13 @@ const ProfilefeedDisplay = ({ isOwnProfile, current_id }) => {
         }
     }, [current_id]);
 
+    // console.log(viewerPosts);
+    
+
     const containerClass = viewerPosts.length > 0 ? 'ProfilefeedDisplay-container' : 'EmptyProfilefeedDisplay-container';
     return (
-        <div>
-             {console.log("viewerPosts:",viewerPosts)}
+        <div className='test'>
+             {/* {console.log("viewerPosts:",viewerPosts)} */}
             {loading ? (
                 <h1>Loading...</h1>
             ) : (
@@ -61,6 +65,8 @@ const ProfilefeedDisplay = ({ isOwnProfile, current_id }) => {
                                 price={item.price}
                                 title={item.title}
                                 userId={item.userId}
+                                like={item.like}
+                                disLike={item.disLike}
                                 />
                                 
                             ))

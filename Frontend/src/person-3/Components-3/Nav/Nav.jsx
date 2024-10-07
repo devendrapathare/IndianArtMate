@@ -44,7 +44,7 @@ const Nav = ({ setshowLogin }) => {
           if (user.profilePic.startsWith('http')) {
             fullImageUrl = user.profilePic;
           } else {
-            console.log("in else");
+            // console.log("in else");
             fullImageUrl = `http://localhost:5000/profilePics${user.profilePic.split('/profilePic')[1]}`;
           }
   

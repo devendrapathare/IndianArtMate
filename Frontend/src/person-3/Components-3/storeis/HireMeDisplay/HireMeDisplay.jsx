@@ -9,10 +9,9 @@ const HireMeDisplay = () => {
   // Map through fetchHiring and include _id
   const projectOwnerDetails = fetchHiring.map(item => {
     const owner = item.ProjectOwnerDetails[0];
-    return owner ? { ...owner, _id: item._id, hiringState: item.hiringState } : null; // Include hiringState in the returned object
-  }).filter(Boolean); // Filter out any null values
+    return owner ? { ...owner, _id: item._id, hiringState: item.hiringState } : null; 
+  }).filter(Boolean); 
 
-  // Filter out owners whose hiringState is "Accepted"
   const filteredOwners = projectOwnerDetails.filter(owner => owner.hiringState !== "Accepted");
 
   useEffect(() => {
@@ -20,12 +19,11 @@ const HireMeDisplay = () => {
 }, [fetchHiringData])
 
 
-  console.log("fetdhhd", fetchHiring);
   
   return (
     <div className="HireMeDisplay-container">
       <div>
-        <h1>Hire me</h1>
+       
       </div>
       <hr />
       <div>

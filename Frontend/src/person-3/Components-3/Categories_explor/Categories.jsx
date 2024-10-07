@@ -154,6 +154,8 @@ const Categories = () => {
   };
 
   const visiblePosts = showAll ? filteredPosts : filteredPosts.slice(0, 6);
+  // console.log(visiblePosts);
+  
 
   return (
     <div className='cat'>
@@ -163,7 +165,9 @@ const Categories = () => {
           <h2>Painting Handloom and Handcraft</h2>
         </div>
         <div className="mid">
-          {visiblePosts.map((post) => (
+          {visiblePosts
+          .filter(post => post.userId !==authUser?._id)
+          .map((post) => (
             <div
               className="card"
               key={post._id}
@@ -204,7 +208,9 @@ const Categories = () => {
             </div>
           ))}
         </div>
-        <div className="bottom">
+        {/* <center> */}
+          <center>
+          <div className="bottom">
           {!showAll ? (
             <button className='explore-button' onClick={handleShowMore}>
               Show More
@@ -215,6 +221,10 @@ const Categories = () => {
             </button>
           )}
         </div>
+          </center>
+       
+          {/* <center/> */}
+
       </center>
     </div>
   );

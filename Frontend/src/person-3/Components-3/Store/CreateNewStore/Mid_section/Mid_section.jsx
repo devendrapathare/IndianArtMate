@@ -18,14 +18,16 @@ const Mid_section = () => {
 
   // Map through fetchHiring and include _id
   const projectOwnerDetails = fetchHiring.map(item => {
+    
     const owner = item.ProjectOwnerDetails[0];
-    return owner ? { ...owner, _id: item._id, hiringState: item.hiringState } : null;
+    return owner ? { ...owner, _id: item._id, hiringState: item.hiringState , ProjectOwnerId : item.ProjectOwnerId } : null;
   }).filter(Boolean);
   
+  // console.log("fetchHiring:",fetchHiring);
   const userId = authUser?._id; 
 
   function gotoProfile(artistId){
-    console.log("from store:",artistId)
+    // console.log("from store:",artistId)
     navigate(`/temp/${artistId}`);
 
   }
@@ -84,7 +86,10 @@ const Mid_section = () => {
         {projectOwnerDetails.length > 0 ? (
           projectOwnerDetails.filter(artist => artist.hiringState === "Accepted").map((artist) => {
             let imageUrl = artist.profilePic;
+            // console.log("artist:",artist)
             const desiredPath = 'https://avatar.iran.liara.run/public/'; 
+          // console.log("projectOwnerDetails:",projectOwnerDetails);
+          
 
             if (imageUrl.startsWith(desiredPath)) {
               imageUrl = artist.profilePic;
@@ -107,9 +112,9 @@ const Mid_section = () => {
                   <div className="email">
                     <p id='Contact_info'>Email: {artist.email}</p>
                   </div>
-                  {/* <div className="chat">
-                    <button onClick={()=>{gotoProfile(artist._id)}} id="arti-chat">View Profile</button>
-                  </div> */}
+                  <div className="chat">
+                    <button onClick={()=>{gotoProfile(artist.ProjectOwnerId)}} id="arti-chat">Profile</button>
+                  </div>
                 </div>
                 <hr />
               </React.Fragment>
