@@ -96,7 +96,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
             setLoadingWinners(prev => ({ ...prev, [_id]: true }));
 
             try {
-              console.log("in try");
+              // console.log("in try");
               const winnerResponse = await axios.get(`http://localhost:5000/users/${highestBiddingAmountSetBy}`);
               if (winnerResponse.data.success) {
                 setWinners(prev => ({

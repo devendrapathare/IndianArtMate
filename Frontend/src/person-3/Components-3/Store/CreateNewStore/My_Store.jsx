@@ -82,7 +82,7 @@ const CreateStore = () => {
       <div className="store-left">
         <ProfileInfo setshowUploadPost={false} isOwnProfile={true} userId={userId} />
       </div>
-
+     
       <div className="store-mid">
         {!storeAvailable ? (
           <>
@@ -97,7 +97,10 @@ const CreateStore = () => {
                 required 
                 placeholder="Store Name"
               />
+              <center>
+
               <button type='submit'>Create Store</button>
+              </center>
             </form>
           </>
         ) : (

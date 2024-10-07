@@ -1,7 +1,9 @@
 .top-artists-list {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+
     margin: 20px auto;
     max-width: 1200px;
     overflow-y: auto;

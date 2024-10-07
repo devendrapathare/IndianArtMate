@@ -15,7 +15,6 @@ const Hire_me = ({ profilePic, userName, respectors, hireId }) => {
   const wantedPath = fullPath.replace('/uploads/profilePic', '');
 
   useEffect(() => {
-    // This will run when hireState changes
   }, [hireState]);
 
   const HireStateHandler = async (event, HireId) => {
@@ -50,7 +49,7 @@ const Hire_me = ({ profilePic, userName, respectors, hireId }) => {
     <div className='Hire-me-container'>
       <div className="Hire-me-components">
         <div className="profile-pic">
-          <img src={`${url}/profilePics${wantedPath}`} alt="ProfilePic" />
+        <img src={`${url}/profilePics${wantedPath}`} alt="ProfilePic" />
         </div>
         <div className="info">
           <p>{userName}</p>

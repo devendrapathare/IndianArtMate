@@ -46,7 +46,7 @@ const ProfilefeedDisplay = ({ isOwnProfile, current_id }) => {
 
     const containerClass = viewerPosts.length > 0 ? 'ProfilefeedDisplay-container' : 'EmptyProfilefeedDisplay-container';
     return (
-        <div>
+        <div className='test'>
              {/* {console.log("viewerPosts:",viewerPosts)} */}
             {loading ? (
                 <h1>Loading...</h1>

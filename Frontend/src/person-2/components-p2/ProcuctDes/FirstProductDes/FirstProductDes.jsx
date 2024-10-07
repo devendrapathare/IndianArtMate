@@ -80,22 +80,22 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
 
   useEffect(() => {
     if (userData.profilePic) {
-      let currentImageUrl = userData.profilePic || authUser.profilePic;
+      let currentImageUrl =userData.profilePic ;
       const desiredPath = 'https://avatar.iran.liara.run/public/';
-
+      // console.log(currentImageUrl);
+      
       // Check if the profile picture URL matches the desired path
       if (currentImageUrl.startsWith(desiredPath)) {
-        currentImageUrl =  userData.profilePic || authUser.profilePic;
+        currentImageUrl =  userData.profilePic;  
         console.log(currentImageUrl);
-          // Use the authenticated user's profile picture
       } else {
-        const fullPath = authUser.profilePic || userData.profilePic;  
+        const fullPath =  userData.profilePic;  
         const wantedpath = fullPath.replace('/uploads/profilePic', ''); 
-        // Adjust the path as needed
-        currentImageUrl = `${url}/profilePics${wantedpath}`;  // Construct the desired URL
+        currentImageUrl = `${url}/profilePics${wantedpath}`; 
+        // console.log(currentImageUrl);
       }
       // console.log(currentImageUrl);
-      setImageUrl(currentImageUrl);  // Set the new image URL
+      setImageUrl(currentImageUrl); 
     }
   }, [userData.profilePic, authUser.profilePic]);
 

@@ -166,7 +166,7 @@ const Categories = () => {
         </div>
         <div className="mid">
           {visiblePosts
-          // .filter(post => post.userId !==authUser._id)
+          .filter(post => post.userId !==authUser?._id)
           .map((post) => (
             <div
               className="card"
@@ -208,7 +208,9 @@ const Categories = () => {
             </div>
           ))}
         </div>
-        <div className="bottom">
+        {/* <center> */}
+          <center>
+          <div className="bottom">
           {!showAll ? (
             <button className='explore-button' onClick={handleShowMore}>
               Show More
@@ -219,6 +221,10 @@ const Categories = () => {
             </button>
           )}
         </div>
+          </center>
+       
+          {/* <center/> */}
+
       </center>
     </div>
   );
