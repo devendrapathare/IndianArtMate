@@ -166,7 +166,7 @@ const Categories = () => {
         </div>
         <div className="mid">
           {visiblePosts
-          .filter(post => post.userId !==authUser._id)
+          // .filter(post => post.userId !==authUser._id)
           .map((post) => (
             <div
               className="card"

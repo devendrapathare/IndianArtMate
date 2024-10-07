@@ -20,7 +20,7 @@ const HireMeDisplay = () => {
 }, [fetchHiringData])
 
 
-  console.log("fetdhhd", fetchHiring);
+  // console.log("fetdhhd", fetchHiring);
   
   return (
     <div className="HireMeDisplay-container">

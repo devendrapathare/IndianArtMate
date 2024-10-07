@@ -99,7 +99,7 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
     }
   }, [userData.profilePic, authUser.profilePic]);
 
-  // console.log(imageUrl);
+  console.log(imageUrl);
   
 
   const getTheHighestBidderData = async (userId) => {
