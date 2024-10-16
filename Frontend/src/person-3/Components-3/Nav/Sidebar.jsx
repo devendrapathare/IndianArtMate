@@ -20,7 +20,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   const [postTitles, setPostTitles] = useState({});
   const [artistNames, setArtistNames] = useState({});
   const navigate = useNavigate();
-  const { url } = usePostContext()
+  const { url } = usePostContext();
 
   const [activeTab, setActiveTab] = useState('bidding'); // New state for active tab
 
@@ -96,7 +96,6 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
             setLoadingWinners(prev => ({ ...prev, [_id]: true }));
 
             try {
-              // console.log("in try");
               const winnerResponse = await axios.get(`http://localhost:5000/users/${highestBiddingAmountSetBy}`);
               if (winnerResponse.data.success) {
                 setWinners(prev => ({
@@ -156,19 +155,25 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
     }
   };
 
-  let imageUrl = authUser.profilePic;
-  const desiredPath = 'https://avatar.iran.liara.run/public/';
-  // console.log(imageUrl);
+  // Initialize imageUrl with a default value
+  let imageUrl = '/defaultProfilePic.png'; // Path to your default profile picture
 
-  if (imageUrl.startsWith(desiredPath)) {
+  if(authUser && authUser.profilePic){
     imageUrl = authUser.profilePic;
-  } else {
-    const fullPath = authUser.profilePic;
-    const wantedpath = fullPath.replace('/uploads/profilePic', '');
-    // console.log("wantedpath:",wantedpath)
-    imageUrl = `${url}/profilePics${wantedpath}`
-    // console.log("wantedpath_2:",imageUrl)
-
+    const desiredPath = 'https://avatar.iran.liara.run/public/';
+    console.log('desiredPath:', desiredPath);
+    console.log('imageUrl before processing:', imageUrl);
+  
+    if (typeof imageUrl === 'string' && imageUrl.startsWith(desiredPath)) {
+      // imageUrl is already correct
+    } else if (typeof imageUrl === 'string') {
+      const fullPath = imageUrl;
+      const wantedpath = fullPath.replace('/uploads/profilePic', '');
+      imageUrl = `${url}/profilePics${wantedpath}`;
+    } else {
+      console.warn('profilePic is not a string:', imageUrl);
+      imageUrl = '/defaultProfilePic.png';
+    }
   }
 
   return (
@@ -176,14 +181,14 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
       <div className={`sidebar ${isOpen ? 'sidebar-open' : ''}`}>
         <hr />
         <div className="top-work">
-        <div className='sidebar-profile'>
-          <img src={imageUrl} alt="ProfilePic" />
-        </div>
-        <div className="close-button">
-          <p className="close-btn" onClick={toggleSidebar}>
-            X
-          </p>
-        </div>
+          <div className='sidebar-profile'>
+            <img src={imageUrl} alt="ProfilePic" />
+          </div>
+          <div className="close-button">
+            <p className="close-btn" onClick={toggleSidebar}>
+              X
+            </p>
+          </div>
         </div>
         <hr />
         {/* New Navigation Buttons */}

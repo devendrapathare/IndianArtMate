@@ -79,7 +79,14 @@ const Nav = ({ setshowLogin }) => {
         </div>
         <div className="left common">
           <div className="nav-icon">
-            <Link to='/'> <img className='img' src={assets.home_icon} alt="Home" /></Link>
+          <Link to='/'>
+            {/* <div className="icon"> */}
+             <img className='img' src={assets.home_icon} alt="Home" />
+             {/* <p>Home</p> */}
+
+            {/* </div> */}
+            </Link>
+            
           </div>
           {!authUser ? (
             <div className="nav-icon">

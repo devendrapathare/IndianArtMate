@@ -140,5 +140,9 @@
 .nav-icon img:hover {
     transform: scale(1.1); 
 }
- 
+
+.icon{
+    display: flex;
+    gap: 10px;
+}
 

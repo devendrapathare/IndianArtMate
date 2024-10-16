@@ -24,14 +24,7 @@ const LeftProfileUpdate = () => {
   
         const user = data.user; // Access the 'user' object
   
-        // let fullImageUrl;
-        
-        // if (user.profilePic.startsWith('http')) {
-        //   fullImageUrl = user.profilePic;
-        // } else {
-        //   // Updated to use the 'uploads' folder
-        //   fullImageUrl = `http://localhost:5000/uploads${user.profilePic.split('/uploads')[1]}`;
-        // }
+       
         let imageUrl = authUser.profilePic;
         const desiredPath = 'https://avatar.iran.liara.run/public/';
         console.log(imageUrl);

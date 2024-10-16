@@ -139,7 +139,9 @@ const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
             <div className="above">
                 <h2>{userData.userName || 'Krish Mishra'}</h2>
                 <p>{userData.profile_type || 'Painter'}</p>
+                <p>{userData.email || 'Painter'}</p>
             </div>
+           
 
             <div className="profileInfo-buttons">
                 {!isOwnProfile && (
