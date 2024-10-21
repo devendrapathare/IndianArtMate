@@ -214,13 +214,8 @@ const UploadPost = () => {
                             <p>Art Category</p>
                             <select onChange={onChangeHandler} name="category" value={data.category}>
                                 <option value="Painting">Painting</option>
-                                <option value="Sculpture">Sculpture</option>
-                                <option value="Textile Arts">Textile Arts</option>
-                                <option value="Crafts">Crafts</option>
-                                <option value="Jewelry Making">Jewelry Making</option>
-                                <option value="Papercraft">Papercraft</option>
-                                <option value="Ceramics">Ceramics</option>
-                                <option value="Textile Printing">Textile Printing</option>
+                                <option value="Handlooms">Handlooms</option>
+                                <option value="HandCrafts">HandCrafts</option>
                             </select>
                         </div>
                         <div className="add-price flex-col">

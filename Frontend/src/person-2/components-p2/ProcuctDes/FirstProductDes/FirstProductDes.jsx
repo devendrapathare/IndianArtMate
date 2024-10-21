@@ -12,8 +12,6 @@ import { usePostContext } from '../../../../person-2/context/PostContext/PostCon
 
 const FirstProductDes = ({ image, category, description, price, title, userId, id, isOwner, totalLike, totaldisLike }) => {
   const { authUser } = useAuthContext();
-  // console.log("userID:",userId)
-  // console.log("userID_id:",totaldisLike)
   const { cartItems, addItemToCart, removeItemFromCart } = useContext(CartContext);
   const [userData, setUserData] = useState({});
   const [biddingData, setBiddingData] = useState(null);
@@ -37,7 +35,6 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
     console.log("userData", userData);
     console.log("authUser", authUser);
 
-    // Validate that ownerId and receiverId are not the same
     if (!ProjectOwnerId) {
       toast.error('You must be logged in to hire.');
       return;
@@ -57,14 +54,6 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
     }
   };
 
-
-  // useEffect(()=>{
-  //   if(authUser){
-  //     if(biddingData.endTime >= Date.now()){
-  //       window.location.reload()
-  //     }
-  //   }
-  // })
 
 
   useEffect(() => {
@@ -92,7 +81,6 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
       const desiredPath = 'https://avatar.iran.liara.run/public/';
       // console.log(currentImageUrl);
       
-      // Check if the profile picture URL matches the desired path
       if (currentImageUrl.startsWith(desiredPath)) {
         currentImageUrl =  userData.profilePic;  
         console.log(currentImageUrl);
@@ -289,3 +277,4 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
 };
 
 export default FirstProductDes;
+

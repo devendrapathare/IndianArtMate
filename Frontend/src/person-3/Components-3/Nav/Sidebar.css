@@ -1,4 +1,8 @@
 /* Sidebar container */
+.Notifications{
+    margin-left: 20px;
+}
+
 .sidebar {
     height: 100%;
     width: 0;

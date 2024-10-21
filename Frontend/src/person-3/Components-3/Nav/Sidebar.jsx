@@ -179,6 +179,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   return (
     <>
       <div className={`sidebar ${isOpen ? 'sidebar-open' : ''}`}>
+        <h2 className = "Notifications">Notifications</h2>
         <hr />
         <div className="top-work">
           <div className='sidebar-profile'>
