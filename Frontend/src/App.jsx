@@ -19,8 +19,7 @@ import MyOrders from './person-2/Pages-p2/MyOrders/MyOrders';
 import Verify from './person-2/Pages-p2/Verify/Verify';
 import ReceivedOrder from './person-2/Pages-p2/ReceivedOrder/ReceivedOrder';
 import Show_resp_respting from './person-3/Components-3/Show_resp_respting';
-import ProfileFeed from './person-2/components-p2/Profile/ProfileFeed/ProfileFeed';
-import ProfilefeedDisplay from './person-2/components-p2/ProfileDisplay/ProfilefeedDisplay/ProfilefeedDisplay';
+
 
 function App() {
     const { authUser } = useAuthContext();

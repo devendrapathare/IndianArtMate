@@ -10,8 +10,6 @@ const Cart = () => {
   const { posts, url } = usePostContext()
   const navigate = useNavigate()
 
-
-
   return (
     <div className='cart'>
       <div className="cart-items">
