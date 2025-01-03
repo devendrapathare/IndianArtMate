@@ -6,6 +6,7 @@ import { assets } from '../../../assets/assets';
 import UseLogout from '../../../person-2/hooks/UseLogout/UseLogout';
 import { CartContext } from '../../../person-2/context/CartContext/CartContext';
 import Sidebar from './Sidebar'; // Adjust the path as necessary
+import { usePostContext } from '../../../person-2/context/PostContext/PostContext';
 
 const Nav = ({ setshowLogin }) => {
   const { authUser } = useAuthContext();
@@ -17,6 +18,7 @@ const Nav = ({ setshowLogin }) => {
 
   const { getTotalCartAmount } = useContext(CartContext)
   const userId = authUser?._id;
+  const url = usePostContext();
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -32,7 +34,7 @@ const Nav = ({ setshowLogin }) => {
       if(authUser){
 
         try {
-          const response = await fetch(`http://localhost:5000/users/${userId}`);
+          const response = await fetch(`${url}/users/${userId}`);
           if (!response.ok) throw new Error('Network response was not ok');
           const data = await response.json();
   
@@ -45,7 +47,7 @@ const Nav = ({ setshowLogin }) => {
             fullImageUrl = user.profilePic;
           } else {
             // console.log("in else");
-            fullImageUrl = `http://localhost:5000/profilePics${user.profilePic.split('/profilePic')[1]}`;
+            fullImageUrl = `${url}/profilePics${user.profilePic.split('/profilePic')[1]}`;
           }
   
           setImage(fullImageUrl);

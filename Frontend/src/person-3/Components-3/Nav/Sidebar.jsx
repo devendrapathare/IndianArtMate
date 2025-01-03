@@ -35,7 +35,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
     const fetchBiddingNotifications = async () => {
       setLoadingNotifications(true);
       try {
-        const response = await axios.get(`http://localhost:5000/api/bidding/notifications/${userId}`);
+        const response = await axios.get(`${url}/api/bidding/notifications/${userId}`);
         if (response.data.success) {
           setBiddingNotifications(response.data.activeBiddingsFromRespectedUsers);
         } else {
@@ -51,7 +51,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
     const fetchOwnerBiddings = async () => {
       setLoadingOwnerBiddings(true);
       try {
-        const response = await axios.get(`http://localhost:5000/api/bidding/ownerBiddings/${userId}`);
+        const response = await axios.get(`${url}/api/bidding/ownerBiddings/${userId}`);
         if (response.data.success) {
           setOwnerBiddings(response.data.ownerBiddings);
         } else {
@@ -78,12 +78,12 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
           const isBidEnded = new Date(endTime) < new Date();
 
           try {
-            const postResponse = await axios.get(`http://localhost:5000/api/post/getPostDataByID/${postId}`);
+            const postResponse = await axios.get(`${url}/api/post/getPostDataByID/${postId}`);
             if (postResponse.data.success) {
               const post = postResponse.data.data;
               setPostTitles(prev => ({ ...prev, [postId]: post.title }));
 
-              const artistResponse = await axios.get(`http://localhost:5000/users/${post.userId}`);
+              const artistResponse = await axios.get(`${url}/users/${post.userId}`);
               if (artistResponse.data.success) {
                 setArtistNames(prev => ({ ...prev, [postId]: artistResponse.data.user.userName }));
               }
@@ -96,7 +96,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
             setLoadingWinners(prev => ({ ...prev, [_id]: true }));
 
             try {
-              const winnerResponse = await axios.get(`http://localhost:5000/users/${highestBiddingAmountSetBy}`);
+              const winnerResponse = await axios.get(`${url}/users/${highestBiddingAmountSetBy}`);
               if (winnerResponse.data.success) {
                 setWinners(prev => ({
                   ...prev,
@@ -125,13 +125,13 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 
   const getPostData = async (postId, isOwnerBid = false) => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/post/getPostDataByID/${postId}`);
+      const response = await axios.get(`${url}/api/post/getPostDataByID/${postId}`);
       if (response.data.success) {
         const post = response.data.data;
         const { image, category, description, price, title, userId, _id: id } = post;
         console.log("userId....:",userId)
         console.log("userId---id....:",id)
-        const imageUrl = `http://localhost:5000/images/${image}`;
+        const imageUrl = `${url}/images/${image}`;
 
         isOwnerBid = authUser?._id === userId
 
@@ -220,8 +220,6 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                 <ul>
                   {biddingNotifications.map((bid) => (
                     <li key={bid._id}>
-                      {/* <p>Post Title: {postTitles[bid.postId] || 'Loading title...'}</p> */}
-                      {/* <p>Artist: {artistNames[bid.postId] || 'Loading artist...'}</p> */}
                       <p>Starting Price: {bid.startingPrice}</p>
                       <p>Highest Bid: {bid.highestPriceReceivedDueToBidding}</p>
                       <p>End Time: {new Date(bid.endTime).toLocaleString()}</p>

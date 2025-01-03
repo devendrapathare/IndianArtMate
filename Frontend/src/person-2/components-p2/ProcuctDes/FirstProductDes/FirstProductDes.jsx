@@ -61,7 +61,7 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
     const fetchUserData = async () => {
       if (authUser) {
         try {
-          const response = await axios.get(`http://localhost:5000/users/${userId}`);
+          const response = await axios.get(`${url}/users/${userId}`);
           if (response.data) {
             setUserData(response.data.user);
           }
@@ -102,7 +102,7 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
     if (authUser) {
 
       console.log("from first:", userId)
-      const response = await axios.get(`http://localhost:5000/users/${userId}`);
+      const response = await axios.get(`${url}/users/${userId}`);
       if (response.data.success) {
         setHighestBidder(response.data.user);
       }
@@ -118,7 +118,7 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
   useEffect(() => {
     const fetchBiddingData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/bidding/biddingData/${id}`);
+        const response = await axios.get(`${url}/api/bidding/biddingData/${id}`);
         setBiddingData(response.data);
       } catch (error) {
         console.error('Error fetching bidding data:', error.message);
@@ -145,7 +145,7 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
       return;
     }
     try {
-      const response = await axios.post(`http://localhost:5000/api/bidding/placeBid`, {
+      const response = await axios.post(`${url}/api/bidding/placeBid`, {
         postId: id,
         userId: authUser._id,
         bidAmount: userBid
