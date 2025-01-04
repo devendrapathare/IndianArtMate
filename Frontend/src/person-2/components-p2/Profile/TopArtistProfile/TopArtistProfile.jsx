@@ -19,7 +19,7 @@ const TopArtistsList = memo(() => {
   useEffect(() => {
     const fetchArtists = async () => {
       try {
-        const response = await fetch('http://localhost:5000/profile/find_all');
+        const response = await fetch(`${url}/profile/find_all`);
         if (!response.ok) {
           throw new Error('Error fetching data');
         }

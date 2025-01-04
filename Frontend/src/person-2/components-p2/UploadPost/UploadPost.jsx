@@ -101,7 +101,7 @@ const UploadPost = () => {
                 // NavigationForPosts(true,authUser._id)
     
                 if(isBiddingActive){
-                    const respectorsResponse = await axios.get(`http://localhost:5000/users/${authUser._id}`);
+                    const respectorsResponse = await axios.get(`${url}/users/${authUser._id}`);
                     if(respectorsResponse.data.success){
                         const respectors = respectorsResponse.data.user.respectors; 
                         
@@ -118,7 +118,7 @@ const UploadPost = () => {
                             respectors: respectors
                         };
     
-                        const biddingResponse = await axios.post('http://localhost:5000/api/bidding/start', biddingData, {
+                        const biddingResponse = await axios.post(`${url}/api/bidding/start`, biddingData, {
                             headers: {
                                 'Content-Type': 'application/json'
                             }

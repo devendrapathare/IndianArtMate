@@ -31,7 +31,7 @@ const MyProfileDetails = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/users/${userId}`);
+        const response = await fetch(`${url}/users/${userId}`);
   
         if (!response.ok) {
           throw new Error(`Error: ${response.statusText}`);
@@ -69,7 +69,7 @@ const MyProfileDetails = () => {
   
   const getData = async (userId) => {
     try {
-      const response = await fetch(`http://localhost:5000/users/${userId}`);
+      const response = await fetch(`${url}/users/${userId}`);
   
       if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);

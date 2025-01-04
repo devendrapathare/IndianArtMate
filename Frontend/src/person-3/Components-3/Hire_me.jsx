@@ -9,13 +9,14 @@ const Hire_me = ({ profilePic, userName, respectors, hireId, ProjectOwnerId }) =
   const { token } = useContext(CartContext);
   const [winners, setWinners] = useState({});
   const [hireState, setHireState] = useState(null); 
+ 
 
   console.log(ProjectOwnerId);
 
   useEffect(() => {
     const getUserData = async () => {
       try {
-        const winnerResponse = await axios.get(`http://localhost:5000/users/${ProjectOwnerId}`);
+        const winnerResponse = await axios.get(`${url}/users/${ProjectOwnerId}`);
         if (winnerResponse.data.success) {
           setWinners(winnerResponse.data.user);
         } else {
