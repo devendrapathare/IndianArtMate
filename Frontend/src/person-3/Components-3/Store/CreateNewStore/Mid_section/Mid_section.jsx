@@ -2,9 +2,9 @@ import React, { useContext, useEffect, useState } from 'react';
 import './Mid_section.css';
 import { useAuthContext } from '../../../../../person-2/context/AuthContext/AuthContext'; 
 import { useNavigate } from 'react-router-dom';
-
 import { HireContext } from '../../../../../person-2/context/HireContext/HIreContext';
 import { usePostContext } from '../../../../../person-2/context/PostContext/PostContext'; // Import usePostContext
+import axios from 'axios';
 
 const Mid_section = () => {
   const [storeData, setStoreData] = useState(null);
@@ -14,6 +14,7 @@ const Mid_section = () => {
   const { fetchHiring } = useContext(HireContext);
   const { url } = usePostContext(); 
   const navigate = useNavigate();
+  const [winners, setWinners] = useState({});
 
 
   // Map through fetchHiring and include _id
@@ -85,18 +86,30 @@ const Mid_section = () => {
       <div className='mid_section-bottom'>
         {projectOwnerDetails.length > 0 ? (
           projectOwnerDetails.filter(artist => artist.hiringState === "Accepted").map((artist) => {
-            let imageUrl = artist.profilePic;
-            // console.log("artist:",artist)
-            const desiredPath = 'https://avatar.iran.liara.run/public/'; 
-          // console.log("projectOwnerDetails:",projectOwnerDetails);
-          
 
-            if (imageUrl.startsWith(desiredPath)) {
-              imageUrl = artist.profilePic;
-            } else {
-              const fullPath = artist.profilePic;
-              const wantedPath = fullPath.replace('/uploads/profilePic', '');
-              imageUrl = `${url}/profilePics${wantedPath}`;
+            const getUserData = async (userId) => {
+              try {
+                const winnerResponse = await axios.get(`http://localhost:5000/users/${userId}`);
+                if (winnerResponse.data.success) {
+                  setWinners(winnerResponse.data.user);
+                } else {
+                  console.error(`Failed to fetch winner for userId ${userId}:`, winnerResponse.data.message);
+                }
+              } catch (error) {
+                console.error(`Error fetching winner info for userId ${userId}:`, error.message);
+              }
+            };
+            getUserData(artist.ProjectOwnerId);
+
+            // console.log(winners.profilePic);
+            let imageUrl = winners.profilePic;
+            const avatarBaseUrl = 'https://avatar.iran.liara.run/public/';
+          
+            if (imageUrl && !imageUrl.startsWith(avatarBaseUrl)) {
+              
+               imageUrl = `${url}${imageUrl.replace('/uploads/profilePic', '/profilePics')}`;
+                     
+          
             }
   
             return (
@@ -106,14 +119,14 @@ const Mid_section = () => {
                     <img src={imageUrl} alt="ProfilePic" />
                   </div>
                   <div className="artist-name-respect">
-                    <p>{artist.userName}</p>
-                    <p><span>{artist.respectors?.length || 0}</span> Respecters</p>
+                    <p>{winners.userName}</p>
+                    <p><span>{winners.respectors?.length || 0}</span> Respecters</p>
                   </div>
                   <div className="email">
-                    <p id='Contact_info'>Email: {artist.email}</p>
+                    <p id='Contact_info'>Email: {winners.email}</p>
                   </div>
                   <div className="chat">
-                    <button onClick={()=>{gotoProfile(artist.ProjectOwnerId)}} id="arti-chat">Profile</button>
+                    <button onClick={()=>{gotoProfile(winners._id)}} id="arti-chat">Profile</button>
                   </div>
                 </div>
                 <hr />

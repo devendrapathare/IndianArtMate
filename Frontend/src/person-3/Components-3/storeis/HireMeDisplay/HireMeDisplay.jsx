@@ -9,7 +9,7 @@ const HireMeDisplay = () => {
   // Map through fetchHiring and include _id
   const projectOwnerDetails = fetchHiring.map(item => {
     const owner = item.ProjectOwnerDetails[0];
-    return owner ? { ...owner, _id: item._id, hiringState: item.hiringState } : null; 
+    return owner ? { ...owner, _id: item._id, hiringState: item.hiringState,ProjectOwnerId:item.ProjectOwnerId } : null; 
   }).filter(Boolean); 
 
   const filteredOwners = projectOwnerDetails.filter(owner => owner.hiringState !== "Accepted");
@@ -29,7 +29,7 @@ const HireMeDisplay = () => {
       <div>
         {filteredOwners.length > 0 ? (
           filteredOwners.map((owner) => (
-            <Hire_me key={owner._id} hireId={owner._id} profilePic={owner.profilePic} userName={owner.userName} respectors={owner.respectors} />
+            <Hire_me key={owner._id} hireId={owner._id} profilePic={owner.profilePic} userName={owner.userName} respectors={owner.respectors} ProjectOwnerId={owner.ProjectOwnerId} />
           ))
         ) : (
           <div>You Dont Have any Hire Request Now.</div>

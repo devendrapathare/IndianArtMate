@@ -105,7 +105,6 @@ const Categories = () => {
     });
   }, [filteredPosts, userNames]);
 
-  // Handle like/dislike and update the state instantly
   const handleLikeDislike = async (postId, actionType) => {
     if (authUser) {
       try {
@@ -115,7 +114,6 @@ const Categories = () => {
           prevPosts.map((post) => {
             if (post._id === postId) {
               if (actionType === 'like') {
-                // If user has liked the post, remove them from dislike array (if present) and add to like array
                 const updatedLikes = post.like.includes(userId)
                   ? post.like.filter((id) => id !== userId)
                   : [...post.like, userId];
@@ -125,13 +123,12 @@ const Categories = () => {
                 
                 return { ...post, like: updatedLikes, disLike: updatedDislikes };
               } else if (actionType === 'dislike') {
-                // If user has disliked the post, remove them from like array (if present) and add to dislike array
                 const updatedDislikes = post.disLike.includes(userId)
                   ? post.disLike.filter((id) => id !== userId)
                   : [...post.disLike, userId];
                 const updatedLikes = post.like.includes(userId)
                   ? post.like.filter((id) => id !== userId)
-                  : post.like; // Remove from likes if in the like array
+                  : post.like; 
                 
                 return { ...post, like: updatedLikes, disLike: updatedDislikes };
               }
