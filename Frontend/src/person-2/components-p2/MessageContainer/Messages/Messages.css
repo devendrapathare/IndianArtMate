@@ -1,0 +1,9 @@
+.Messages-container{
+    padding: 20px;
+}
+
+.start-conv {
+    text-align: center;
+    font-size: 14px;
+    color: gray;
+}

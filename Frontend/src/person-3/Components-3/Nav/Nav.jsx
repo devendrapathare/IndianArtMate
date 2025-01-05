@@ -18,46 +18,53 @@ const Nav = ({ setshowLogin }) => {
 
   const { getTotalCartAmount } = useContext(CartContext)
   const userId = authUser?._id;
-  const url = usePostContext();
+  const {url} = usePostContext();
 
-  const toggleSidebar = () => {
+  const toggleSidebar = () => {``
     setIsSidebarOpen(!isSidebarOpen);
   };
 
   const onNavClick = (section) => {
-    console.log(`Navigating to ${section}`);
+    // console.log(`Navigating to ${section}`);
   };
 
 
   useEffect(() => {
     const fetchUserProfile = async () => {
-      if(authUser){
+      if (authUser) {
 
         try {
+          // console.log('url:', url);
+          
           const response = await fetch(`${url}/users/${userId}`);
+          // console.log("response:", response);
+          
           if (!response.ok) throw new Error('Network response was not ok');
           const data = await response.json();
-  
+
           const user = data.user;
           let fullImageUrl;
-  
+
           // console.log("user from nav:", user);
-  
+
           if (user.profilePic.startsWith('http')) {
             fullImageUrl = user.profilePic;
           } else {
-            // console.log("in else");
+            console.log("in else");
             fullImageUrl = `${url}/profilePics${user.profilePic.split('/profilePic')[1]}`;
           }
-  
+
           setImage(fullImageUrl);
-          // console.log(image);
-  
+          // console.log('fullImageUrl', fullImageUrl);
+
         } catch (error) {
           console.error('Error fetching user data:', error);
         }
       };
-      }
+    }
+    // console.log("image:", image);
+
+
 
     const intervalId = setInterval(() => {
       fetchUserProfile();
@@ -72,7 +79,7 @@ const Nav = ({ setshowLogin }) => {
     <>
       <div className='nav'>
         <div className="right common">
-          {authUser && ( 
+          {authUser && (
             <button className="sidebar-toggle-btn" onClick={toggleSidebar}>
               &#9776;
             </button>
@@ -81,14 +88,14 @@ const Nav = ({ setshowLogin }) => {
         </div>
         <div className="left common">
           <div className="nav-icon">
-          <Link to='/'>
-            {/* <div className="icon"> */}
-             <img className='img' src={assets.home_icon} alt="Home" />
-             {/* <p>Home</p> */}
+            <Link to='/'>
+              {/* <div className="icon"> */}
+              <img className='img' src={assets.home_icon} alt="Home" />
+              {/* <p>Home</p> */}
 
-            {/* </div> */}
+              {/* </div> */}
             </Link>
-            
+
           </div>
           {!authUser ? (
             <div className="nav-icon">
@@ -103,14 +110,14 @@ const Nav = ({ setshowLogin }) => {
               <div className="nav-icon">
                 <Link to='/ProfilePage'><img className='img' src={assets.profile_icon} alt="My Profile" onClick={() => onNavClick('profile')} /></Link>
               </div>
-              {/* <div className="nav-icon">
+              <div className="nav-icon">
                 <Link to='/myChats'><img className='img' src={assets.chat_icon} alt="My Chats" onClick={() => onNavClick('chats')} /></Link>
-              </div> */}
+              </div>
               {/* <Link to='/myStore'><h2 onClick={() => onNavClick('store')}>My Store</h2></Link>
               <Link to='/ProfilePage'><h2 onClick={() => onNavClick('profile')}>My Profile</h2></Link>
               <Link to='/myChats'><h2 onClick={() => onNavClick('chats')}>My Chats</h2></Link> */}
               <div className="cart-dot nav-icon">
-              <Link to='/cart'><img className='img' src={assets.cart_icon} alt="Cart" onClick={() => onNavClick('cart')} /></Link> 
+                <Link to='/cart'><img className='img' src={assets.cart_icon} alt="Cart" onClick={() => onNavClick('cart')} /></Link>
                 <div className={getTotalCartAmount() === 0 ? '' : "dot"}></div>
               </div>
               <div className='navbar-profile'>
@@ -141,7 +148,7 @@ const Nav = ({ setshowLogin }) => {
           )}
         </div>
       </div>
-      {authUser && ( 
+      {authUser && (
         <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       )}
     </>

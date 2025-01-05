@@ -1,17 +1,14 @@
 .MessageContainer-container {
-    display: flex;
+    display: grid;
+    grid-template-rows: 0.25fr 3fr 0.25fr;
     flex-direction: column;
     background: #FFF9D7;
+    width: 100%;
+    height: 100vh;
+    border: 2px solid red;
 }
 
-
-@media (min-width: 768px) {
-    .MessageContainer-container {
-        min-width: 76.5%;
-    }
-}
-
-.MessageContainer-content{
+.MessageContainer-content {
     background: #6f3d00;
     padding-left: 1rem;
     padding-right: 1rem;
@@ -20,12 +17,42 @@
     margin-bottom: 0.5rem;
 }
 
-.span1{
+.Messages {
+    overflow-y: auto;
+    scrollbar-color: brown #f1f1f1;
+    scrollbar-width: thin;
+}
+
+.span1 {
     color: #FFF9D7;
 }
 
-.span2{
+.span2 {
     color: #FFF9D7;
     font-weight: 700;
     font-size: 16px;
+}
+
+
+.noChatSelected-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+}
+
+.noChatSelected-data{
+    padding-left: 1rem;
+    padding-right: 1rem;
+    text-align: center;
+    font-weight: 800;
+    display: flex;
+    flex-direction: column;
+}
+
+.noChatSelected-data p{
+    font-weight: bold;
+    font-size: 24px;
+    color: #664a40;
 }

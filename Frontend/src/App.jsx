@@ -19,6 +19,7 @@ import MyOrders from './person-2/Pages-p2/MyOrders/MyOrders';
 import Verify from './person-2/Pages-p2/Verify/Verify';
 import ReceivedOrder from './person-2/Pages-p2/ReceivedOrder/ReceivedOrder';
 import Show_resp_respting from './person-3/Components-3/Show_resp_respting';
+import ChattingPage from './person-2/Pages-p2/ChattingPage/ChattingPage';
 
 
 function App() {
@@ -36,7 +37,7 @@ function App() {
                     <Route path="/profilePage" element={<ProfilePage current_id = {userId} />} />
                     <Route path="/myStore" element={<My_Store />} />
                     <Route path="/cart" element={<Cart />} />
-                    <Route path="/myChats" element={<Chat />} />
+                    <Route path="/myChats" element={<ChattingPage />} />
                     <Route path="/productDes" element={<ProductDesPage />} />
                     <Route path="/UpdateProfilePage" element={<UpdateProfilePage />} />
                     <Route path = "/temp/:id" element={<Temp/>}/>

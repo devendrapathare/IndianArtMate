@@ -8,6 +8,8 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { HireContext } from '../../../context/HireContext/HIreContext';
 import { usePostContext } from '../../../../person-2/context/PostContext/PostContext';
+import { useChatContext } from '../../../context/chatContext/chatContext';
+import { useConversation } from '../../../Zustand/UseConversation';
 
 
 const FirstProductDes = ({ image, category, description, price, title, userId, id, isOwner, totalLike, totaldisLike }) => {
@@ -23,9 +25,18 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
   const [isHired, setIsHired] = useState(false);
   const { url } = usePostContext()
 
+  const { setMyId, setReceiverId, getMessageReceiverDetails } = useChatContext()
 
   const { applyHire } = useContext(HireContext)
 
+  const { setSelectedConversation } = useConversation()
+
+  const handleChat = async() => {
+    setMyId(authUser._id)
+    await getMessageReceiverDetails(userId)
+    setSelectedConversation(userId)
+    navigate('/myChats')
+  }
 
   const handleHireMe = async () => {
     const ProjectOwnerId = authUser?._id;
@@ -54,8 +65,6 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
     }
   };
 
-
-
   useEffect(() => {
 
     const fetchUserData = async () => {
@@ -77,26 +86,26 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
 
   useEffect(() => {
     if (userData.profilePic) {
-      let currentImageUrl =userData.profilePic ;
+      let currentImageUrl = userData.profilePic;
       const desiredPath = 'https://avatar.iran.liara.run/public/';
 
       // Check if the profile picture URL matches the desired path
       if (currentImageUrl.startsWith(desiredPath)) {
-        currentImageUrl =  userData.profilePic;  
-        console.log(currentImageUrl);
+        currentImageUrl = userData.profilePic;
+        // console.log(currentImageUrl);
       } else {
-        const fullPath =  userData.profilePic;  
-        const wantedpath = fullPath.replace('/uploads/profilePic', ''); 
-        currentImageUrl = `${url}/profilePics${wantedpath}`; 
+        const fullPath = userData.profilePic;
+        const wantedpath = fullPath.replace('/uploads/profilePic', '');
+        currentImageUrl = `${url}/profilePics${wantedpath}`;
         // console.log(currentImageUrl);
       }
       // console.log(currentImageUrl);
-      setImageUrl(currentImageUrl); 
+      setImageUrl(currentImageUrl);
     }
   }, [userData.profilePic, authUser.profilePic]);
 
-  console.log(imageUrl);
-  
+  // console.log(imageUrl);
+
 
   const getTheHighestBidderData = async (userId) => {
     if (authUser) {
@@ -249,9 +258,10 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
             </div>
           ) : (
             <div className="impressions">
-                <button onClick={handleHireMe} disabled={isHired}>
-                  {isHired ? 'Sent' : 'Hire me'}
-                </button>
+              <button onClick={handleChat}>Chat</button>
+              <button onClick={handleHireMe} disabled={isHired}>
+                {isHired ? 'Sent' : 'Hire me'}
+              </button>
               {!cartItems[id] ? (
                 <button onClick={() => addItemToCart(id)} className="buy-btn">Buy Now</button>
               ) : (

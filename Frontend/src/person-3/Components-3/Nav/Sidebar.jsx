@@ -161,8 +161,8 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   if(authUser && authUser.profilePic){
     imageUrl = authUser.profilePic;
     const desiredPath = 'https://avatar.iran.liara.run/public/';
-    console.log('desiredPath:', desiredPath);
-    console.log('imageUrl before processing:', imageUrl);
+    // console.log('desiredPath:', desiredPath);
+    // console.log('imageUrl before processing:', imageUrl);
   
     if (typeof imageUrl === 'string' && imageUrl.startsWith(desiredPath)) {
       // imageUrl is already correct

@@ -73,11 +73,7 @@ const Hire_me = ({ profilePic, userName, respectors, hireId, ProjectOwnerId }) =
     <div className='Hire-me-container'>
       <div className="Hire-me-components">
         <div className="profile-pic">
-<<<<<<< HEAD
-        <img src={`${url}/profilePics${wantedPath}`} alt="ProfilePic" />
-=======
           <img src={imageUrl} alt="ProfilePic" />
->>>>>>> acf5acb6854574281dea809c3ca3db3dc8f18e39
         </div>
         <div className="info">
           <p>{userName}</p>
