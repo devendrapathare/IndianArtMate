@@ -34,7 +34,7 @@ const Nav = ({ setshowLogin }) => {
       if(authUser){
 
         try {
-          const response = await fetch(`${url}/users/${userId}`);
+          const response = await fetch(`http://localhost:5000/users/${userId}`);
           if (!response.ok) throw new Error('Network response was not ok');
           const data = await response.json();
   
@@ -47,7 +47,7 @@ const Nav = ({ setshowLogin }) => {
             fullImageUrl = user.profilePic;
           } else {
             // console.log("in else");
-            fullImageUrl = `${url}/profilePics${user.profilePic.split('/profilePic')[1]}`;
+            fullImageUrl = `http://localhost:5000/profilePics${user.profilePic.split('/profilePic')[1]}`;
           }
   
           setImage(fullImageUrl);
@@ -99,6 +99,9 @@ const Nav = ({ setshowLogin }) => {
             <>
               <div className="nav-icon">
                 <Link to='/myStore'><img className='img' src={assets.store_icon} alt="Store" onClick={() => onNavClick('store')} /></Link>
+              </div>
+              <div className="nav-icon">
+                <Link to='/SearchPost'>Search</Link>
               </div>
               <div className="nav-icon">
                 <Link to='/ProfilePage'><img className='img' src={assets.profile_icon} alt="My Profile" onClick={() => onNavClick('profile')} /></Link>

@@ -8,6 +8,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { HireContext } from '../../../context/HireContext/HIreContext';
 import { usePostContext } from '../../../../person-2/context/PostContext/PostContext';
+import Comment from '../../../../person-3/Components-3/Comments/Comment';
 
 
 const FirstProductDes = ({ image, category, description, price, title, userId, id, isOwner, totalLike, totaldisLike }) => {
@@ -21,7 +22,11 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
   const [highestBidder, setHighestBidder] = useState(null);
   const [imageUrl, setImageUrl] = useState('');
   const [isHired, setIsHired] = useState(false);
+  const [timeleft,setTimeleft] = useState(0)
+  let currentTime = new Date();
+  let endTime = biddingData?.endTime ? new Date(biddingData.endTime) : null;
   const { url } = usePostContext()
+  let checker = true;
 
 
   const { applyHire } = useContext(HireContext)
@@ -128,8 +133,10 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
     fetchBiddingData();
   }, [userId]);
 
-  const currentTime = new Date();
-  const endTime = biddingData?.endTime ? new Date(biddingData.endTime) : null;
+useEffect(()=>{
+   currentTime = new Date();
+   endTime = biddingData?.endTime ? new Date(biddingData.endTime) : null;
+})
 
   const handleNavigate = () => {
     navigate('/cart');
@@ -220,6 +227,7 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
           </div>
         ) : isOwner === false ? (
           endTime && currentTime < endTime ? (
+             
             <div className="bidding-section">
               <p>Current Highest Bid: ₹{biddingData?.highestPriceReceivedDueToBidding}</p>
               <p id="profileView" onClick={() => gotoProfile(highestBidder?._id)}>
@@ -237,7 +245,7 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
                   Place Bid
                 </button>
               </div>
-            </div>
+            </div> 
           ) : (
             <p>Bidding has ended or is not active yet.</p>
           )
@@ -271,6 +279,7 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
 
         <hr />
       </div>
+      <Comment postId={id} Recived_userId={userId}/>
     </div>
 
   );

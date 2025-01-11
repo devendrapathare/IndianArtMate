@@ -74,5 +74,32 @@ const get_post_data_by_post_id = async(req,res)=>{
     }
 }
 
+const get_post_data_by_name = async (req, res) => {
+    try {
+        const name = req.body.postName; // Match the frontend field name
+        if (!name) {
+            return res.status(400).json({ success: false, message: "Post name is required" });
+        }
 
-export { userPostData,listPostData,listLogedInUserPostData ,get_post_data_by_post_id }
+        console.log("Received postName:", name);
+
+      
+        const posts = await userPosts.find({
+            title: { $regex: new RegExp(name, "i") } // 'i' flag makes it case-insensitive
+        });
+
+        if (!posts || posts.length === 0) {
+            return res.status(404).json({ success: false, message: "No posts found" });
+        }
+
+        console.log("Posts found:", posts);
+        res.status(200).json({ success: true, data: posts });
+    } catch (error) {
+        console.error("Error in get_post_data_by_name:", error.message);
+        res.status(500).json({ error: "Internal server error" });
+    }
+};
+
+
+
+export { userPostData,listPostData,listLogedInUserPostData ,get_post_data_by_post_id, get_post_data_by_name }

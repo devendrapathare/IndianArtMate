@@ -28,11 +28,6 @@ const UploadPost = () => {
     const fileInputRef = useRef(null);
     const { authUser } = useAuthContext();
     const { fetchPostList, fetchLoggedInUserPostList, url } = usePostContext(); 
-
-    // const NavigationForPosts = (isOwner,userId) => {
-    //     // console.log("userId:", userId);
-    //     navigate(`/myFeed/${isOwner}/${userId}`);
-    //   };
     
 
     useEffect(() => {

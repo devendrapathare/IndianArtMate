@@ -1,0 +1,113 @@
+.search-parent-div {
+    color: white;
+    padding: 20px;
+    min-height: 100vh; 
+    background: #FFF9D7;
+}
+.search-top {
+    /* display: flex; */
+    justify-content: center;
+    /* gap: 10px; */
+    padding: 20px 60px;
+
+}
+
+.search-top input {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    background-color: #BFAE8C;
+}
+
+.search-top button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    /* background-color: #007bff; */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.input-part{
+    display: flex;
+}
+.input-part input {
+    width: 80%;
+    height: 50px;
+}
+.input-part select{
+    width: 20%;
+    height: 50px;
+}
+
+.search-top button:hover {
+    background-color: orange;
+}
+
+
+.search-parent-div p {
+    color: red;
+    text-align: center;
+}
+
+.search-result-container-post{
+    width: 1400px;
+    margin: 20px auto;
+    columns: 5;
+    column-gap: 15px;
+}
+.search-result-container .search-result-post{
+    column-width:300px;  
+}
+.search-result-container .search-result-post img{
+    width: 100%;
+    border-radius: 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.search-result-post img:hover {
+    transform: scale(1.02); 
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6); 
+}
+
+.search-result-container-artist{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.search-result-artist{
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius:10px ;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    
+}
+.search-result-artist:hover {
+    transform: scale(1.05); 
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6); 
+}
+
+.search-result-artist img{
+    border-radius:50% ;
+    height: 200px;
+    padding: 20px;
+}
+.search-result-artist p{
+    /* padding: 20px; */
+    color: black;
+}
+.search-result-artist:hover{
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+
+}

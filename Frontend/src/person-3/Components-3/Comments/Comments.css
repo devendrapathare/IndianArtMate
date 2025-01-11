@@ -1,0 +1,153 @@
+
+.comments {
+    margin-left: 10vh;
+    /* border: 2px solid red; */
+    width: 600px;
+    height: 600px;
+    overflow-y: auto; /* Make it scrollable vertically */
+    border: 1px solid #191919; 
+    padding: 10px;
+    border-radius: 8px; /* Rounded corners for a polished look */
+    margin: 20px auto; /* Center the div horizontally */
+}
+
+/* Custom scrollbar styling */
+.comments::-webkit-scrollbar {
+    width: 8px; /* Width of the scrollbar */
+}
+
+.comments::-webkit-scrollbar-thumb {
+    background-color: brown; /* Brown scrollbar thumb */
+    border-radius: 4px; /* Rounded corners for the scrollbar thumb */
+}
+
+.comments::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Light background for the track */
+}
+
+/* Style individual comment blocks */
+.comments > div {
+    display: flex;
+    align-items: flex-start; /* Align items to the top */
+    margin-bottom: 10px; /* Space between comments */
+    padding: 10px;
+    border-bottom: 1px solid #e0e0e0; /* Separate comments with a light line */
+}
+
+/* Image styling */
+.comments img {
+    width: 40px; /* Size of the profile picture */
+    height: 40px;
+    border-radius: 50%; /* Circular image */
+    margin-right: 10px; /* Space between image and text */
+}
+
+/* Username styling */
+.comments strong {
+    font-size: 14px;
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+/* Comment text styling */
+.comments p {
+    margin: 0;
+    line-height: 1.5; /* Improve readability */
+}
+
+/* Button styling */
+.comments button {
+    /* background: transparent; */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 5px 10px;
+    margin-right: 5px;
+    /* margin-left: 90%; */
+    cursor: pointer;
+}
+
+.clickable{
+    display: flex;
+    cursor: pointer;
+}
+
+/* Form styling */
+.comments form {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+
+.comments input[type="text"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.comments button[type="submit"] {
+    align-self: flex-start; /* Align the submit button to the left */
+    padding: 8px 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.modify-btn{
+    display: flex;
+    margin-left: 10%;
+}
+form{
+    display: flex;
+    /* background: #8E4800; */
+    position: sticky;
+    bottom: 0;
+    background: #BFAE8C;
+    padding: 15px;
+    border-radius: 5px;
+        /* color :white; */
+}
+
+form .form-left{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+form .form-left label{
+    font-size: 13px;
+    margin-right: 10px;
+}
+form .form-right{
+    display: flex;
+    justify-content: space-between;
+}
+
+.profile-picture-date{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.profile-picture-date small{
+    font-size: 11px;
+}
+
+.card{
+    width: 100%;
+    align-items: center;
+    border-radius:10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.card-left{
+    width: 30%;
+}
+.card-center{
+    width: 40%;
+}
+.card-right{
+    width: 30%;
+}
+
+.card:hover{
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}

@@ -21,6 +21,7 @@ import ReceivedOrder from './person-2/Pages-p2/ReceivedOrder/ReceivedOrder';
 import Show_resp_respting from './person-3/Components-3/Show_resp_respting';
 import ProfileFeed from './person-2/components-p2/Profile/ProfileFeed/ProfileFeed';
 import ProfilefeedDisplay from './person-2/components-p2/ProfileDisplay/ProfilefeedDisplay/ProfilefeedDisplay';
+import Search from './person-3/Components-3/search/Search';
 
 function App() {
     const { authUser } = useAuthContext();
@@ -47,6 +48,7 @@ function App() {
                     <Route path = "/receivedOrders" element={<ReceivedOrder />}/>
                     {/* <Route path = "/myProfileDetails/:whatToDo/:userId" element={<ProfilePage current_id = {userId}/>}/> */}
                     <Route path = "/myProfileDetails/:whatToDo/:userId" element={<Show_resp_respting/>}/>
+                    <Route path = "/SearchPost" element={<Search/>}/>
                 </Routes>
                 <Toaster />
             </div>
