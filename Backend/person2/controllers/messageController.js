@@ -2,6 +2,7 @@ import Conversation from "../models/conversationModel.js"
 import Message from '../models/messageModel.js'
 import { getReceiverSocketId, io } from "../../socket.js"
 import User from "../models/userModels.js"
+import mongoose from "mongoose"
 
 export const sendMessage = async (req, res) => {
     try {
@@ -123,4 +124,45 @@ export const MessageReceiverDetails = async (req, res) => {
         res.status(500).json({ error: "Internal Server Error" })
     }
 
+}
+
+export const getUserAllConversations = async (req,res) => {
+    
+    const {id:userId} = req.params;
+
+    try {
+
+        const response = await Conversation.find({
+            participants: new mongoose.Types.ObjectId(userId)
+        })
+
+        if (response.length === 0) {
+            return res.status(404).json({ error: "No conversations found" })
+        }
+
+        res.status(200).json(response);
+        // console.log(response);
+        
+    } catch (error) {
+        console.log("Error in messageController getUserAllConversations", error.message);
+        res.status(500).json({ error: "Internal Server Error" })
+    }
+
+}
+
+export const getUserLastMessage = async (req,res) => {
+    
+    const {id:messageId} = req.params;
+
+    try {
+
+        const response = await Message.findById(messageId)
+        res.status(200).json(response);
+        // console.log(response);
+        
+    } catch (error) {
+        console.log("Error in messageController getUserLastMessage", error.message);
+        res.status(500).json({ error: "Internal Server Error" })
+    }
+    
 }

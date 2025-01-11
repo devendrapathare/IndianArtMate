@@ -108,6 +108,9 @@ const Nav = ({ setshowLogin }) => {
                 <Link to='/myStore'><img className='img' src={assets.store_icon} alt="Store" onClick={() => onNavClick('store')} /></Link>
               </div>
               <div className="nav-icon">
+                <Link to="/feedPage"><img className='img' src={assets.feedImg} alt="My Feed" onClick={() => onNavClick('feed')} /></Link>
+              </div>
+              <div className="nav-icon">
                 <Link to='/ProfilePage'><img className='img' src={assets.profile_icon} alt="My Profile" onClick={() => onNavClick('profile')} /></Link>
               </div>
               <div className="nav-icon">

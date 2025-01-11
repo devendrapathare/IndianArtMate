@@ -8,15 +8,10 @@
 }
 
 body {
-    background: #BFAE8C; 
-   
+    background: #BFAE8C;    
 }
 
-body::-webkit-scrollbar{
-    display: none;
-}
-
-button{
+button {
     background-color: #8E4800;
     color: #FFF9D7;
     border: none;
@@ -35,4 +30,14 @@ button{
 
 button:hover{
     background-color: #6f3d00;
+}
+
+.scrollable-hidden-scrollbar {
+    overflow-y: scroll; /* Enable scrolling */
+    scrollbar-width: none; /* For Firefox */
+    -ms-overflow-style: none;  /* For Internet Explorer and Edge */
+}
+
+.scrollable-hidden-scrollbar::-webkit-scrollbar {
+    display: none; /* For Chrome, Safari, and Opera */
 }

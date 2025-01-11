@@ -52,6 +52,7 @@ import profile_icon from './Images/user.png'
 import chat_icon from './Images/chat.png'
 
 import sendArrow from './Images/send.png'
+import feedImg from './Images/feed.png'
 
 
 export const like_dislike_images = {
@@ -189,6 +190,8 @@ export const assets = {
     profile_icon,
     chat_icon,
     sendArrow,
+    feedImg,
+    img1,
 }
 
 export const forSecondProductDes = [

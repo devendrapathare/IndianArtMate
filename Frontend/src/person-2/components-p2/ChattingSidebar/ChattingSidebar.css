@@ -1,8 +1,5 @@
 .ChattingSidebar-container {
   background: #FFF9D7;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
   padding: 20px;
   border-right: 2px solid #a0522d;  
   scrollbar-color: brown #f1f1f1;
@@ -17,7 +14,7 @@
 
 .Conversations-container {
   overflow-y: auto;
-  max-height: calc(100vh - 100px); /* Adjust height as needed */
+  max-height: calc(100vh - 100px);  
 }
 
 .Conversation-container {

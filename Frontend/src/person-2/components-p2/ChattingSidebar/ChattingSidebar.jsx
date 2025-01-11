@@ -11,7 +11,7 @@ const ChattingSidebar = () => {
       <SearchInputs />
       <div className="ChattingSidebar-other-content"></div>
       <Conversations />
-      <LogOutButton />
+      {/* <LogOutButton /> */}
     </div>
   );
 };

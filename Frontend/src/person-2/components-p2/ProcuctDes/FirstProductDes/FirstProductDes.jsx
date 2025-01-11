@@ -13,6 +13,10 @@ import { useConversation } from '../../../Zustand/UseConversation';
 
 
 const FirstProductDes = ({ image, category, description, price, title, userId, id, isOwner, totalLike, totaldisLike }) => {
+
+  console.log('id',id);
+  
+
   const { authUser } = useAuthContext();
   const { cartItems, addItemToCart, removeItemFromCart } = useContext(CartContext);
   const [userData, setUserData] = useState({});
@@ -23,7 +27,7 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
   const [highestBidder, setHighestBidder] = useState(null);
   const [imageUrl, setImageUrl] = useState('');
   const [isHired, setIsHired] = useState(false);
-  const { url } = usePostContext()
+  const { url,deletePostById } = usePostContext()
 
   const { setMyId, setReceiverId, getMessageReceiverDetails } = useChatContext()
 
@@ -36,6 +40,11 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
     await getMessageReceiverDetails(userId)
     setSelectedConversation(userId)
     navigate('/myChats')
+  }
+
+  const handleDeletePost = async() =>{
+    await deletePostById(id)
+    navigate('/profilePage')
   }
 
   const handleHireMe = async () => {
@@ -181,6 +190,8 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
     navigate(`/temp/${artistId}`);
   };
 
+
+
   return (
     <div className='FirstProductDes-container'>
       <div className="FirstProductDes-img">
@@ -255,6 +266,7 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
             <div className="impressions">
               <p>Likes <span>{totalLike}</span> </p>
               <p>Dislikes <span>{totaldisLike}</span> </p>
+              <button onClick={handleDeletePost}>Delete Post</button>
             </div>
           ) : (
             <div className="impressions">

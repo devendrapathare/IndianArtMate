@@ -1,105 +1,135 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './Conversation.css'
-// import '../tailwind.css'
-import { assets } from '../../../../assets/assets'
+import { useAuthContext } from '../../../context/AuthContext/AuthContext'
+import { usePostContext } from '../../../context/PostContext/PostContext'
+import { useChatContext } from '../../../context/chatContext/chatContext'
+import { useConversation } from '../../../Zustand/UseConversation'
+import { set } from 'lodash'
+import UseGetMessages from '../../../hooks/UseGetMessages/UseGetMessages'
 
-const Conversation = () => {
+const Conversation = ({ participants, message }) => {
+  const { authUser } = useAuthContext();
+  const [ReceiverData, setReceiverData] = useState([]);
+  const [fullImageUrl, setFullImageUrl] = useState('');
+  const [receiverId, setReceiverId] = useState('');
+  const { url } = usePostContext();
+  const { getMessageReceiverDetails } = useChatContext();
+  const { setSelectedConversation } = useConversation();
+  const [UserLastMessage, setUserLastMessage] = useState([])
+
+  const { loading, messages } = UseGetMessages()
+
+
+  async function fetchReceiverData() {
+    let tempReceiverId;
+
+    if (authUser._id === participants[0]) {
+      tempReceiverId = participants[1];
+    } else if (authUser._id === participants[1]) {
+      tempReceiverId = participants[0];
+    }
+
+    setReceiverId(tempReceiverId);
+
+    try {
+      const response = await fetch(`${url}/users/${tempReceiverId}`);
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Error response:', errorText);
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      setReceiverData(data.user);
+
+      // Set fullImageUrl
+      if (data.user && data.user.profilePic) {
+        if (data.user.profilePic.startsWith('http')) {
+          setFullImageUrl(data.user.profilePic);
+          // console.log('fullImageUrl 1', data.user.profilePic);
+        } else {
+          const imageUrl = `${url}/profilePics${data.user.profilePic.split('/profilePic')[1]}`;
+          setFullImageUrl(imageUrl);
+          // console.log('fullImageUrl 2', imageUrl);
+        }
+      } else {
+        console.log('ReceiverData or ReceiverData.profilePic is undefined');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  useEffect(() => {
+    fetchReceiverData();
+  }, [authUser, participants]);
+
+  const handleChat = async () => {
+    await getMessageReceiverDetails(receiverId);
+    setSelectedConversation(receiverId);
+    // navigate('/myChats')
+  };
+
+  const lastMessgeId = message.slice(-1)[0]
+  // console.log('lastMessgeId',lastMessgeId);
+
+
+  async function getUserLastMessage() {
+
+    try {
+
+      const response = await fetch(`${url}/api/messages/getUserLastMessage/${lastMessgeId}`)
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Error response:', errorText);
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      setUserLastMessage(data)
+
+    } catch (error) {
+      console.error(error)
+    }
+
+  }
+
+  useEffect(() => {
+    getUserLastMessage();
+  }, [message,messages,participants])
+
+  // console.log('UserLastMessage', UserLastMessage.message);
+
+
+
   return (
     <>
-    <div className='Conversation-container'>
-      <div className="Conversation-dp">
-        <img src={assets.profileTest} alt="" />
-      </div>
-      <div className="Conversation-other-info">
-        <div className="user-name">
-          <p>Krish Mishra</p>
+      <div onClick={handleChat} className='Conversation-container'>
+        <div className="Conversation-dp">
+          <img src={fullImageUrl} alt="" />
         </div>
-        <div className="latestMessage">
-          <p>No Messge Available</p>
-        </div>
-      </div>
-    </div>
-    <hr />
-
-    
-    <div className='Conversation-container'>
-      <div className="Conversation-dp">
-        <img src={assets.profileTest} alt="" />
-      </div>
-      <div className="Conversation-other-info">
-        <div className="user-name">
-          <p>Krish Mishra</p>
-        </div>
-        <div className="latestMessage">
-          <p>No Messge Available</p>
+        <div className="Conversation-other-info">
+          <div className="user-name">
+            <p>{ReceiverData.userName}</p>
+          </div>
+          <div className="latestMessage">
+            {UserLastMessage ? (
+              <p>
+                {UserLastMessage.senderId === authUser._id ? 'You: ' : ''}
+                {UserLastMessage.message ? (
+                  <>
+                    {UserLastMessage.message.split(' ').slice(0, 4).join(' ')}
+                    {UserLastMessage.message.split(' ').length > 4 ? ' ....' : ''}
+                  </>
+                ) : ''}
+              </p>
+            ) : (
+              <p>Start a conversation</p>
+            )}
+          </div>
         </div>
       </div>
-    </div>
-    <hr />
-
-    <div className='Conversation-container'>
-      <div className="Conversation-dp">
-        <img src={assets.profileTest} alt="" />
-      </div>
-      <div className="Conversation-other-info">
-        <div className="user-name">
-          <p>Krish Mishra</p>
-        </div>
-        <div className="latestMessage">
-          <p>No Messge Available</p>
-        </div>
-      </div>
-    </div>
-    <hr />
-
-    <div className='Conversation-container'>
-      <div className="Conversation-dp">
-        <img src={assets.profileTest} alt="" />
-      </div>
-      <div className="Conversation-other-info">
-        <div className="user-name">
-          <p>Krish Mishra</p>
-        </div>
-        <div className="latestMessage">
-          <p>No Messge Available</p>
-        </div>
-      </div>
-    </div>
-    <hr />
-
-    <div className='Conversation-container'>
-      <div className="Conversation-dp">
-        <img src={assets.profileTest} alt="" />
-      </div>
-      <div className="Conversation-other-info">
-        <div className="user-name">
-          <p>Krish Mishra</p>
-        </div>
-        <div className="latestMessage">
-          <p>No Messge Available</p>
-        </div>
-      </div>
-    </div>
-    <hr />
-
-    <div className='Conversation-container'>
-      <div className="Conversation-dp">
-        <img src={assets.profileTest} alt="" />
-      </div>
-      <div className="Conversation-other-info">
-        <div className="user-name">
-          <p>Krish Mishra</p>
-        </div>
-        <div className="latestMessage">
-          <p>No Messge Available</p>
-        </div>
-      </div>
-    </div>
-    <hr />
-
-
+      <hr />
     </>
-  )
-}
+  );
+};
 
-export default Conversation
+export default Conversation;

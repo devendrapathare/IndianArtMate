@@ -33,6 +33,8 @@ const Message = ({message}) => {
     fullImageUrl = `${url}/profilePics${profilePic.split('/profilePic')[1]}`;
   }
 
+  
+
   return (
     <div >    
       <div className={`main-chat-container ${chatClassName}`}>

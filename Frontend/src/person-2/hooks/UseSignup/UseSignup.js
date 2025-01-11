@@ -27,7 +27,7 @@ const UseSignup = () => {
             const data = await res.json()
             if(data.error) {
                 throw new Error(data.error)
-            }
+            }            
             // So now we have to store the user data to the local storeage so that after refreshing the page the data will not get erases and for that purpose we will use the context like authContext
             localStorage.setItem("user-info",JSON.stringify(data))
 

@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState, useCallback } from "react";
 import axios from 'axios';
 import { useAuthContext } from "../AuthContext/AuthContext";
+import toast from "react-hot-toast";
 
 export const PostContext = createContext();
 
@@ -58,6 +59,30 @@ const PostContextProvider = ({ children }) => {
         }
     }, [authUser, fetchLoggedInUserPostList]);
 
+    const deletePostById = async (id) => {
+        try {
+            const response = await axios.post(
+                `${url}/api/post/deletePostById/${id}`,
+                {}, // Empty body
+                {
+                    withCredentials: true,  // Cookies ko request mein include karne ke liye
+                }
+            );
+    
+            if (response.status === 200) {
+                setLoggedInUserPosts((prevPosts) => prevPosts.filter(post => post._id !== id));
+                toast.success('Post deleted successfully');
+            } else {
+                console.error("Failed to delete post");
+                toast.error('Failed to delete Post');
+            }
+        } catch (error) {
+            console.error("Error deleting post:", error);
+            toast.error('Failed to delete Post');
+        }
+    };
+    
+
     const contextValue = {
         posts,
         fetchPostList,
@@ -66,6 +91,7 @@ const PostContextProvider = ({ children }) => {
         url,
         fetchSingleUserDetailById,
         singleUserData,
+        deletePostById,
     };
 
     return (

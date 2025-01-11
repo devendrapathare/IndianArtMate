@@ -152,7 +152,7 @@ const Categories = () => {
   };
 
   const visiblePosts = showAll ? filteredPosts : filteredPosts.slice(0, 6);
-  // console.log(visiblePosts);
+  // console.log(posts);
   
 
   return (
