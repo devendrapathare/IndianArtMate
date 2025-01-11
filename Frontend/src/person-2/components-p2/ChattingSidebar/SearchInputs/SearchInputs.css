@@ -3,23 +3,29 @@
     align-items: center;
     gap: 25px;
     margin-bottom: 25px;
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.2s;
+    background: #fff9d7;
 }
 
 .SearchInputs-form button {
     border: none;
     border-radius: 50%;
-    width: 30%;
-    height: 100%;
+    width: 6.5vh;
+    height: 6.5vh;
     background: #6f3d00;
     color: #000; 
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 16px; 
 }
 
 .SearchInputs-form button:hover {
-    background: #A68B5B; 
+    background: #5b4319; 
     color: #FFF9D7; 
     transition:  0.2s ease-in; 
 }
@@ -56,4 +62,5 @@
 .SearchInputs-form-input::placeholder {
     color: #BFAE8C; 
     opacity: 1; 
+    font-size: 14px;
 }

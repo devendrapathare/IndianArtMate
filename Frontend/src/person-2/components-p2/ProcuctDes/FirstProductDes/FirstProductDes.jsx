@@ -9,9 +9,15 @@ import toast from 'react-hot-toast';
 import { HireContext } from '../../../context/HireContext/HIreContext';
 import { usePostContext } from '../../../../person-2/context/PostContext/PostContext';
 import Comment from '../../../../person-3/Components-3/Comments/Comment';
+import { useChatContext } from '../../../context/chatContext/chatContext';
+import { useConversation } from '../../../Zustand/UseConversation';
 
 
 const FirstProductDes = ({ image, category, description, price, title, userId, id, isOwner, totalLike, totaldisLike }) => {
+
+  console.log('id',id);
+  
+
   const { authUser } = useAuthContext();
   const { cartItems, addItemToCart, removeItemFromCart } = useContext(CartContext);
   const [userData, setUserData] = useState({});
@@ -25,12 +31,27 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
   const [timeleft,setTimeleft] = useState(0)
   let currentTime = new Date();
   let endTime = biddingData?.endTime ? new Date(biddingData.endTime) : null;
-  const { url } = usePostContext()
+  // const { url } = usePostContext()
   let checker = true;
+  const { url,deletePostById } = usePostContext()
 
+  const { setMyId, setReceiverId, getMessageReceiverDetails } = useChatContext()
 
   const { applyHire } = useContext(HireContext)
 
+  const { setSelectedConversation } = useConversation()
+
+  const handleChat = async() => {
+    setMyId(authUser._id)
+    await getMessageReceiverDetails(userId)
+    setSelectedConversation(userId)
+    navigate('/myChats')
+  }
+
+  const handleDeletePost = async() =>{
+    await deletePostById(id)
+    navigate('/profilePage')
+  }
 
   const handleHireMe = async () => {
     const ProjectOwnerId = authUser?._id;
@@ -59,8 +80,6 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
     }
   };
 
-
-
   useEffect(() => {
 
     const fetchUserData = async () => {
@@ -88,21 +107,21 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
 
       // Check if the profile picture URL matches the desired path
       if (currentImageUrl.startsWith(desiredPath)) {
-        currentImageUrl =  userData.profilePic;  
-        console.log(currentImageUrl);
+        currentImageUrl = userData.profilePic;
+        // console.log(currentImageUrl);
       } else {
-        const fullPath =  userData.profilePic;  
-        const wantedpath = fullPath.replace('/uploads/profilePic', ''); 
-        currentImageUrl = `${url}/profilePics${wantedpath}`; 
+        const fullPath = userData.profilePic;
+        const wantedpath = fullPath.replace('/uploads/profilePic', '');
+        currentImageUrl = `${url}/profilePics${wantedpath}`;
         // console.log(currentImageUrl);
       }
       // console.log(currentImageUrl);
-      setImageUrl(currentImageUrl); 
+      setImageUrl(currentImageUrl);
     }
   }, [userData.profilePic, authUser.profilePic]);
 
-  console.log(imageUrl);
-  
+  // console.log(imageUrl);
+
 
   const getTheHighestBidderData = async (userId) => {
     if (authUser) {
@@ -180,6 +199,8 @@ useEffect(()=>{
     navigate(`/temp/${artistId}`);
   };
 
+
+
   return (
     <div className='FirstProductDes-container'>
       <div className="FirstProductDes-img">
@@ -255,12 +276,14 @@ useEffect(()=>{
             <div className="impressions">
               <p>Likes <span>{totalLike}</span> </p>
               <p>Dislikes <span>{totaldisLike}</span> </p>
+              <button onClick={handleDeletePost}>Delete Post</button>
             </div>
           ) : (
             <div className="impressions">
-                <button onClick={handleHireMe} disabled={isHired}>
-                  {isHired ? 'Sent' : 'Hire me'}
-                </button>
+              <button onClick={handleChat}>Chat</button>
+              <button onClick={handleHireMe} disabled={isHired}>
+                {isHired ? 'Sent' : 'Hire me'}
+              </button>
               {!cartItems[id] ? (
                 <button onClick={() => addItemToCart(id)} className="buy-btn">Buy Now</button>
               ) : (

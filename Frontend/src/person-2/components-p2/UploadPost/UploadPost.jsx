@@ -6,7 +6,6 @@ import toast from 'react-hot-toast';
 import { usePostContext } from '../../context/PostContext/PostContext';
 // import { useNavigate } from 'react-router-dom';
 
-
 const UploadPost = () => {
     const [image, setImage] = useState(null);
 
@@ -16,7 +15,7 @@ const UploadPost = () => {
         category: 'Painting',
         price: '',
         userId: '',
-        duration: 24 
+        duration: 24
     });
 
     const [isBiddingActive, setIsBiddingActive] = useState(false);
@@ -27,8 +26,8 @@ const UploadPost = () => {
 
     const fileInputRef = useRef(null);
     const { authUser } = useAuthContext();
-    const { fetchPostList, fetchLoggedInUserPostList, url } = usePostContext(); 
-    
+    const { fetchPostList, fetchLoggedInUserPostList, url } = usePostContext();
+
 
     useEffect(() => {
         if (authUser && authUser._id) {
@@ -48,7 +47,7 @@ const UploadPost = () => {
         const { name, value } = event.target;
         let updatedValue = value;
 
-        if(name === 'price' || name === 'duration'){
+        if (name === 'price' || name === 'duration') {
             updatedValue = Number(value);
         }
 
@@ -68,58 +67,58 @@ const UploadPost = () => {
         setIsSubmitting(true);
         try {
             console.log("Submitting data:", data, image, isBiddingActive);
-    
+
             if (!image) {
                 toast.error('Please upload an image.');
                 setIsSubmitting(false);
                 return;
             }
-    
+
             const formData = new FormData();
             formData.append('image', image);
             formData.append('title', data.title);
             formData.append('description', data.description);
             formData.append('category', data.category);
             formData.append('price', Number(data.price));
-            formData.append('userId', data.userId); 
+            formData.append('userId', data.userId);
             formData.append('duration', Number(data.duration)); // Include duration
-    
+
             const uploadResponse = await axios.post(`${url}/api/post/uploadPost`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-    
-            if(uploadResponse.data.success){
-                
-                await fetchLoggedInUserPostList();  
+
+            if (uploadResponse.data.success) {
+
+                await fetchLoggedInUserPostList();
                 // NavigationForPosts(true,authUser._id)
-    
-                if(isBiddingActive){
+
+                if (isBiddingActive) {
                     const respectorsResponse = await axios.get(`${url}/users/${authUser._id}`);
-                    if(respectorsResponse.data.success){
-                        const respectors = respectorsResponse.data.user.respectors; 
-                        
-                        if(!Array.isArray(respectors)){
+                    if (respectorsResponse.data.success) {
+                        const respectors = respectorsResponse.data.user.respectors;
+
+                        if (!Array.isArray(respectors)) {
                             toast.error('Respectors data is invalid.');
                             setIsSubmitting(false);
                             return;
                         }
-    
+
                         const biddingData = {
                             postId: uploadResponse.data.postId,
-                            startingPrice: Number(data.price), 
+                            startingPrice: Number(data.price),
                             duration: Number(data.duration),
                             respectors: respectors
                         };
-    
+
                         const biddingResponse = await axios.post(`${url}/api/bidding/start`, biddingData, {
                             headers: {
                                 'Content-Type': 'application/json'
                             }
                         });
-    
-                        if(biddingResponse.data.success){
+
+                        if (biddingResponse.data.success) {
                             toast.success(biddingResponse.data.message);
                         } else {
                             toast.error(biddingResponse.data.message);
@@ -141,8 +140,8 @@ const UploadPost = () => {
     };
 
     return (
-        <div className='UploadPost-container'>
-            <form onSubmit={handleSubmit}>
+        <div >
+            <form className='UploadPost-container' onSubmit={handleSubmit}>
                 <div className="header">
                     <p>Upload Your Post</p>
                 </div>
@@ -169,9 +168,9 @@ const UploadPost = () => {
                 <div className="information-fields">
                     <div className="add-product-name flex-col">
                         <p>Art Name</p>
-                        <input 
+                        <input
                             type="text"
-                            name="title" 
+                            name="title"
                             placeholder='Type Here'
                             onChange={onChangeHandler}
                             value={data.title}
@@ -180,10 +179,10 @@ const UploadPost = () => {
                     </div>
                     <div className="add-product-description flex-col">
                         <p>Art Description</p>
-                        <textarea 
-                            name="description" 
-                            rows='3' 
-                            placeholder='Write Content here' 
+                        <textarea
+                            name="description"
+                            rows='3'
+                            placeholder='Write Content here'
                             required
                             onChange={onChangeHandler}
                             value={data.description}
@@ -193,10 +192,10 @@ const UploadPost = () => {
                     {/* Duration Input */}
                     <div className="add-duration flex-col">
                         <p>Auction Duration (Hours)</p>
-                        <input 
-                            type="number" 
-                            name="duration" 
-                            placeholder='Enter Duration in Hours' 
+                        <input
+                            type="number"
+                            name="duration"
+                            placeholder='Enter Duration in Hours'
                             onChange={onChangeHandler}
                             value={data.duration}
                             min="1"
@@ -215,10 +214,10 @@ const UploadPost = () => {
                         </div>
                         <div className="add-price flex-col">
                             <p>Art Price (₹)</p>
-                            <input 
-                                type="number" 
-                                name="price" 
-                                placeholder='Enter Amount' 
+                            <input
+                                type="number"
+                                name="price"
+                                placeholder='Enter Amount'
                                 onChange={onChangeHandler}
                                 value={data.price}
                                 min="0"
@@ -226,12 +225,12 @@ const UploadPost = () => {
                             />
                         </div>
                     </div>
-                    
+
                     {/* Toggle for starting bidding */}
                     <div className="start-bidding-toggle flex-col">
                         <label className="toggle-label">
-                            <input 
-                                type="checkbox" 
+                            <input
+                                type="checkbox"
                                 checked={isBiddingActive}
                                 onChange={handleToggleChange}
                             />

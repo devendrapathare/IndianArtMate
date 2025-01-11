@@ -42,6 +42,8 @@ const listPostData = async (req,res) =>{
         }
 
         res.status(200).json({ success: true, data: posts });
+        // console.log('posts',posts);
+        
     } catch (error) {
         console.log("Error in userPostController.js listPostData", error.message);
         res.status(500).json({ error: "Error in userPostController.js " })
@@ -100,6 +102,23 @@ const get_post_data_by_name = async (req, res) => {
     }
 };
 
+const deletePostById = async (req,res) => {
+    
+    const { id: postId } = req.params;
+
+    try {
+
+        const deletePost = await userPosts.findByIdAndDelete(postId);
+        if (!deletePost) {
+            return res.status(404).json({ error: "Post not found" });
+        }
+        res.status(200).json({ message: "Post deleted successfully" });
+    } catch (error) {
+        console.log("Error in userPostController.js deletePostById: ", error.message);
+        res.status(500).json({ error: "Error in userPostController.js " });
+    }
+    
+}
 
 
-export { userPostData,listPostData,listLogedInUserPostData ,get_post_data_by_post_id, get_post_data_by_name }
+export { userPostData,listPostData,listLogedInUserPostData ,get_post_data_by_post_id, deletePostById }

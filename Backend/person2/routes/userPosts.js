@@ -1,6 +1,7 @@
 import express from "express";
-import { listLogedInUserPostData, listPostData, userPostData ,get_post_data_by_post_id, get_post_data_by_name } from "../controllers/userPostControllers.js";
+import { listLogedInUserPostData, listPostData, userPostData ,get_post_data_by_post_id } from "../controllers/userPostControllers.js";
 import multer from 'multer'
+import protectRoute from "../middleware/protectRoute.js";
 
 const router = express.Router() 
 
@@ -18,6 +19,5 @@ router.get('/listPost',listPostData)
 router.get('/listlogedIUserPost',listLogedInUserPostData)
 router.get('/listlogedInUserPost/:userId',listLogedInUserPostData)
 router.get('/getPostDataByID/:id',get_post_data_by_post_id)
-router.post('/listPostByName',get_post_data_by_name)
 
 export default router

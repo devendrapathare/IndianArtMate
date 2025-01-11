@@ -54,7 +54,7 @@ const fetchCartData = async (req, res) => {
         let userData = await User.findById(userId)       
         let cartData = await userData.cartData
         res.status(200).json({success:true,message: "Cart data fetched successfully",cartData})
-        console.log("cartdata",cartData);
+        // console.log("cartdata",cartData);
         
     } catch (error) {
         res.status(500).json({success:false,message:error.message})

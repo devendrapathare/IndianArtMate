@@ -3,7 +3,6 @@ import { useComments } from '../../context/CommentContext.jsx';
 import { useAuthContext } from '../../../person-2/context/AuthContext/AuthContext.jsx';
 import { usePostContext } from '../../../person-2/context/PostContext/PostContext.jsx';
 import { useNavigate } from 'react-router-dom';
-
 import './Comments.css';
 
 const Comment = ({ postId }) => {

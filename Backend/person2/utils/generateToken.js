@@ -9,6 +9,8 @@ const generateTokenAndSetCookie = (userId, res) => {
         sameSite:"strict" ,//It basically prevents CSRf attaks which is cross-site request foregery attacks
         secure:process.env.NODE_ENV !== "develepment",
     })
+    console.log('tokenhre',token);
+    
 }
 
 export default generateTokenAndSetCookie

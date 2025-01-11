@@ -49,7 +49,7 @@ const UseLogin = () => {
             localStorage.setItem('user-info', JSON.stringify(data))
 
             setauthUser(data)
-            console.log("data",data);
+            // console.log("data",data);
 
             if (setshowLogin) setshowLogin(false);
             
