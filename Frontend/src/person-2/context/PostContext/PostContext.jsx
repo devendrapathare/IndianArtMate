@@ -95,6 +95,7 @@ export const PostContext = createContext();
 
 const PostContextProvider = ({ children }) => {
     const [posts, setPosts] = useState([]);
+    const [Allposts, setAllPosts] = useState([]);
     const [loggedInUserPosts, setLoggedInUserPosts] = useState([]);
     const { authUser } = useAuthContext();
     const [singleUserData, setsingleUserData] = useState([]);
@@ -147,15 +148,37 @@ const PostContextProvider = ({ children }) => {
         }
     }, [authUser, fetchLoggedInUserPostList]);
 
+    const fetchPostsByName = useCallback(async (postName) => {
+        console.log("Fetching posts by name using POST method...");
+        try {
+            const path = `${url}/api/post/listPostByName`;
+            console.log("Request URL:", path);
+            const response = await axios.post(path, { postName });
+            const sortedPosts = response.data.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            console.log("Fetched posts by name:", sortedPosts);
+            return { success: true, data: sortedPosts };
+        } catch (error) {
+            console.error("Error fetching posts by name:", error);
+            return { success: false, error:"Could not fetch the data" };
+        }
+    }, [url]);
+    
+
+
     const contextValue = {
         posts,
+        Allposts,
         fetchPostList,
         fetchLoggedInUserPostList,
         loggedInUserPosts,
         url,
         fetchSingleUserDetailById,
         singleUserData,
+        fetchPostsByName,
     };
+
+    
+
 
     return (
         <PostContext.Provider value={contextValue}>

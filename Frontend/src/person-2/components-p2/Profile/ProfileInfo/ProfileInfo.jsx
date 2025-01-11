@@ -82,7 +82,7 @@ const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
     useEffect(() => {
         const fetchUserProfile = async () => {
           try {
-            const response = await fetch(`http://localhost:5000/users/${userId}`);
+            const response = await fetch(`${url}/users/${userId}`);
             if (!response.ok) throw new Error('Network response was not ok');
             
             const data = await response.json();
@@ -94,7 +94,7 @@ const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
             if (user.profilePic.startsWith('http')) {
               fullImageUrl = user.profilePic;
             } else {
-              fullImageUrl = `http://localhost:5000/profilePics${user.profilePic.split('/profilePic')[1]}`;
+              fullImageUrl = `${url}/profilePics${user.profilePic.split('/profilePic')[1]}`;
             }
             setImage(fullImageUrl);
           } catch (error) {
@@ -139,7 +139,9 @@ const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
             <div className="above">
                 <h2>{userData.userName || 'Krish Mishra'}</h2>
                 <p>{userData.profile_type || 'Painter'}</p>
+                <p>{userData.email || 'Painter'}</p>
             </div>
+           
 
             <div className="profileInfo-buttons">
                 {!isOwnProfile && (

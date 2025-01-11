@@ -8,12 +8,11 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { HireContext } from '../../../context/HireContext/HIreContext';
 import { usePostContext } from '../../../../person-2/context/PostContext/PostContext';
+import Comment from '../../../../person-3/Components-3/Comments/Comment';
 
 
 const FirstProductDes = ({ image, category, description, price, title, userId, id, isOwner, totalLike, totaldisLike }) => {
   const { authUser } = useAuthContext();
-  // console.log("userID:",userId)
-  // console.log("userID_id:",totaldisLike)
   const { cartItems, addItemToCart, removeItemFromCart } = useContext(CartContext);
   const [userData, setUserData] = useState({});
   const [biddingData, setBiddingData] = useState(null);
@@ -23,7 +22,11 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
   const [highestBidder, setHighestBidder] = useState(null);
   const [imageUrl, setImageUrl] = useState('');
   const [isHired, setIsHired] = useState(false);
+  const [timeleft,setTimeleft] = useState(0)
+  let currentTime = new Date();
+  let endTime = biddingData?.endTime ? new Date(biddingData.endTime) : null;
   const { url } = usePostContext()
+  let checker = true;
 
 
   const { applyHire } = useContext(HireContext)
@@ -37,7 +40,6 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
     console.log("userData", userData);
     console.log("authUser", authUser);
 
-    // Validate that ownerId and receiverId are not the same
     if (!ProjectOwnerId) {
       toast.error('You must be logged in to hire.');
       return;
@@ -64,7 +66,7 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
     const fetchUserData = async () => {
       if (authUser) {
         try {
-          const response = await axios.get(`http://localhost:5000/users/${userId}`);
+          const response = await axios.get(`${url}/users/${userId}`);
           if (response.data) {
             setUserData(response.data.user);
           }
@@ -81,9 +83,9 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
   useEffect(() => {
     if (userData.profilePic) {
       let currentImageUrl =userData.profilePic ;
+      // let currentImageUrl =userData.profilePic ;
       const desiredPath = 'https://avatar.iran.liara.run/public/';
-      // console.log(currentImageUrl);
-      
+
       // Check if the profile picture URL matches the desired path
       if (currentImageUrl.startsWith(desiredPath)) {
         currentImageUrl =  userData.profilePic;  
@@ -106,7 +108,7 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
     if (authUser) {
 
       console.log("from first:", userId)
-      const response = await axios.get(`http://localhost:5000/users/${userId}`);
+      const response = await axios.get(`${url}/users/${userId}`);
       if (response.data.success) {
         setHighestBidder(response.data.user);
       }
@@ -122,7 +124,7 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
   useEffect(() => {
     const fetchBiddingData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/bidding/biddingData/${id}`);
+        const response = await axios.get(`${url}/api/bidding/biddingData/${id}`);
         setBiddingData(response.data);
       } catch (error) {
         console.error('Error fetching bidding data:', error.message);
@@ -132,8 +134,10 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
     fetchBiddingData();
   }, [userId]);
 
-  const currentTime = new Date();
-  const endTime = biddingData?.endTime ? new Date(biddingData.endTime) : null;
+useEffect(()=>{
+   currentTime = new Date();
+   endTime = biddingData?.endTime ? new Date(biddingData.endTime) : null;
+})
 
   const handleNavigate = () => {
     navigate('/cart');
@@ -149,7 +153,7 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
       return;
     }
     try {
-      const response = await axios.post(`http://localhost:5000/api/bidding/placeBid`, {
+      const response = await axios.post(`${url}/api/bidding/placeBid`, {
         postId: id,
         userId: authUser._id,
         bidAmount: userBid
@@ -224,6 +228,7 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
           </div>
         ) : isOwner === false ? (
           endTime && currentTime < endTime ? (
+             
             <div className="bidding-section">
               <p>Current Highest Bid: ₹{biddingData?.highestPriceReceivedDueToBidding}</p>
               <p id="profileView" onClick={() => gotoProfile(highestBidder?._id)}>
@@ -241,7 +246,7 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
                   Place Bid
                 </button>
               </div>
-            </div>
+            </div> 
           ) : (
             <p>Bidding has ended or is not active yet.</p>
           )
@@ -275,9 +280,11 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
 
         <hr />
       </div>
+      <Comment postId={id} Recived_userId={userId}/>
     </div>
 
   );
 };
 
 export default FirstProductDes;
+

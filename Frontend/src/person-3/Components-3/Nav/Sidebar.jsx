@@ -19,25 +19,31 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   const [loadingWinners, setLoadingWinners] = useState({});
   const [postTitles, setPostTitles] = useState({});
   const [artistNames, setArtistNames] = useState({});
+  const [Time, setTime] = useState({});
   const navigate = useNavigate();
-  const { url } = usePostContext()
+  let biddingNotiLenght = 0;
+  const { url } = usePostContext();
 
-  const [activeTab, setActiveTab] = useState('bidding'); // New state for active tab
+  const [activeTab, setActiveTab] = useState('bidding'); 
 
   const userId = authUser?._id;
 
   const NavigationForWinner = (userId) => {
-    console.log("userId:", userId);
+    // console.log("userId:", userId);
     navigate(`/temp/${userId}`);
   };
 
   useEffect(() => {
+    let biddingInterval; // To store the interval ID
+  
     const fetchBiddingNotifications = async () => {
       setLoadingNotifications(true);
       try {
-        const response = await axios.get(`http://localhost:5000/api/bidding/notifications/${userId}`);
+        const response = await axios.get(`${url}/api/bidding/notifications/${userId}`);
         if (response.data.success) {
           setBiddingNotifications(response.data.activeBiddingsFromRespectedUsers);
+          const biddingNotiLength = response.data.activeBiddingsFromRespectedUsers.length; // Use `response.data` directly
+          setTime(response.data.activeBiddingsFromRespectedUsers.map(bid => bid.endTime)); // Assuming you want all endTimes
         } else {
           console.error("Failed to fetch bidding notifications:", response.data.message);
         }
@@ -47,11 +53,11 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         setLoadingNotifications(false);
       }
     };
-
+  
     const fetchOwnerBiddings = async () => {
       setLoadingOwnerBiddings(true);
       try {
-        const response = await axios.get(`http://localhost:5000/api/bidding/ownerBiddings/${userId}`);
+        const response = await axios.get(`${url}/api/bidding/ownerBiddings/${userId}`);
         if (response.data.success) {
           setOwnerBiddings(response.data.ownerBiddings);
         } else {
@@ -63,12 +69,30 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         setLoadingOwnerBiddings(false);
       }
     };
-
-    if (userId) {
+  
+    const startFetching = () => {
       fetchBiddingNotifications();
       fetchOwnerBiddings();
+  
+      biddingInterval = setInterval(() => {
+        fetchBiddingNotifications();
+        fetchOwnerBiddings();
+      }, 5000); 
+    };
+  
+    if (userId) {
+      startFetching();
     }
-  }, [userId]);
+  
+    // Cleanup the interval when the component unmounts or `userId` changes
+    return () => {
+      if (biddingInterval) {
+        clearInterval(biddingInterval);
+      }
+    };
+  }, [userId]); // Dependency ensures the effect runs when `userId` changes
+  
+  
 
   useEffect(() => {
     const checkOwnerBiddings = async () => {
@@ -78,12 +102,12 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
           const isBidEnded = new Date(endTime) < new Date();
 
           try {
-            const postResponse = await axios.get(`http://localhost:5000/api/post/getPostDataByID/${postId}`);
+            const postResponse = await axios.get(`${url}/api/post/getPostDataByID/${postId}`);
             if (postResponse.data.success) {
               const post = postResponse.data.data;
               setPostTitles(prev => ({ ...prev, [postId]: post.title }));
 
-              const artistResponse = await axios.get(`http://localhost:5000/users/${post.userId}`);
+              const artistResponse = await axios.get(`${url}/users/${post.userId}`);
               if (artistResponse.data.success) {
                 setArtistNames(prev => ({ ...prev, [postId]: artistResponse.data.user.userName }));
               }
@@ -96,8 +120,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
             setLoadingWinners(prev => ({ ...prev, [_id]: true }));
 
             try {
-              // console.log("in try");
-              const winnerResponse = await axios.get(`http://localhost:5000/users/${highestBiddingAmountSetBy}`);
+              const winnerResponse = await axios.get(`${url}/users/${highestBiddingAmountSetBy}`);
               if (winnerResponse.data.success) {
                 setWinners(prev => ({
                   ...prev,
@@ -126,13 +149,13 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 
   const getPostData = async (postId, isOwnerBid = false) => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/post/getPostDataByID/${postId}`);
+      const response = await axios.get(`${url}/api/post/getPostDataByID/${postId}`);
       if (response.data.success) {
         const post = response.data.data;
         const { image, category, description, price, title, userId, _id: id } = post;
-        console.log("userId....:",userId)
-        console.log("userId---id....:",id)
-        const imageUrl = `http://localhost:5000/images/${image}`;
+        // console.log("userId....:",userId)
+        // console.log("userId---id....:",id)
+        const imageUrl = `${url}/images/${image}`;
 
         isOwnerBid = authUser?._id === userId
 
@@ -156,34 +179,41 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
     }
   };
 
-  let imageUrl = authUser.profilePic;
-  const desiredPath = 'https://avatar.iran.liara.run/public/';
-  // console.log(imageUrl);
+  // Initialize imageUrl with a default value
+  let imageUrl = '/defaultProfilePic.png'; // Path to your default profile picture
 
-  if (imageUrl.startsWith(desiredPath)) {
+  if(authUser && authUser.profilePic){
     imageUrl = authUser.profilePic;
-  } else {
-    const fullPath = authUser.profilePic;
-    const wantedpath = fullPath.replace('/uploads/profilePic', '');
-    // console.log("wantedpath:",wantedpath)
-    imageUrl = `${url}/profilePics${wantedpath}`
-    // console.log("wantedpath_2:",imageUrl)
-
+    const desiredPath = 'https://avatar.iran.liara.run/public/';
+    // console.log('desiredPath:', desiredPath);
+    // console.log('imageUrl before processing:', imageUrl);
+  
+    if (typeof imageUrl === 'string' && imageUrl.startsWith(desiredPath)) {
+      // imageUrl is already correct
+    } else if (typeof imageUrl === 'string') {
+      const fullPath = imageUrl;
+      const wantedpath = fullPath.replace('/uploads/profilePic', '');
+      imageUrl = `${url}/profilePics${wantedpath}`;
+    } else {
+      console.warn('profilePic is not a string:', imageUrl);
+      imageUrl = '/defaultProfilePic.png';
+    }
   }
 
   return (
     <>
       <div className={`sidebar ${isOpen ? 'sidebar-open' : ''}`}>
+        <h2 className = "Notifications">Notifications</h2>
         <hr />
         <div className="top-work">
-        <div className='sidebar-profile'>
-          <img src={imageUrl} alt="ProfilePic" />
-        </div>
-        <div className="close-button">
-          <p className="close-btn" onClick={toggleSidebar}>
-            X
-          </p>
-        </div>
+          <div className='sidebar-profile'>
+            <img src={imageUrl} alt="ProfilePic" />
+          </div>
+          <div className="close-button">
+            <p className="close-btn" onClick={toggleSidebar}>
+              X
+            </p>
+          </div>
         </div>
         <hr />
         {/* New Navigation Buttons */}
@@ -201,26 +231,21 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
             Hire
           </button>
         </div>
-
-        {/* Conditional Rendering Based on Active Tab */}
         {activeTab === 'bidding' ? (
           <>
-            {/* Bidding Notifications Section */}
             <div className="notifications-section">
               <h3>My Ongoing Bids</h3>
-              {loadingNotifications ? (
-                <p>Loading...</p>
-              ) : biddingNotifications.length > 0 ? (
+              { biddingNotifications.length > 0 ? (
                 <ul>
                   {biddingNotifications.map((bid) => (
+                    // () 
                     <li key={bid._id}>
-                      {/* <p>Post Title: {postTitles[bid.postId] || 'Loading title...'}</p> */}
-                      {/* <p>Artist: {artistNames[bid.postId] || 'Loading artist...'}</p> */}
                       <p>Starting Price: {bid.startingPrice}</p>
                       <p>Highest Bid: {bid.highestPriceReceivedDueToBidding}</p>
                       <p>End Time: {new Date(bid.endTime).toLocaleString()}</p>
                       <button onClick={() => getPostData(bid.postId)}>View</button>
                     </li>
+                    // ):<p></p>
                   ))}
                 </ul>
               ) : (
@@ -231,9 +256,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
             {/* My Biddings Section */}
             <div className="notifications-section">
               <h3>My Biddings</h3>
-              {loadingOwnerBiddings ? (
-                <p>Loading...</p>
-              ) : ownerBiddings.length > 0 ? (
+              { ownerBiddings.length > 0 ? (
                 <ul>
                   {ownerBiddings.map((bid) => (
                     <li key={bid._id}>

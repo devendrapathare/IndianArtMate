@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import './Categories.css';
 import { like_dislike_images } from '../../../assets/assets';
 import axios from 'axios';
-import { PostContext } from '../../../person-2/context/PostContext/PostContext';
+import { PostContext, usePostContext } from '../../../person-2/context/PostContext/PostContext';
 import { useAuthContext } from '../../../person-2/context/AuthContext/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -14,12 +14,13 @@ const Categories = () => {
   const [filteredPosts, setFilteredPosts] = useState([]);
   const navigate = useNavigate();
   const [count, setCount] = useState(0);
+  const { url } = usePostContext();
 
   const userId = authUser?._id;
 
   const fetchUserName = async (userId, postId) => {
     try {
-      const response = await fetch(`http://localhost:5000/users/${userId}`);
+      const response = await fetch(`${url}/users/${userId}`);
       if (!response.ok) throw new Error('Network response was not ok');
       
       const data = await response.json();
@@ -38,7 +39,7 @@ const Categories = () => {
     if (authUser) {
       navigate('/productDes', {
         state: {
-          image: `http://localhost:5000/images/${image}`,
+          image: `${url}/images/${image}`,
           category,
           description,
           price,
@@ -54,7 +55,7 @@ const Categories = () => {
 
   const fetchBiddingData = async (postId) => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/bidding/biddingData/${postId}`);
+      const response = await axios.get(`${url}/api/bidding/biddingData/${postId}`);
   
       if (response.data.userId) {
         return response.data;
@@ -105,17 +106,15 @@ const Categories = () => {
     });
   }, [filteredPosts, userNames]);
 
-  // Handle like/dislike and update the state instantly
   const handleLikeDislike = async (postId, actionType) => {
     if (authUser) {
       try {
-        await axios.post(`http://localhost:5000/posts/${postId}/${actionType}`, { userId });
+        await axios.post(`${url}/posts/${postId}/${actionType}`, { userId });
   
         setFilteredPosts((prevPosts) =>
           prevPosts.map((post) => {
             if (post._id === postId) {
               if (actionType === 'like') {
-                // If user has liked the post, remove them from dislike array (if present) and add to like array
                 const updatedLikes = post.like.includes(userId)
                   ? post.like.filter((id) => id !== userId)
                   : [...post.like, userId];
@@ -125,13 +124,12 @@ const Categories = () => {
                 
                 return { ...post, like: updatedLikes, disLike: updatedDislikes };
               } else if (actionType === 'dislike') {
-                // If user has disliked the post, remove them from like array (if present) and add to dislike array
                 const updatedDislikes = post.disLike.includes(userId)
                   ? post.disLike.filter((id) => id !== userId)
                   : [...post.disLike, userId];
                 const updatedLikes = post.like.includes(userId)
                   ? post.like.filter((id) => id !== userId)
-                  : post.like; // Remove from likes if in the like array
+                  : post.like; 
                 
                 return { ...post, like: updatedLikes, disLike: updatedDislikes };
               }
@@ -174,7 +172,7 @@ const Categories = () => {
             >
               <img
                 id='main-card-img'
-                src={`http://localhost:5000/images/${post.image}`}
+                src={`${url}/images/${post.image}`}
                 alt={post.title}
                 onClick={() =>
                   GotoPost(post.image, post.category, post.description, post.price, post.title, post.userId, post._id)

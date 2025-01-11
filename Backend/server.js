@@ -13,6 +13,8 @@ import like_dislike_controlls from './person_3/routes/setLikeDislikeroutes.js'
 import setRespectingRoutes from './person_3/routes/setRespectingRoutes.js'
 import biddingRoutes from './person_3/routes/biddingRoutes.js'
 import HIringRouter from './person2/routes/HIringRouter.js'
+import CommentRoute from './person_3/routes/commentRoutes.js'
+// import './person_3/cron/biddingStatusUpdater.js'
 
 const app = express();
 
@@ -43,6 +45,9 @@ app.use("/posts",like_dislike_controlls)
 app.use('/profilePics', express.static('uploads/profilePic'));
 app.use('/api/bidding', biddingRoutes);
 app.use('/api/hiring', HIringRouter);
+app.use('/comment', CommentRoute);
+
+
 
 
 app.listen(PORT, () => {

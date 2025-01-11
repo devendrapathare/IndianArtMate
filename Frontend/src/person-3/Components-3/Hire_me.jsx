@@ -4,18 +4,30 @@ import { usePostContext } from '../../person-2/context/PostContext/PostContext';
 import axios from 'axios';
 import { CartContext } from '../../person-2/context/CartContext/CartContext';
 
-const Hire_me = ({ profilePic, userName, respectors, hireId }) => {
+const Hire_me = ({ profilePic, userName, respectors, hireId, ProjectOwnerId }) => {
   const { url } = usePostContext();
   const { token } = useContext(CartContext);
-  
-  // State to trigger re-render
-  const [hireState, setHireState] = useState(null); // Hold the hiring state
+  const [winners, setWinners] = useState({});
+  const [hireState, setHireState] = useState(null); 
+ 
 
-  const fullPath = profilePic;
-  const wantedPath = fullPath.replace('/uploads/profilePic', '');
+  console.log(ProjectOwnerId);
 
   useEffect(() => {
-  }, [hireState]);
+    const getUserData = async () => {
+      try {
+        const winnerResponse = await axios.get(`${url}/users/${ProjectOwnerId}`);
+        if (winnerResponse.data.success) {
+          setWinners(winnerResponse.data.user);
+        } else {
+          console.error(`Failed to fetch winner for ProjectOwnerId ${ProjectOwnerId}:`, winnerResponse.data.message);
+        }
+      } catch (error) {
+        console.error(`Error fetching winner info for ProjectOwnerId ${ProjectOwnerId}:`, error.message);
+      }
+    };
+    getUserData();
+  }, [ProjectOwnerId]);
 
   const HireStateHandler = async (event, HireId) => {
     try {
@@ -24,32 +36,44 @@ const Hire_me = ({ profilePic, userName, respectors, hireId }) => {
 
       if (newState === "Reject") {
         if (window.confirm("You cannot change the status again after this. Do you want to proceed?")) {
-          const response = await axios.post(`${url}/api/hiring/verifyHire`, {
+          await axios.post(`${url}/api/hiring/verifyHire`, {
             HireId,
             hiringState: newState,
           });
-          setHireState(newState); // Update state here
+          setHireState(newState);
         } else {
           return;
         }
       } else {
-        const response = await axios.post(`${url}/api/hiring/verifyHire`, {
+        await axios.post(`${url}/api/hiring/verifyHire`, {
           HireId,
           hiringState: newState,
         });
-        setHireState(newState); // Update state here
+        setHireState(newState);
       }
       
     } catch (error) {
       console.log(error);
     }
+  };
+
+  let imageUrl = winners.profilePic;
+  const avatarBaseUrl = 'https://avatar.iran.liara.run/public/';
+
+  if (imageUrl && !imageUrl.startsWith(avatarBaseUrl)) {
+    
+     imageUrl = `${url}${imageUrl.replace('/uploads/profilePic', '/profilePics')}`;
+           
+
   }
+
+  console.log("Final imageUrl:", imageUrl);
 
   return (
     <div className='Hire-me-container'>
       <div className="Hire-me-components">
         <div className="profile-pic">
-        <img src={`${url}/profilePics${wantedPath}`} alt="ProfilePic" />
+          <img src={imageUrl} alt="ProfilePic" />
         </div>
         <div className="info">
           <p>{userName}</p>
@@ -60,7 +84,7 @@ const Hire_me = ({ profilePic, userName, respectors, hireId }) => {
             className="hire-button"
             value="Accepted"
             onClick={(event) => HireStateHandler(event, hireId)}
-            disabled={hireState === 'Accept'} // Disable if already accepted
+            disabled={hireState === 'Accept'} 
           >
             Accept
           </button>
@@ -68,7 +92,7 @@ const Hire_me = ({ profilePic, userName, respectors, hireId }) => {
             className="hire-button"
             value="Reject"
             onClick={(event) => HireStateHandler(event, hireId)}
-            disabled={hireState === 'Reject'} // Disable if already rejected
+            disabled={hireState === 'Reject'} 
           >
             Reject
           </button>

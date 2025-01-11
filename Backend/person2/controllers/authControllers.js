@@ -137,4 +137,57 @@ export const logOutUser = async (req, res) => {
     }
 }
 
+export const userDataFromId = async (req, res) => {
+    try {
+        const { userId } = req.body;
+
+        if (!userId) {
+            return res.status(400).json({ error: "User ID is required" });
+        }
+
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(400).json({ error: "User not found" });
+        }
+
+        res.status(200).json({
+            _id: user._id,
+            userName: user.userName,
+            profilePic: user.profilePic,
+        })
+
+    } catch (error) {
+        console.log("Error in authController.js userDataFromId", error.message);
+        res.status(500).json({ error: "Error in authController.js userDataFromId" })
+    }
+}
+
+export const fetchUserByName = async (req, res) => {
+    try {
+        const { name } = req.body;
+        if (!name) {
+            return res.status(400).json({ error: "User name is required in the request body" });
+        }
+        const userName = name
+        const users = await User.find({ userName }); 
+        if (!users || users.length === 0) {
+            return res.status(404).json({ error: "No users found with the provided name" });
+        }
+
+        const response = users.map((user) => ({
+            _id: user._id,
+            userName: user.userName,
+            profilePic: user.profilePic,
+        }));
+
+        res.status(200).json(response);
+        // res.status(200).json(users);
+    } catch (error) {
+        console.error("Error in fetchUserByName:", error.message);
+        res.status(500).json({ error: "An internal server error occurred" });
+    }
+};
+
+
 

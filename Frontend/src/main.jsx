@@ -7,6 +7,7 @@ import { AuthContextProvider } from './person-2/context/AuthContext/AuthContext.
 import PostContextProvider from './person-2/context/PostContext/PostContext.jsx'
 import CartContextProvider from './person-2/context/CartContext/CartContext.jsx'
 import HireContextProvider from './person-2/context/HireContext/HIreContext.jsx'
+import {CommentProvider} from './person-3/context/CommentContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   // <StrictMode>
@@ -15,11 +16,14 @@ createRoot(document.getElementById('root')).render(
       <PostContextProvider>
         <CartContextProvider>
           <HireContextProvider>
+              <CommentProvider>
             <App />
+              </CommentProvider>
           </HireContextProvider>
         </CartContextProvider>
       </PostContextProvider>
     </AuthContextProvider>
   </BrowserRouter>
+  
   // </StrictMode>,
 )

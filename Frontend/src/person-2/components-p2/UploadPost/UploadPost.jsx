@@ -28,11 +28,6 @@ const UploadPost = () => {
     const fileInputRef = useRef(null);
     const { authUser } = useAuthContext();
     const { fetchPostList, fetchLoggedInUserPostList, url } = usePostContext(); 
-
-    // const NavigationForPosts = (isOwner,userId) => {
-    //     // console.log("userId:", userId);
-    //     navigate(`/myFeed/${isOwner}/${userId}`);
-    //   };
     
 
     useEffect(() => {
@@ -101,7 +96,7 @@ const UploadPost = () => {
                 // NavigationForPosts(true,authUser._id)
     
                 if(isBiddingActive){
-                    const respectorsResponse = await axios.get(`http://localhost:5000/users/${authUser._id}`);
+                    const respectorsResponse = await axios.get(`${url}/users/${authUser._id}`);
                     if(respectorsResponse.data.success){
                         const respectors = respectorsResponse.data.user.respectors; 
                         
@@ -118,7 +113,7 @@ const UploadPost = () => {
                             respectors: respectors
                         };
     
-                        const biddingResponse = await axios.post('http://localhost:5000/api/bidding/start', biddingData, {
+                        const biddingResponse = await axios.post(`${url}/api/bidding/start`, biddingData, {
                             headers: {
                                 'Content-Type': 'application/json'
                             }
@@ -214,13 +209,8 @@ const UploadPost = () => {
                             <p>Art Category</p>
                             <select onChange={onChangeHandler} name="category" value={data.category}>
                                 <option value="Painting">Painting</option>
-                                <option value="Sculpture">Sculpture</option>
-                                <option value="Textile Arts">Textile Arts</option>
-                                <option value="Crafts">Crafts</option>
-                                <option value="Jewelry Making">Jewelry Making</option>
-                                <option value="Papercraft">Papercraft</option>
-                                <option value="Ceramics">Ceramics</option>
-                                <option value="Textile Printing">Textile Printing</option>
+                                <option value="Handlooms">Handlooms</option>
+                                <option value="HandCrafts">HandCrafts</option>
                             </select>
                         </div>
                         <div className="add-price flex-col">

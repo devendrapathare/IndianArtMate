@@ -18,20 +18,13 @@ const LeftProfileUpdate = () => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/users/${userId}`);
+        const response = await fetch(`${url}/users/${userId}`);
         if (!response.ok) throw new Error('Network response was not ok');
         const data = await response.json();
   
         const user = data.user; // Access the 'user' object
   
-        // let fullImageUrl;
-        
-        // if (user.profilePic.startsWith('http')) {
-        //   fullImageUrl = user.profilePic;
-        // } else {
-        //   // Updated to use the 'uploads' folder
-        //   fullImageUrl = `http://localhost:5000/uploads${user.profilePic.split('/uploads')[1]}`;
-        // }
+       
         let imageUrl = authUser.profilePic;
         const desiredPath = 'https://avatar.iran.liara.run/public/';
         console.log(imageUrl);
@@ -78,7 +71,7 @@ const LeftProfileUpdate = () => {
     formData.append('profilePic', file);
   
     try {
-      const response = await fetch(`http://localhost:5000/users/${userId}/profile-pic`, {
+      const response = await fetch(`${url}/users/${userId}/profile-pic`, {
         method: 'POST',
         body: formData,
       });
@@ -86,7 +79,7 @@ const LeftProfileUpdate = () => {
       if (!response.ok) throw new Error('Failed to upload image');
       const data = await response.json();
   
-      const newImageUrl = `http://localhost:5000/profilePics${data.profilePic.split('/profilePic')[1]}`;
+      const newImageUrl = `${url}/profilePics${data.profilePic.split('/profilePic')[1]}`;
       setImage(newImageUrl);
       const userData = JSON.parse(localStorage.getItem('user-info'));
             userData.profilePic = data.profilePic; 

@@ -6,6 +6,7 @@ import { assets } from '../../../assets/assets';
 import UseLogout from '../../../person-2/hooks/UseLogout/UseLogout';
 import { CartContext } from '../../../person-2/context/CartContext/CartContext';
 import Sidebar from './Sidebar'; // Adjust the path as necessary
+import { usePostContext } from '../../../person-2/context/PostContext/PostContext';
 
 const Nav = ({ setshowLogin }) => {
   const { authUser } = useAuthContext();
@@ -17,6 +18,7 @@ const Nav = ({ setshowLogin }) => {
 
   const { getTotalCartAmount } = useContext(CartContext)
   const userId = authUser?._id;
+  const url = usePostContext();
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -79,7 +81,14 @@ const Nav = ({ setshowLogin }) => {
         </div>
         <div className="left common">
           <div className="nav-icon">
-            <Link to='/'> <img className='img' src={assets.home_icon} alt="Home" /></Link>
+          <Link to='/'>
+            {/* <div className="icon"> */}
+             <img className='img' src={assets.home_icon} alt="Home" />
+             {/* <p>Home</p> */}
+
+            {/* </div> */}
+            </Link>
+            
           </div>
           {!authUser ? (
             <div className="nav-icon">
@@ -90,6 +99,9 @@ const Nav = ({ setshowLogin }) => {
             <>
               <div className="nav-icon">
                 <Link to='/myStore'><img className='img' src={assets.store_icon} alt="Store" onClick={() => onNavClick('store')} /></Link>
+              </div>
+              <div className="nav-icon">
+                <Link to='/SearchPost'>Search</Link>
               </div>
               <div className="nav-icon">
                 <Link to='/ProfilePage'><img className='img' src={assets.profile_icon} alt="My Profile" onClick={() => onNavClick('profile')} /></Link>
