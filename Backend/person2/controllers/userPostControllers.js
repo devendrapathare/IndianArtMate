@@ -78,7 +78,7 @@ const get_post_data_by_post_id = async(req,res)=>{
 
 const get_post_data_by_name = async (req, res) => {
     try {
-        const name = req.body.postName; // Match the frontend field name
+        const name = req.body.postName; 
         if (!name) {
             return res.status(400).json({ success: false, message: "Post name is required" });
         }
@@ -121,4 +121,4 @@ const deletePostById = async (req,res) => {
 }
 
 
-export { userPostData,listPostData,listLogedInUserPostData ,get_post_data_by_post_id, deletePostById }
+export { userPostData,listPostData,listLogedInUserPostData ,get_post_data_by_post_id, deletePostById, get_post_data_by_name }
