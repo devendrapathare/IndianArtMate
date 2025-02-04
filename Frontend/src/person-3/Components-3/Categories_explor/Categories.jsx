@@ -94,9 +94,9 @@ const Categories = () => {
     }
   }, [posts]);
 
-  useEffect(() => {
-    fetchPostList();
-  }, [fetchPostList]);
+  // useEffect(() => {
+  //   fetchPostList();
+  // }, [fetchPostList]);
 
   useEffect(() => {
     filteredPosts.forEach((post) => {
@@ -120,7 +120,7 @@ const Categories = () => {
                   : [...post.like, userId];
                 const updatedDislikes = post.disLike.includes(userId)
                   ? post.disLike.filter((id) => id !== userId)
-                  : post.disLike; // Remove from dislikes if in the dislike array
+                  : post.disLike; 
                 
                 return { ...post, like: updatedLikes, disLike: updatedDislikes };
               } else if (actionType === 'dislike') {
