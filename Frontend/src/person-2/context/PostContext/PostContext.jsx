@@ -66,15 +66,12 @@ const PostContextProvider = ({ children }) => {
             const path = `${url}/api/post/listPostByName`;
             console.log("Request URL:", path);
             const response = await axios.post(path, { postName });
-            const sortedPosts = response.data.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-            console.log("Fetched posts by name:", sortedPosts);
-            return { success: true, data: sortedPosts };
+            return { success: true, data: response.data.data };
         } catch (error) {
             console.error("Error fetching posts by name:", error);
             return { success: false, error:"Could not fetch the data" };
         }
     }, [url]);
-    
 
 
     const deletePostById = async (id) => {
