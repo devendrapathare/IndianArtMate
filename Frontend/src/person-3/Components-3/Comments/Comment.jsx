@@ -14,13 +14,12 @@ const Comment = ({ postId }) => {
     const { comments, fetchComments, addComment, updateComment, deleteComment } = useComments();
     const [comment, setComment] = useState('');
     const [userMap, setUserMap] = useState({});
-    const [editingCommentId, setEditingCommentId] = useState(null); // Track the comment being edited
+    const [editingCommentId, setEditingCommentId] = useState(null); 
     const navigate = useNavigate();
 
     useEffect(() => {
         if (Curr_post) fetchComments(Curr_post);
-        // console.log("use effect")
-    }, [postId, comments]);
+    }, [postId,comments.length]);
 
     const handleAddComment = () => {
         if (!comment.trim()) return;
@@ -33,12 +32,11 @@ const Comment = ({ postId }) => {
             addComment(Curr_post, userId, comment.trim());
         }
         setComment('');
-        setEditingCommentId(null); // Reset editing state after adding/updating comment
+        setEditingCommentId(null); 
     };
 
     useEffect(() => {
-        // console.log("user")
-        // setComment('')
+        
         const fetchUsersForComments = async () => {
             const userIds = [...new Set(comments?.map((comment) => comment.userId._id))];
             const userData = {};
@@ -59,7 +57,6 @@ const Comment = ({ postId }) => {
     };
 
     const handleEditComment = (commentId, text) => {
-        // Set the comment text in the input field for editing
         setComment(text);
         setEditingCommentId(commentId);
     };

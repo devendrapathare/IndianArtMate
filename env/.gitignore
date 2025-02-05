@@ -1,0 +1,611 @@
+# Python environment
+*.pyc
+*.pyo
+*.pyd
+
+# Python bytecode files
+__pycache__/
+
+# Python package directories
+*.egg-info/
+dist/
+build/
+
+# Python package installation files
+*.egg
+
+# Python IDE directories
+.vscode/
+.pydevproject
+
+# Python logs
+*.log
+
+# Python virtual environment
+env/
+venv/
+.venv/
+
+# Python test files
+*.test
+test_*.py
+
+# Python doc files
+*.rst
+*.md
+
+# Python compiled files
+*.so
+*.o
+
+# Python bytecode-compiled files
+*.pyc
+*.pyo
+
+# Python coverage files
+.coverage
+*.cover
+
+# Python profiling files
+*.prof
+
+# Python debugging files
+*.pdb
+
+# Python IDE files
+*.suo
+*.ntvs*
+*.nntvs*
+*.dbg
+*.user
+*.sln.docstates
+
+# Python package manager files
+*.egg-info/PKG-INFO
+*.dist-info/
+*.whl
+
+# Python cache files
+*.cache
+.cache/
+__pycache__/
+
+# Python type checking files
+*.mypy_cache/
+.mypy_cache/
+
+# Python linter files
+*.pytype/
+.pytype/
+
+# Python testing files
+*.pytest_cache/
+.pytest_cache/
+
+# Python documentation files
+*.rst
+*.md
+docs/
+doc/
+Documentation/
+
+# Python project files
+*.project
+*.sublime-project
+*.sublime-workspace
+
+# Python settings files
+*.settings
+*.config
+*.cfg
+*.ini
+
+# Python lock files
+*.lock
+*.pid
+
+# Python temp files
+*.tmp
+*.temp
+*.bak
+
+# Python backup files
+*.bak
+*.old
+*.orig
+
+# Python swap files
+*.swo
+*.swp
+
+# Python session files
+*.session
+*.ses
+
+# Python socket files
+*.sock
+
+# Python fifo files
+*.fifo
+
+# Python device files
+*.dev
+
+# Python named pipe files
+*.pipe
+
+# Python symbolic link files
+*.sym
+
+# Python socket files
+*.socket
+
+# Python system files
+*.sys
+
+# Python system configuration files
+*.sysconfig
+
+# Python system data files
+*.sysdata
+
+# Python system log files
+*.syslog
+
+# Python system lock files
+*.syslock
+
+# Python system pid files
+*.syspid
+
+# Python system socket files
+*.syssocket
+
+# Python system fifo files
+*.sysfifo
+
+# Python system device files
+*.sysdev
+
+# Python system named pipe files
+*.syspipe
+
+# Python system symbolic link files
+*.syssym
+
+# Python system socket files
+*.syssocket
+
+# Python system configuration files
+*.sysconfig
+
+# Python system data files
+*.sysdata
+
+# Python system log files
+*.syslog
+
+# Python system lock files
+*.syslock
+
+# Python system pid files
+*.syspid
+
+# Python system socket files
+*.syssocket
+
+# Python system fifo files
+*.sysfifo
+
+# Python system device files
+*.sysdev
+
+# Python system named pipe files
+*.syspipe
+
+# Python system symbolic link files
+*.syssym
+
+# Python system socket files
+*.syssocket
+
+# Python system configuration files
+*.sysconfig
+
+# Python system data files
+*.sysdata
+
+# Python system log files
+*.syslog
+
+# Python system lock files
+*.syslock
+
+# Python system pid files
+*.syspid
+
+# Python system socket files
+*.syssocket
+
+# Python system fifo files
+*.sysfifo
+
+# Python system device files
+*.sysdev
+
+# Python system named pipe files
+*.syspipe
+
+# Python system symbolic link files
+*.syssym
+
+# Python system socket files
+*.syssocket
+
+# Python system configuration files
+*.sysconfig
+
+# Python system data files
+*.sysdata
+
+# Python system log files
+*.syslog
+
+# Python system lock files
+*.syslock
+
+# Python system pid files
+*.syspid
+
+# Python system socket files
+*.syssocket
+
+# Python system fifo files
+*.sysfifo
+
+# Python system device files
+*.sysdev
+
+# Python system named pipe files
+*.syspipe
+
+# Python system symbolic link files
+*.syssym
+
+# Python system socket files
+*.syssocket
+
+# Python system configuration files
+*.sysconfig
+
+# Python system data files
+*.sysdata
+
+# Python system log files
+*.syslog
+
+# Python system lock files
+*.syslock
+
+# Python system pid files
+*.syspid
+
+# Python system socket files
+*.syssocket
+
+# Python system fifo files
+*.sysfifo
+
+# Python system device files
+*.sysdev
+
+# Python system named pipe files
+*.syspipe
+
+# Python system symbolic link files
+*.syssym
+
+# Python system socket files
+*.syssocket
+
+# Python system configuration files
+*.sysconfig
+
+# Python system data files
+*.sysdata
+
+# Python system log files
+*.syslog
+
+# Python system lock files
+*.syslock
+
+# Python system pid files
+*.syspid
+
+# Python system socket files
+*.syssocket
+
+# Python system fifo files
+*.sysfifo
+
+# Python system device files
+*.sysdev
+
+# Python system named pipe files
+*.syspipe
+
+# Python system symbolic link files
+*.syssym
+
+# Python system socket files
+*.syssocket
+
+# Python system configuration files
+*.sysconfig
+
+# Python system data files
+*.sysdata
+
+# Python system log files
+*.syslog
+
+# Python system lock files
+*.syslock
+
+# Python system pid files
+*.syspid
+
+# Python system socket files
+*.syssocket
+
+# Python system fifo files
+*.sysfifo
+
+# Python system device files
+*.sysdev
+
+# Python system named pipe files
+*.syspipe
+
+# Python system symbolic link files
+*.syssym
+
+# Python system socket files
+*.syssocket
+
+# Python system configuration files
+*.sysconfig
+
+# Python system data files
+*.sysdata
+
+# Python system log files
+*.syslog
+
+# Python system lock files
+*.syslock
+
+# Python system pid files
+*.syspid
+
+# Python system socket files
+*.syssocket
+
+# Python system fifo files
+*.sysfifo
+
+# Python system device files
+*.sysdev
+
+# Python system named pipe files
+*.syspipe
+
+# Python system symbolic link files
+*.syssym
+
+# Python system socket files
+*.syssocket
+
+# Python system configuration files
+*.sysconfig
+
+# Python system data files
+*.sysdata
+
+# Python system log files
+*.syslog
+
+# Python system lock files
+*.syslock
+
+# Python system pid files
+*.syspid
+
+# Python system socket files
+*.syssocket
+
+# Python system fifo files
+*.sysfifo
+
+# Python system device files
+*.sysdev
+
+# Python system named pipe files
+*.syspipe
+
+# Python system symbolic link files
+*.syssym
+
+# Python system socket files
+*.syssocket
+
+# Python system configuration files
+*.sysconfig
+
+# Python system data files
+*.sysdata
+
+# Python system log files
+*.syslog
+
+# Python system lock files
+*.syslock
+
+# Python system pid files
+*.syspid
+
+# Python system socket files
+*.syssocket
+
+# Python system fifo files
+*.sysfifo
+
+# Python system device files
+*.sysdev
+
+# Python system named pipe files
+*.syspipe
+
+# Python system symbolic link files
+*.syssym
+
+# Python system socket files
+*.syssocket
+
+# Python system configuration files
+*.sysconfig
+
+# Python system data files
+*.sysdata
+
+# Python system log files
+*.syslog
+
+# Python system lock files
+*.syslock
+
+# Python system pid files
+*.syspid
+
+# Python system socket files
+*.syssocket
+
+# Python system fifo files
+*.sysfifo
+
+# Python system device files
+*.sysdev
+
+# Python system named pipe files
+*.syspipe
+
+# Python system symbolic link files
+*.syssym
+
+# Python system socket files
+*.syssocket
+
+# Python system configuration files
+*.sysconfig
+
+# Python system data files
+*.sysdata
+
+# Python system log files
+*.syslog
+
+# Python system lock files
+*.syslock
+
+# Python system pid files
+*.syspid
+
+# Python system socket files
+*.syssocket
+
+# Python system fifo files
+*.sysfifo
+
+# Python system device files
+*.sysdev
+
+# Python system named pipe files
+*.syspipe
+
+# Python system symbolic link files
+*.syssym
+
+# Python system socket files
+*.syssocket
+
+# Python system configuration files
+*.sysconfig
+
+# Python system data files
+*.sysdata
+
+# Python system log files
+*.syslog
+
+# Python system lock files
+*.syslock
+
+# Python system pid files
+*.syspid
+
+# Python system socket files
+*.syssocket
+
+# Python system fifo files
+*.sysfifo
+
+# Python system device files
+*.sysdev
+
+# Python system named pipe files
+*.syspipe
+
+# Python system symbolic link files
+*.syssym
+
+# Python system socket files
+*.syssocket
+
+# Python system configuration files
+*.sysconfig
+
+# Python system data files
+*.sysdata
+
+# Python system log files
+*.syslog
+
+# Python system lock files
+*.syslock
+
+# Python system pid files
+*.syspid
+
+# Python system socket files
+*.syssocket
+
+# Python system fifo files
+*.sysfifo
+
+# Python system device files
+*.sysdev
+
+# Python system named pipe files
+*.syspipe
+
+# Python system symbolic link files
+*.syssym
+
+# Python system socket files
+*.syssocket
+
+# Python system configuration files
+*.sysconfig
+
+# Python
