@@ -32,7 +32,7 @@ export-env {
       }
     }
 
-    let virtual_env = r#'C:\Users\91702\Documents\programming\projects\thired_year_project\IndianArtMate_project_sem5\IndianArtMate-2.O\env'#
+    let virtual_env = r#'D:\VsCode\miniproject-2A\IndianArtMate-2.O\env'#
     let bin = r#'Scripts'#
 
     let is_windows = ($nu.os-info.family) == 'windows'
