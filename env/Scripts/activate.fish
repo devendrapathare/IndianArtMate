@@ -58,7 +58,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV 'C:\Users\91702\Documents\programming\projects\thired_year_project\IndianArtMate_project_sem5\IndianArtMate-2.O\env'
+set -gx VIRTUAL_ENV 'D:\VsCode\miniproject-2A\IndianArtMate-2.O\env'
 
 # https://github.com/fish-shell/fish-shell/issues/436 altered PATH handling
 if test (echo $FISH_VERSION | head -c 1) -lt 3
