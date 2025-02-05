@@ -3,7 +3,8 @@
     margin-left: 10vh;
     /* border: 2px solid red; */
     width: 600px;
-    height: 600px;
+    height: auto;
+    max-height: 600px;
     overflow-y: auto; /* Make it scrollable vertically */
     border: 1px solid #191919; 
     padding: 10px;
