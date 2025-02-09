@@ -1,4 +1,5 @@
 import userPosts from "../models/postModels.js";
+import axios from "axios";
 
 const userPostData = async (req,res) =>{
 
@@ -84,11 +85,11 @@ const get_post_data_by_name = async (req, res) => {
         }
 
         console.log("Received postName:", name);
-
-      
-        const posts = await userPosts.find({
-            title: { $regex: new RegExp(name, "i") } // 'i' flag makes it case-insensitive
+        const pythonResponse = await axios.get(`http://127.0.0.1:6000/search`, {
+            params: { input_text: name },
         });
+
+        const posts = pythonResponse.data.results; 
 
         if (!posts || posts.length === 0) {
             return res.status(404).json({ success: false, message: "No posts found" });
@@ -96,9 +97,15 @@ const get_post_data_by_name = async (req, res) => {
 
         console.log("Posts found:", posts);
         res.status(200).json({ success: true, data: posts });
+
     } catch (error) {
-        console.error("Error in get_post_data_by_name:", error.message);
-        res.status(500).json({ error: "Internal server error" });
+        console.error("Error in getPostDataByName:", error.message);
+        
+        if (error.response) {
+            return res.status(error.response.status).json({ success: false, error: error.response.data });
+        }
+
+        res.status(500).json({ success: false, error: "Internal server error" });
     }
 };
 

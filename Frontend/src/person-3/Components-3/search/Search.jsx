@@ -13,7 +13,7 @@ const Search = () => {
     const { fetchPostsByName, url } = usePostContext();
     const navigate = useNavigate();
     const { authUser, fetchUserByName } = useAuthContext();
-
+ 
     const handleSearch = async () => {
         setError("");
         setResults([]);

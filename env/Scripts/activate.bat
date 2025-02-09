@@ -5,7 +5,7 @@
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-@set "VIRTUAL_ENV=C:\Users\91702\Documents\programming\projects\thired_year_project\IndianArtMate_project_sem5\IndianArtMate-2.O\env"
+@set "VIRTUAL_ENV=D:\VsCode\miniproject-2A\IndianArtMate-2.O\env"
 
 @set "VIRTUAL_ENV_PROMPT="
 @if NOT DEFINED VIRTUAL_ENV_PROMPT (
