@@ -14,35 +14,35 @@ const Comment = ({ postId }) => {
     const { comments, fetchComments, addComment, updateComment, deleteComment } = useComments();
     const [comment, setComment] = useState('');
     const [userMap, setUserMap] = useState({});
-    const [editingCommentId, setEditingCommentId] = useState(null); 
+    const [editingCommentId, setEditingCommentId] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
         if (Curr_post) fetchComments(Curr_post);
-    }, [postId,comments.length]);
+    }, [postId, comments.length]);
 
     const handleAddComment = () => {
         if (!comment.trim()) return;
         const userId = Curr_userId;
         if (editingCommentId) {
-           
+
             updateComment(postId, editingCommentId, comment.trim());
         } else {
-            
+
             addComment(Curr_post, userId, comment.trim());
         }
         setComment('');
-        setEditingCommentId(null); 
+        setEditingCommentId(null);
     };
 
     useEffect(() => {
-        
+
         const fetchUsersForComments = async () => {
             const userIds = [...new Set(comments?.map((comment) => comment.userId._id))];
             const userData = {};
             for (const userId of userIds) {
                 if (!userMap[userId]) {
-                    console.log("userID")
+                    // console.log("userID")
                     const data = await fetchUserData(userId);
                     if (data) userData[userId] = data;
                 }
@@ -75,24 +75,24 @@ const Comment = ({ postId }) => {
         const diffInDays = Math.floor(diffInHours / 24);
         const diffInMonths = Math.floor(diffInDays / 30);
         const diffInYears = Math.floor(diffInMonths / 12);
-      
+
         if (diffInYears >= 1) {
-          return diffInYears === 1 ? "1 year ago" : `${diffInYears} years ago`;
+            return diffInYears === 1 ? "1 year ago" : `${diffInYears} years ago`;
         }
         if (diffInMonths >= 1) {
-          return diffInMonths === 1 ? "1 month ago" : `${diffInMonths} months ago`;
+            return diffInMonths === 1 ? "1 month ago" : `${diffInMonths} months ago`;
         }
         if (diffInDays >= 1) {
-          return diffInDays === 1 ? "1 day ago" : `${diffInDays} days ago`;
+            return diffInDays === 1 ? "1 day ago" : `${diffInDays} days ago`;
         }
         if (diffInHours >= 1) {
-          return diffInHours === 1 ? "1 hour ago" : `${diffInHours} hours ago`;
+            return diffInHours === 1 ? "1 hour ago" : `${diffInHours} hours ago`;
         }
         if (diffInMinutes >= 1) {
-          return diffInMinutes === 1 ? "1 minute ago" : `${diffInMinutes} minutes ago`;
+            return diffInMinutes === 1 ? "1 minute ago" : `${diffInMinutes} minutes ago`;
         }
         return "Just now";
-      };
+    };
 
     function checker(userId) {
         return userId === Curr_userId;
@@ -108,40 +108,40 @@ const Comment = ({ postId }) => {
                     {/* {comments = []} */}
                     {comments.length > 0 ? (
                         comments.map((comment) => (
-                            
+
                             <div className="card" key={comment._id}>
-                            <div className="clickable card-left" onClick={() => gotoProfile(comment.userId._id)}>
-                                <div className="profile-picture-date">
-                                    <img
-                                        src={
-                                            userMap[comment.userId._id]?.profilePic.startsWith("https://avatar.iran.liara.run/public/")
-                                                ? userMap[comment.userId._id]?.profilePic
-                                                : `${url}/profilePics${userMap[comment.userId._id]?.profilePic.split("/profilePic")[1]}`
-                                        }
-                                        alt="User"
-                                    />
-                                    <small>
-                                        {comment.isEdited ? formatTime(comment.updatedAt) : formatTime(comment.createdAt)}
-                                    </small>
-                                </div>
-                                <div>
-                                    <p>
-                                        <strong>{userMap[comment.userId._id]?.userName}: </strong>
-                                    </p>
-                                    <small>{comment.isEdited ? "(edited)" : ""}</small>
-                                </div>
-                            </div>
-                            <p className="card-center">{comment.commentText}</p>
-                            <div className="card-right">
-                                {checker(comment.userId._id) && (
-                                    <div className="modify-btn">
-                                        <button onClick={() => handleEditComment(comment._id, comment.commentText)}>Edit</button>
-                                        <button onClick={() => handleDeleteComment(comment._id)}>Delete</button>
+                                <div className="clickable card-left" onClick={() => gotoProfile(comment.userId._id)}>
+                                    <div className="profile-picture-date">
+                                        <img
+                                            src={
+                                                userMap[comment.userId._id]?.profilePic.startsWith("https://avatar.iran.liara.run/public/")
+                                                    ? userMap[comment.userId._id]?.profilePic
+                                                    : `${url}/profilePics${userMap[comment.userId._id]?.profilePic.split("/profilePic")[1]}`
+                                            }
+                                            alt="User"
+                                        />
+                                        <small>
+                                            {comment.isEdited ? formatTime(comment.updatedAt) : formatTime(comment.createdAt)}
+                                        </small>
                                     </div>
-                                )}
+                                    <div>
+                                        <p>
+                                            <strong>{userMap[comment.userId._id]?.userName}: </strong>
+                                        </p>
+                                        <small>{comment.isEdited ? "(edited)" : ""}</small>
+                                    </div>
+                                </div>
+                                <p className="card-center">{comment.commentText}</p>
+                                <div className="card-right">
+                                    {checker(comment.userId._id) && (
+                                        <div className="modify-btn">
+                                            <button onClick={() => handleEditComment(comment._id, comment.commentText)}>Edit</button>
+                                            <button onClick={() => handleDeleteComment(comment._id)}>Delete</button>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
-                        </div>
-                        
+
                         ))
                     ) : (
                         <p>No comments yet. Be the first to comment!</p>

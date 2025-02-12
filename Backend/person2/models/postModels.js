@@ -16,15 +16,15 @@ const userPostSchema = new mongoose.Schema({
     },
 
     like: {
-    type: [mongoose.Schema.Types.ObjectId],  
-    ref: "User",
-    default: [] 
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: "User",
+        default: []
     },
 
     disLike: {
-    type: [mongoose.Schema.Types.ObjectId],  
-    ref: "User",
-    default: []  
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: "User",
+        default: []
     },
 
     description: {
@@ -38,9 +38,17 @@ const userPostSchema = new mongoose.Schema({
     price: {
         type: Number,
         required: true
+    },
+    commentRank: {
+        type: Number,
+        default: 0
+    },
+    likeDislikeRank: {
+        type: Number,
+        default: 0
     }
-},{timestamps:(true)})
+}, { timestamps: (true) })
 
-const userPosts = mongoose.model.Post || mongoose.model('UserPosts',userPostSchema)
+const userPosts = mongoose.model.Post || mongoose.model('UserPosts', userPostSchema)
 
 export default userPosts

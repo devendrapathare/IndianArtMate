@@ -35,7 +35,11 @@ const CommentSchema = new mongoose.Schema({
                 default: Date.now
             }
         }
-    ]
+    ],
+    rank: {
+        type: Number,
+        default: 0
+    },
 }, {
     timestamps: true // Adds createdAt and updatedAt fields to the schema
 });

@@ -1,6 +1,10 @@
-import Comment from '../models/commentModel.js'; 
+import Comment from '../models/commentModel.js';
+import { exec } from 'child_process';
 
-// Add a comment
+import { promisify } from "util";
+import userPosts from '../../person2/models/postModels.js';
+const execPromise = promisify(exec); // exec ko promise-based function banane ke liye
+
 export const addComment = async (req, res) => {
     try {
         const { postId, userId, commentText } = req.body;
@@ -9,30 +13,58 @@ export const addComment = async (req, res) => {
             return res.status(400).json({ message: 'All fields are required' });
         }
 
-        // Find or create a comment document for the post
+        // Python executable and script path
+        const pythonPath = "D:\\VsCode\\miniproject-2A\\IndianArtMate-2.O\\env\\Scripts\\python.exe";
+        const scriptPath = "D:\\VsCode\\miniproject-2A\\IndianArtMate-2.O\\env\\src\\Krish\\predict.py";
+
+        // **Step 1: Run Python Script for Sentiment Prediction**
+        await execPromise(`"${pythonPath}" "${scriptPath}" "${commentText}" "${postId}"`);
+
+        // **Step 2: Run Python Script to Calculate Sentiment Ratio and Rank**
+        const { stdout } = await execPromise(`"${pythonPath}" -c "from predict import calculate_sentiment_ratio; result = calculate_sentiment_ratio('${postId}'); print(result['ratio'], result['rank'])"`,
+            { cwd: "D:\\VsCode\\miniproject-2A\\IndianArtMate-2.O\\env\\src\\Krish" });
+
+        // **Step 3: Process Output**
+        const [ratio, rank] = stdout.trim().split(" "); // Split Python output
+        // console.log('Rank:', rank);
+
+        // **Step 4: Find or Create Comment Document**
         let commentDoc = await Comment.findOne({ postId });
 
         if (!commentDoc) {
-            // Create a new comment document if none exists
             commentDoc = new Comment({
                 postId,
                 comments: [{ userId, commentText, createdAt: new Date() }],
+                rank: parseFloat(rank),
             });
         } else {
-            // Add the new comment to the existing document
             commentDoc.comments.push({ userId, commentText, createdAt: new Date() });
+            commentDoc.rank = parseFloat(rank);
         }
 
         await commentDoc.save();
 
+        // **Step 5: Update the commentRank in UserPosts**
+        const updatedPost = await userPosts.findOneAndUpdate(
+            { _id: postId }, // Find the post by postId
+            { commentRank: parseFloat(rank) }, // Update the commentRank
+            { new: true } // Return the updated document
+        );
+
+        // console.log('updatedPost',updatedPost);
+        
         res.status(201).json({
             message: 'Comment added successfully',
             comment: commentDoc,
+            updatedPost, // Returning updated post to confirm the change
         });
+        // console.log('commentDoc', commentDoc);
+
     } catch (error) {
         res.status(500).json({ message: 'Failed to add comment', error: error.message });
     }
 };
+
 
 
 // Update a comment
@@ -42,7 +74,6 @@ export const updateComment = async (req, res) => {
         const { postId, commentId, commentText } = req.body;
         // console.log("commentId:",commentId)
 
-
         const commentDoc = await Comment.findOneAndUpdate(
             { postId, "comments._id": commentId },
             {
@@ -50,10 +81,9 @@ export const updateComment = async (req, res) => {
                     "comments.$.commentText": commentText,
                     "comments.$.isEdited": true,
                     "comments.$.updatedAt": new Date()
-                    
                 }
             },
-            { new: true } 
+            { new: true }
         );
 
         if (!commentDoc) {
@@ -94,7 +124,7 @@ export const getComments = async (req, res) => {
 
         const commentDoc = await Comment.findOne({ postId }).populate('comments.userId', 'username'); // Populate user details if needed
 
-        console.log('Fetched comment document:', commentDoc);
+        // console.log('Fetched comment document:', commentDoc);
 
         if (!commentDoc) {
             return res.status(200).json({ comments: [], message: 'No comments found for this post' });
@@ -106,5 +136,24 @@ export const getComments = async (req, res) => {
         res.status(500).json({ message: 'Failed to fetch comments', error: error.message });
     }
 };
+
+//Krish
+export const getCommentRankAndRatioById = async (req, res) => {
+
+    const { postId } = req.query
+
+    try {
+        const response = await Comment.findOne({'postId':postId})
+        if (!response) {
+            return res.status(404).json({ message: 'Comments not found' });
+        }
+        res.status(200).json({ success: true, rank: response.rank });
+    } catch (error) {
+        res.status(500).json({ message: "Server error", error: error.message });
+        console.log({ error: error.message });
+
+    }
+};
+
 
 

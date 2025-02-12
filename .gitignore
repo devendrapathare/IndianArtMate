@@ -1,0 +1,7 @@
+Lib
+datasets
+Scripts
+share
+# Ignore large files and directories
+env/
+*.csv

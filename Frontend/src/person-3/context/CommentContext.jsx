@@ -11,6 +11,7 @@ export const CommentProvider = ({ children }) => {
     const [comments, setComments] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [CommentRatioAndRank, setCommentRatioAndRank] = useState()
     const { url } = usePostContext()
 
     const fetchComments = async (postId) => {
@@ -86,6 +87,20 @@ export const CommentProvider = ({ children }) => {
         }
     };
 
+    const fetchCommentRankAndRatioById = async (postId) => {
+        try {
+            const response = await axios.get(`${url}/comment/getComment/ratioAndRank`, {
+                params: { postId }
+            });
+            setCommentRatioAndRank(response.data)
+        }
+        catch (err) {
+            setError(err.response?.data?.message || 'Failed to fetch comment rank and ratio');
+        }
+    }
+    // console.log('CommentRatioAndRank',CommentRatioAndRank);
+    
+
     return (
         <CommentContext.Provider
             value={{
@@ -96,6 +111,8 @@ export const CommentProvider = ({ children }) => {
                 addComment,
                 updateComment,
                 deleteComment,
+                fetchCommentRankAndRatioById,
+                CommentRatioAndRank,
             }}
         >
             {children}
