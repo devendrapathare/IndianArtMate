@@ -10,7 +10,6 @@ const UseSignup = () => {
 
     const signup = async ({userName,email,password,confirmPassword,gender},setshowLogin) => {
         
-        
         const success = handleInputErrors({userName,email,password,confirmPassword,gender})
         if(!success) return false;
 

@@ -1,38 +1,86 @@
 import Comment from '../models/commentModel.js'; 
+import userPosts from "../../person2/models/postModels.js";
 
-// Add a comment
+
 export const addComment = async (req, res) => {
     try {
         const { postId, userId, commentText } = req.body;
 
         if (!postId || !userId || !commentText) {
-            return res.status(400).json({ message: 'All fields are required' });
+            return res.status(400).json({ message: "All fields are required" });
         }
 
-        // Find or create a comment document for the post
         let commentDoc = await Comment.findOne({ postId });
 
         if (!commentDoc) {
-            // Create a new comment document if none exists
+            // If no comment document exists for this post, create a new one
             commentDoc = new Comment({
                 postId,
                 comments: [{ userId, commentText, createdAt: new Date() }],
             });
+
+            await commentDoc.save();
+
+            // Link this comment document to the post (only once)
+            await userPosts.findByIdAndUpdate(postId, { comments: commentDoc._id }, { new: true });
         } else {
-            // Add the new comment to the existing document
+            // If a comment document already exists, just add the new comment to it
             commentDoc.comments.push({ userId, commentText, createdAt: new Date() });
+            await commentDoc.save();
         }
 
-        await commentDoc.save();
-
         res.status(201).json({
-            message: 'Comment added successfully',
+            message: "Comment added successfully",
             comment: commentDoc,
         });
+
+        console.log("Comment added successfully:", commentDoc._id);
+
     } catch (error) {
-        res.status(500).json({ message: 'Failed to add comment', error: error.message });
+        res.status(500).json({ message: "Failed to add comment", error: error.message });
     }
 };
+
+
+// export const addComment = async (req, res) => {
+//     try {
+//         const { postId, userId, commentText } = req.body;
+
+//         if (!postId || !userId || !commentText) {
+//             return res.status(400).json({ message: 'All fields are required' });
+//         }
+
+//         let commentDoc = await Comment.findOne({ postId });
+
+//         if (!commentDoc) {
+//             commentDoc = new Comment({
+//                 postId,
+//                 comments: [{ userId, commentText, createdAt: new Date() }],
+//             });
+//         } else {
+//             commentDoc.comments.push({ userId, commentText, createdAt: new Date() });
+//         }
+
+//         await commentDoc.save();
+
+//         const updatedPost = await userPosts.findByIdAndUpdate(postId, { $push: { comments: commentDoc._id } }, { new: true });
+
+//         if (!updatedPost) {
+//             return res.status(404).json({ message: 'Post not found' });
+//         }
+
+//         res.status(201).json({
+//             message: 'Comment added successfully',
+//             comment: commentDoc,
+//         });
+
+//         console.log('Comment added successfully:', (commentDoc._id));
+//         // userPosts.findByIdAndUpdate(postId, { $push: { comments: commentDoc._id } })
+//     } catch (error) {
+//         res.status(500).json({ message: 'Failed to add comment', error: error.message });
+//     }
+// };
+
 
 
 // Update a comment
@@ -94,7 +142,7 @@ export const getComments = async (req, res) => {
 
         const commentDoc = await Comment.findOne({ postId }).populate('comments.userId', 'username'); // Populate user details if needed
 
-        console.log('Fetched comment document:', commentDoc);
+        // console.log('Fetched comment document:', commentDoc);
 
         if (!commentDoc) {
             return res.status(200).json({ comments: [], message: 'No comments found for this post' });

@@ -153,9 +153,9 @@ const Nav = ({ setshowLogin }) => {
           )}
         </div>
       </div>
-      {authUser && (
+      {/* {authUser && (
         <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-      )}
+      )} */}
     </>
   );
 };

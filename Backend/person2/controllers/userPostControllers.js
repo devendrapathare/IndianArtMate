@@ -14,6 +14,11 @@ const userPostData = async (req,res) =>{
         price: req.body.price
     })
 
+
+    const pythonResponse = await axios.post('http://127.0.0.1:6000/nlp/post_data', post);
+    console.log("pythonResponse.data.status:",pythonResponse.data.status)
+    
+
     try {
 
         const savedPost = await post.save();
@@ -85,7 +90,7 @@ const get_post_data_by_name = async (req, res) => {
         }
 
         console.log("Received postName:", name);
-        const pythonResponse = await axios.get(`http://127.0.0.1:6000/search`, {
+        const pythonResponse = await axios.get(`http://127.0.0.1:6000/nlp/search`, {
             params: { input_text: name },
         });
 
@@ -108,24 +113,61 @@ const get_post_data_by_name = async (req, res) => {
         res.status(500).json({ success: false, error: "Internal server error" });
     }
 };
-
-const deletePostById = async (req,res) => {
-    
+const deletePostById = async (req, res) => {
     const { id: postId } = req.params;
 
     try {
-
+        // Delete from MongoDB first
         const deletePost = await userPosts.findByIdAndDelete(postId);
         if (!deletePost) {
-            return res.status(404).json({ error: "Post not found" });
+            return res.status(404).json({ error: "Post not found in MongoDB" });
         }
-        res.status(200).json({ message: "Post deleted successfully" });
+
+        // Then, delete from the Python NLP system
+        const pythonResponse = await axios.delete('http://127.0.0.1:6000/nlp/delete', { 
+            params: { post_id: postId },
+        });
+
+        res.status(200).json({ 
+            success: true, 
+            message: "Post deleted from MongoDB and CSV",
+            pythonData: pythonResponse.data 
+        });
+
     } catch (error) {
-        console.log("Error in userPostController.js deletePostById: ", error.message);
-        res.status(500).json({ error: "Error in userPostController.js " });
+        console.error("Error in userPostController.js deletePostById: ", error.message);
+        res.status(500).json({ error: "Internal Server Error" });
     }
-    
-}
+};
 
 
 export { userPostData,listPostData,listLogedInUserPostData ,get_post_data_by_post_id, deletePostById, get_post_data_by_name }
+
+
+// functions for python api
+
+// const sendPostDataToPython = async (req, res , post_data) => {
+//     try {
+//         // const postData = {
+//         //     userId: req.body.userId,
+//         //     image: req.body.image,
+//         //     title: req.body.title,
+//         //     description: req.body.description,
+//         //     category: req.body.category,
+//         //     price: req.body.prices
+//         // };
+
+//         const pythonResponse = await axios.post('http://127.0.0.1:6000/post_data', postData);
+
+//         res.status(200).json({ success: true, data: pythonResponse.data });
+
+//     } catch (error) {
+//         console.error("Error in sendPostDataToPython:", error.message);
+
+//         if (error.response) {
+//             return res.status(error.response.status).json({ success: false, error: error.response.data });
+//         }
+
+//         res.status(500).json({ success: false, error: "Internal server error" });
+//     }
+// };

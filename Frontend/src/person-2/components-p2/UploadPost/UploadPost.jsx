@@ -81,7 +81,7 @@ const UploadPost = () => {
             formData.append('category', data.category);
             formData.append('price', Number(data.price));
             formData.append('userId', data.userId);
-            formData.append('duration', Number(data.duration)); // Include duration
+            formData.append('duration', Number(data.duration)); 
 
             const uploadResponse = await axios.post(`${url}/api/post/uploadPost`, formData, {
                 headers: {
@@ -207,9 +207,13 @@ const UploadPost = () => {
                         <div className="add-category flex-col">
                             <p>Art Category</p>
                             <select onChange={onChangeHandler} name="category" value={data.category}>
-                                <option value="Painting">Painting</option>
+                                {/* <option value="Painting">Painting</option>
                                 <option value="Handlooms">Handlooms</option>
-                                <option value="HandCrafts">HandCrafts</option>
+                                <option value="HandCrafts">HandCrafts</option> */}
+                                <option value="Painting">Painting</option>
+                                <option value="Sketch">Sketch</option>
+                                <option value="Wallart">Wallart</option>
+                                <option value="Digital Art">Digital Art</option>
                             </select>
                         </div>
                         <div className="add-price flex-col">

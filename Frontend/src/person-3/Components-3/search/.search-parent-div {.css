@@ -1,0 +1,28 @@
+"""Finds the top N most similar items based on TF-IDF similarity and applies price filtering."""
+global tfidf_matrix, vectorizer, data
+
+if tfidf_matrix is None or data is None:
+    load_data()
+
+# Extract price condition from input text
+price_condition, min_price, max_price = extract_price_condition(input_text)
+
+# Perform TF-IDF search
+input_tfidf = vectorizer.transform([input_text])
+cosine_similarities = cosine_similarity(input_tfidf, tfidf_matrix).flatten()
+best_indices = cosine_similarities.argsort()[-top_n:][::-1]  
+
+results = data.iloc[best_indices]
+
+# Convert price column to numeric (in case of missing values)
+results['price'] = pd.to_numeric(results['price'], errors='coerce')
+
+# Apply price-based filtering
+if price_condition == 'under' and max_price is not None:
+    results = results[results['price'] <= max_price]
+elif price_condition == 'above' and min_price is not None:
+    results = results[results['price'] >= min_price]
+elif price_condition == 'between' and min_price is not None and max_price is not None:
+    results = results[(results['price'] >= min_price) & (results['price'] <= max_price)]
+
+return results.to_dict(orient='records')

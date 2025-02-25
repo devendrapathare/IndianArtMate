@@ -13,11 +13,11 @@ const Search = () => {
     const { fetchPostsByName, url } = usePostContext();
     const navigate = useNavigate();
     const { authUser, fetchUserByName } = useAuthContext();
- 
+
     const handleSearch = async () => {
         setError("");
         setResults([]);
-        setResultsArt([]); 
+        setResultsArt([]);
         if (!searchTerm.trim()) {
             setError("Please enter a name to search.");
             return;
@@ -66,7 +66,7 @@ const Search = () => {
         }
     };
 
-    const GotoArtistProfile = (artistId)=>{
+    const GotoArtistProfile = (artistId) => {
         navigate(`/temp/${artistId}`);
     }
 
@@ -100,23 +100,32 @@ const Search = () => {
                     {searchType === "post" && results.length > 0 && (
                         <div className="search-result-container-post">
                             {results.map((post) => (
-                                <div key={post._id} className="search-result-post">
-                                    <img
-                                        src={`${url}/images/${post.image}`}
-                                        alt={post.title}
-                                        onClick={() =>
-                                            GotoPost(
-                                                post.image,
-                                                post.category,
-                                                post.description,
-                                                post.price,
-                                                post.title,
-                                                post.userId,
-                                                post._id
-                                            )
-                                        }
-                                    />
-                                </div>
+                                // <div className="parent">
+                                    <div key={post._id} className="search-result-post">
+                                        <img
+                                            src={`${url}/images/${post.image}`}
+                                            alt={post.title}
+                                            onClick={() =>
+                                                GotoPost(
+                                                    post.image,
+                                                    post.category,
+                                                    post.description,
+                                                    post.price,
+                                                    post.title,
+                                                    post.userId,
+                                                    post._id
+                                                )
+                                            }
+                                        />
+
+                                        <div className="text-bot">
+                                            <p className = "sam p1">Title: {post.title}</p>
+                                            <p className = "sam p2">Price: ₹{post.price}</p>
+                                        </div>
+                                      
+                                    </div>
+                                // </div>
+
                             ))}
                         </div>
                     )}

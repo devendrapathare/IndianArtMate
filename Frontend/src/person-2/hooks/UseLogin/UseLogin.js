@@ -48,6 +48,7 @@ const UseLogin = () => {
             }
             localStorage.setItem('user-info', JSON.stringify(data))
 
+
             setauthUser(data)
             // console.log("data",data);
 
