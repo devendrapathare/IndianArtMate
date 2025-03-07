@@ -1,98 +1,67 @@
+
 import React, { useEffect, useState, useContext } from 'react';
 import './Sidebar.css';
 import { useAuthContext } from '../../../person-2/context/AuthContext/AuthContext';
 import axios from 'axios';
 import { CartContext } from '../../../person-2/context/CartContext/CartContext';
 import { useNavigate } from 'react-router-dom';
-import Hire_me from '../Hire_me';
-import { usePostContext } from '../../../person-2/context/PostContext/PostContext';
 import HireMeDisplay from '../storeis/HireMeDisplay/HireMeDisplay';
+import { usePostContext } from '../../../person-2/context/PostContext/PostContext';
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
   const { authUser } = useAuthContext();
   const { getTotalCartAmount } = useContext(CartContext);
+  const { url } = usePostContext();
+  const navigate = useNavigate();
+
   const [biddingNotifications, setBiddingNotifications] = useState([]);
   const [ownerBiddings, setOwnerBiddings] = useState([]);
-  const [loadingNotifications, setLoadingNotifications] = useState(false);
-  const [loadingOwnerBiddings, setLoadingOwnerBiddings] = useState(false);
   const [winners, setWinners] = useState({});
-  const [loadingWinners, setLoadingWinners] = useState({});
   const [postTitles, setPostTitles] = useState({});
   const [artistNames, setArtistNames] = useState({});
-  const [Time, setTime] = useState({});
-  const navigate = useNavigate();
-  let biddingNotiLenght = 0;
-  const { url } = usePostContext();
-
-  const [activeTab, setActiveTab] = useState('bidding'); 
-
+  const [activeTab, setActiveTab] = useState('bidding');
   const userId = authUser?._id;
 
-  const NavigationForWinner = (userId) => {
-    // console.log("userId:", userId);
-    navigate(`/temp/${userId}`);
-  };
-
   useEffect(() => {
-    let biddingInterval; // To store the interval ID
-  
     const fetchBiddingNotifications = async () => {
-      setLoadingNotifications(true);
       try {
         const response = await axios.get(`${url}/api/bidding/notifications/${userId}`);
         if (response.data.success) {
           setBiddingNotifications(response.data.activeBiddingsFromRespectedUsers);
-          const biddingNotiLength = response.data.activeBiddingsFromRespectedUsers.length; // Use `response.data` directly
-          setTime(response.data.activeBiddingsFromRespectedUsers.map(bid => bid.endTime)); // Assuming you want all endTimes
-        } else {
-          console.error("Failed to fetch bidding notifications:", response.data.message);
         }
       } catch (error) {
         console.error("Error fetching bidding notifications:", error);
-      } finally {
-        setLoadingNotifications(false);
       }
     };
-  
+
     const fetchOwnerBiddings = async () => {
-      setLoadingOwnerBiddings(true);
       try {
         const response = await axios.get(`${url}/api/bidding/ownerBiddings/${userId}`);
         if (response.data.success) {
           setOwnerBiddings(response.data.ownerBiddings);
-        } else {
-          console.error("Failed to fetch owner biddings:", response.data.message);
         }
       } catch (error) {
         console.error("Error fetching owner biddings:", error);
-      } finally {
-        setLoadingOwnerBiddings(false);
       }
     };
-  
+
     const startFetching = () => {
       fetchBiddingNotifications();
       fetchOwnerBiddings();
-  
-      biddingInterval = setInterval(() => {
+      setInterval(() => {
         fetchBiddingNotifications();
         fetchOwnerBiddings();
-      }, 5000); 
+      }, 5000);
     };
-  
+
     if (userId) {
       startFetching();
     }
-  
-    // Cleanup the interval when the component unmounts or `userId` changes
+
     return () => {
-      if (biddingInterval) {
-        clearInterval(biddingInterval);
-      }
+      clearInterval();
     };
-  }, [userId]); // Dependency ensures the effect runs when `userId` changes
-  
-  
+  }, [userId]);
 
   useEffect(() => {
     const checkOwnerBiddings = async () => {
@@ -106,6 +75,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
             if (postResponse.data.success) {
               const post = postResponse.data.data;
               setPostTitles(prev => ({ ...prev, [postId]: post.title }));
+              console.log("pst:", postResponse);
 
               const artistResponse = await axios.get(`${url}/users/${post.userId}`);
               if (artistResponse.data.success) {
@@ -117,8 +87,6 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
           }
 
           if (isBidEnded && highestBiddingAmountSetBy && !winners[_id]) {
-            setLoadingWinners(prev => ({ ...prev, [_id]: true }));
-
             try {
               const winnerResponse = await axios.get(`${url}/users/${highestBiddingAmountSetBy}`);
               if (winnerResponse.data.success) {
@@ -131,13 +99,9 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                     winnerId: bid.highestBiddingAmountSetBy,
                   },
                 }));
-              } else {
-                console.error(`Failed to fetch winner for bid ID ${_id}:`, winnerResponse.data.message);
               }
             } catch (error) {
               console.error(`Error fetching winner info for bid ID ${_id}:`, error.message);
-            } finally {
-              setLoadingWinners(prev => ({ ...prev, [_id]: false }));
             }
           }
         }
@@ -153,8 +117,6 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
       if (response.data.success) {
         const post = response.data.data;
         const { image, category, description, price, title, userId, _id: id } = post;
-        // console.log("userId....:",userId)
-        // console.log("userId---id....:",id)
         const imageUrl = `${url}/images/${image}`;
 
         isOwnerBid = authUser?._id === userId
@@ -171,133 +133,103 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
             isOwner: isOwnerBid,
           },
         });
-      } else {
-        console.error('Post data not found');
       }
     } catch (error) {
       console.error('Error fetching post data:', error.message);
     }
   };
 
-  // Initialize imageUrl with a default value
-  let imageUrl = '/defaultProfilePic.png'; // Path to your default profile picture
-
-  if(authUser && authUser.profilePic){
-    imageUrl = authUser.profilePic;
-    const desiredPath = 'https://avatar.iran.liara.run/public/';
-    // console.log('desiredPath:', desiredPath);
-    // console.log('imageUrl before processing:', imageUrl);
-  
-    if (typeof imageUrl === 'string' && imageUrl.startsWith(desiredPath)) {
-      // imageUrl is already correct
-    } else if (typeof imageUrl === 'string') {
-      const fullPath = imageUrl;
-      const wantedpath = fullPath.replace('/uploads/profilePic', '');
-      imageUrl = `${url}/profilePics${wantedpath}`;
-    } else {
-      console.warn('profilePic is not a string:', imageUrl);
-      imageUrl = '/defaultProfilePic.png';
-    }
-  }
+  const imageUrl = authUser?.profilePic ? `${url}/profilePics${authUser.profilePic.replace('/uploads/profilePic', '')}` : '/defaultProfilePic.png';
 
   return (
-    <>
-      <div className={`sidebar ${isOpen ? 'sidebar-open' : ''}`}>
-        <h2 className = "Notifications">Notifications</h2>
-        <hr />
-        <div className="top-work">
-          <div className='sidebar-profile'>
-            <img src={imageUrl} alt="ProfilePic" />
-          </div>
-          <div className="close-button">
-            <p className="close-btn" onClick={toggleSidebar}>
-              X
-            </p>
-          </div>
+    <div className={`sidebar ${isOpen ? 'sidebar-open' : ''}`}>
+      <h2 className="Notifications">Notifications</h2>
+      <hr />
+      <div className="top-work">
+        <div className='sidebar-profile'>
+          <img src={imageUrl} alt="ProfilePic" />
         </div>
-        <hr />
-        {/* New Navigation Buttons */}
-        <div className="sidebar-navigation">
-          <button
-            className={`nav-button ${activeTab === 'bidding' ? 'active' : ''}`}
-            onClick={() => setActiveTab('bidding')}
-          >
-            Bidding
-          </button>
-          <button
-            className={`nav-button ${activeTab === 'hire' ? 'active' : ''}`}
-            onClick={() => setActiveTab('hire')}
-          >
-            Hire
-          </button>
+        <div className="close-button">
+          <p className="close-btn" onClick={toggleSidebar}>
+            X
+          </p>
         </div>
-        {activeTab === 'bidding' ? (
-          <>
-            <div className="notifications-section">
-              <h3>My Ongoing Bids</h3>
-              { biddingNotifications.length > 0 ? (
-                <ul>
-                  {biddingNotifications.map((bid) => (
-                    // () 
-                    <li key={bid._id}>
-                      <p>Starting Price: {bid.startingPrice}</p>
-                      <p>Highest Bid: {bid.highestPriceReceivedDueToBidding}</p>
-                      <p>End Time: {new Date(bid.endTime).toLocaleString()}</p>
-                      <button onClick={() => getPostData(bid.postId)}>View</button>
-                    </li>
-                    // ):<p></p>
-                  ))}
-                </ul>
-              ) : (
-                <p>No active biddings.</p>
-              )}
-            </div>
-
-            {/* My Biddings Section */}
-            <div className="notifications-section">
-              <h3>My Biddings</h3>
-              { ownerBiddings.length > 0 ? (
-                <ul>
-                  {ownerBiddings.map((bid) => (
-                    <li key={bid._id}>
-                      <p>Post Title: {postTitles[bid.postId] || 'Loading title...'}</p>
-                      <p>Artist: {artistNames[bid.postId] || 'Loading artist...'}</p>
-                      <p>Starting Price: {bid.startingPrice}</p>
-                      <p>Highest Bid: {bid.highestPriceReceivedDueToBidding}</p>
-                      <p>End Time: {new Date(bid.endTime).toLocaleString()}</p>
-                      {new Date(bid.endTime) < new Date() ? (
-                        winners[bid._id] ? (
-                          <div className="winner-info">
-                            <p onClick={() => NavigationForWinner(winners[bid._id].winnerId)} style={{ cursor: 'pointer', color: 'blue' }}>
-                              Winner: {winners[bid._id].userName}
-                            </p>
-                            <p>Email: {winners[bid._id].email}</p>
-                            <p>Amount to Pay: {winners[bid._id].amountToPay}</p>
-                          </div>
-                        ) : loadingWinners[bid._id] ? (
-                          <p>Fetching winner information...</p>
-                        ) : (
-                          <p>No winner information available.</p>
-                        )
-                      ) : (
-                        <button onClick={() => getPostData(bid.postId, true)}>View</button>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p>No biddings owned.</p>
-              )}
-            </div>
-          </>
-        ) : (
-          // Hire_me Component Section
-          <div className="hire-section">
-            <HireMeDisplay />
-          </div>
-        )}
       </div>
-    </>
+      <hr />
+      <div className="sidebar-navigation">
+        <button
+          className={`nav-button ${activeTab === 'bidding' ? 'active' : ''}`}
+          onClick={() => setActiveTab('bidding')}
+        >
+          Bidding
+        </button>
+        <button
+          className={`nav-button ${activeTab === 'hire' ? 'active' : ''}`}
+          onClick={() => setActiveTab('hire')}
+        >
+          Hire
+        </button>
+      </div>
+      {activeTab === 'bidding' ? (
+        <>
+          <div className="notifications-section">
+            <h3>My Ongoing Bids</h3>
+            {biddingNotifications.length > 0 ? (
+              <ul>
+                {biddingNotifications.map((bid) => (
+                  <li key={bid._id}>
+                    <p>Starting Price: {bid.startingPrice}</p>
+                    <p>Highest Bid: {bid.highestPriceReceivedDueToBidding}</p>
+                    <p>End Time: {new Date(bid.endTime).toLocaleString()}</p>
+                    <button onClick={() => getPostData(bid.postId)}>View</button>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No active biddings.</p>
+            )}
+          </div>
+
+          <div className="notifications-section">
+            <h3>My Biddings</h3>
+            {ownerBiddings.length > 0 ? (
+              <ul>
+                {ownerBiddings.map((bid) => (
+                  <li key={bid._id}>
+                    <p>Post Title: {postTitles[bid.postId] || 'Loading title...'}</p>
+                    <p>Artist: {artistNames[bid.postId] || 'Loading artist...'}</p>
+                    <p>Starting Price: {bid.startingPrice}</p>
+                    <p>Highest Bid: {bid.highestPriceReceivedDueToBidding}</p>
+                    <p>End Time: {new Date(bid.endTime).toLocaleString()}</p>
+                    {new Date(bid.endTime) < new Date() ? (
+                      winners[bid._id] ? (
+                        <div className="winner-info">
+                          <p onClick={() => navigate(`/temp/${winners[bid._id].winnerId}`)} style={{ cursor: 'pointer', color: 'blue' }}>
+                            Winner: {winners[bid._id].userName}
+                          </p>
+                          <p>Email: {winners[bid._id].email}</p>
+                          <p>Amount to Pay: {winners[bid._id].amountToPay}</p>
+                        </div>
+                      ) : (
+                        <p>No winner information available.</p>
+                      )
+                    ) : (
+                      <button onClick={() => getPostData(bid.postId, true)}>View</button>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No biddings owned.</p>
+            )}
+          </div>
+        </>
+      ) : (
+        <div className="hire-section">
+          <HireMeDisplay />
+        </div>
+      )}
+    </div>
   );
 };
 
