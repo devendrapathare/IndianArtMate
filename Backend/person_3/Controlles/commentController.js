@@ -8,7 +8,10 @@ const execPromise = promisify(exec); // exec ko promise-based function banane ke
 export const addComment = async (req, res) => {
     try {
         const { postId, userId, commentText } = req.body;
-
+        console.log("postId:", postId);
+        console.log("userId:", userId);
+        console.log("commentText:", commentText);
+        
         if (!postId || !userId || !commentText) {
             return res.status(400).json({ message: 'All fields are required' });
         }
@@ -17,16 +20,23 @@ export const addComment = async (req, res) => {
         const pythonPath = "D:\\VsCode\\miniproject-2A\\IndianArtMate-2.O\\env\\Scripts\\python.exe";
         const scriptPath = "D:\\VsCode\\miniproject-2A\\IndianArtMate-2.O\\env\\src\\Krish\\predict.py";
 
+        console.log('Python script paths:');
+        
         // **Step 1: Run Python Script for Sentiment Prediction**
+        console.log('Running sentiment prediction script...');
         await execPromise(`"${pythonPath}" "${scriptPath}" "${commentText}" "${postId}"`);
-
+        console.log('Python script executed successfully');
+        
         // **Step 2: Run Python Script to Calculate Sentiment Ratio and Rank**
+        console.log('Calculating sentiment ratio and rank...');
         const { stdout } = await execPromise(`"${pythonPath}" -c "from predict import calculate_sentiment_ratio; result = calculate_sentiment_ratio('${postId}'); print(result['ratio'], result['rank'])"`,
             { cwd: "D:\\VsCode\\miniproject-2A\\IndianArtMate-2.O\\env\\src\\Krish" });
 
         // **Step 3: Process Output**
+        console.log('Processing output...');
         const [ratio, rank] = stdout.trim().split(" "); // Split Python output
-        // console.log('Rank:', rank);
+        console.log('Ratio:', ratio);
+        console.log('Rank:', rank);
 
         // **Step 4: Find or Create Comment Document**
         let commentDoc = await Comment.findOne({ postId });
@@ -58,14 +68,13 @@ export const addComment = async (req, res) => {
             comment: commentDoc,
             updatedPost, // Returning updated post to confirm the change
         });
-        // console.log('commentDoc', commentDoc);
+        console.log('commentDoc', commentDoc);
 
     } catch (error) {
+        console.error('Error:', error.message);
         res.status(500).json({ message: 'Failed to add comment', error: error.message });
     }
 };
-
-
 
 // Update a comment
 export const updateComment = async (req, res) => {

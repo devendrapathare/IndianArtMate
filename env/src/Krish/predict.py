@@ -6,6 +6,9 @@ from data_preprocessing import load_and_preprocess_data
 from vectorization import vectorize_text
 from model_training import train_or_update_model
 
+# Set default encoding to UTF-8
+sys.stdout.reconfigure(encoding='utf-8')
+
 def predict_sentiment(text):
     # ✅ Load vectorizer aur model
     model_dir = os.path.join(os.path.dirname(__file__), "Models")
@@ -69,7 +72,7 @@ if __name__ == "__main__":
         sentiment_label = predict_sentiment(comment)
         save_prediction_to_csv(comment, sentiment_label, post_id)
         print(f"Predicted Sentiment: {'Positive' if sentiment_label == 1 else 'Negative'}")
-        print("✅ Prediction saved to CSV!!")
+        print("\u2705 Prediction saved to CSV!!")
     else:
         while True:
             comment = input("Enter a comment (or type 'exit' to quit): ")
@@ -79,7 +82,7 @@ if __name__ == "__main__":
             sentiment_label = predict_sentiment(comment)
             print(f"Predicted Sentiment: {'Positive' if sentiment_label == 1 else 'Negative'}")
             save_prediction_to_csv(comment, sentiment_label, post_id)
-            print("✅ Prediction saved to CSV!")
+            print("\u2705 Prediction saved to CSV!")
 
             df = load_and_preprocess_data(os.path.join("CSV", f"{post_id}_predictions.csv"))
             df.to_csv(os.path.join("CSV", f"cleaned_{post_id}_predictions.csv"), index=False)
