@@ -1,18 +1,41 @@
 import userPosts from "../../person2/models/postModels.js";
 
 function removeElement(array, elementToRemove) {
-    array.forEach((item, index) => {
-        // console.log("item", item.toString());
-        // console.log("ele", elementToRemove);
-        
-        if (item.toString() === elementToRemove) {
-            array.splice(index, 1);
-            // console.log("index:", index);
-        }
-        // console.log("im out");
-    });
-    return array;
+    return array.filter(item => item.toString() !== elementToRemove);
 }
+
+// Function to calculate and update likes/dislikes stats
+async function calculateAndUpdateLikeDislikeStats(post) {
+    const likeCount = post.like.length;
+    const dislikeCount = post.disLike.length;
+    const total = likeCount + dislikeCount;
+    let ratio = 0;
+    let rank = 0;
+
+    if (total > 0) {
+        ratio = (likeCount - dislikeCount) / total;
+        rank = Math.round((ratio + 1) * 2.5); // Adjusting the ratio to fit within 0 to 5
+    }
+
+    post.likeDislikeRank = rank; // Updating the likeDislikeRank in DB
+    await post.save();
+
+    return { likeCount, dislikeCount, ratio, rank };
+}
+
+export const getAllLikesDislikesByPostId = async (req, res) => {
+    const { postId } = req.query;
+    try {
+        const post = await userPosts.findById(postId);
+        if (!post) {
+            return res.status(404).json({ error: "Post not found" });
+        }
+        const stats = await calculateAndUpdateLikeDislikeStats(post);
+        res.status(200).json(stats);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
 
 export const for_like = async (req, res) => {
     const { postId } = req.params;
@@ -20,25 +43,19 @@ export const for_like = async (req, res) => {
 
     try {
         const post = await userPosts.findById(postId);
+        if (!post) return res.status(404).json({ error: "Post not found" });
 
-        if (!post) {
-            return res.status(404).json({ error: "Post not found" });
-        }
         if (!post.like.includes(userId) && userId != null) {
-            console.log("here i m !");
             post.like.push(userId);
-            if (post.disLike.includes(userId)) {
-                console.log("imhere in 1");
-                removeElement(post.disLike, userId);
-                console.log("post_dis:", post.disLike);
-            }
+            post.disLike = removeElement(post.disLike, userId);
         } else if (post.like.includes(userId) && userId != null) {
-            removeElement(post.like, userId);
-            console.log("okokk:", post.like);
+            post.like = removeElement(post.like, userId);
         }
+
+        const stats = await calculateAndUpdateLikeDislikeStats(post);
+        res.status(200).json(stats);
+        // console.log('stas',stats);
         
-        await post.save();
-        res.status(200).json(post);
     } catch (err) {
         res.status(500).json({ error: 'Something went wrong' });
     }
@@ -50,27 +67,17 @@ export const for_dislike = async (req, res) => {
 
     try {
         const post = await userPosts.findById(postId);
-
-        if (!post) {
-            return res.status(404).json({ error: "Post not found" });
-        }
+        if (!post) return res.status(404).json({ error: "Post not found" });
 
         if (!post.disLike.includes(userId) && userId != null) {
-            console.log("User disliked the post");
             post.disLike.push(userId);
-            if (post.like.includes(userId)) {
-                console.log("User had liked the post, removing the like");
-                removeElement(post.like, userId);
-                console.log("Updated likes:", post.like);
-            }
+            post.like = removeElement(post.like, userId);
         } else if (post.disLike.includes(userId) && userId != null) {
-            console.log("User is removing their dislike");
-            removeElement(post.disLike, userId);
-            console.log("Updated dislikes:", post.disLike);
+            post.disLike = removeElement(post.disLike, userId);
         }
 
-        await post.save();
-        res.status(200).json(post);
+        const stats = await calculateAndUpdateLikeDislikeStats(post);
+        res.status(200).json(stats);
     } catch (err) {
         res.status(500).json({ error: 'Something went wrong' });
     }

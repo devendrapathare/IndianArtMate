@@ -31,7 +31,7 @@ import dislike from './Images/dislike.png'
 import closeIcon from './Images/close.png'
 
 import fast_delivery from './Images/fast-delivery.png';
-import cash_on_delivery from './Images/cash-on-delivery.png';  
+import cash_on_delivery from './Images/cash-on-delivery.png';
 import product_return from './Images/product-return.png';
 import police_icon from './Images/police.png';
 
@@ -54,6 +54,10 @@ import chat_icon from './Images/chat.png'
 import sendArrow from './Images/send.png'
 import feedImg from './Images/feed.png'
 import searchImg from './Images/search.png'
+
+import crouselImg1 from './Images/crouselImg1.jpg'
+import crouselImg2 from './Images/crouselImg2.jpg'
+import crouselImg3 from './Images/crouselImg3.png'
 
 
 export const like_dislike_images = {
@@ -107,7 +111,7 @@ export const allImagesAvailable = [
     name: 'image6',
     image: img6
   }
-  ,{
+  , {
     id: 7,
     name: 'image7',
     image: img7
@@ -129,71 +133,71 @@ export const artistProfile = [
     id: 1,
     name: 'artist1',
     image: profile1,
-    respecters:100,
-    Contact_info:1234567890
+    respecters: 100,
+    Contact_info: 1234567890
   },
   {
     id: 2,
-    name:'artist2',
+    name: 'artist2',
     image: profile2,
-    respecters:200,
-    Contact_info:1234567890
+    respecters: 200,
+    Contact_info: 1234567890
   },
   {
     id: 3,
-    name:'artist3',
+    name: 'artist3',
     image: profile3,
-    respecters:500,
-    Contact_info:1234567890
+    respecters: 500,
+    Contact_info: 1234567890
   },
   {
     id: 4,
-    name:'artist4',
+    name: 'artist4',
     image: profile4,
-    respecters:900,
-    Contact_info:1234567890
+    respecters: 900,
+    Contact_info: 1234567890
   },
   {
     id: 5,
-    name:'artist5',
+    name: 'artist5',
     image: profile5,
-    respecters:150,
-    Contact_info:1234567890
+    respecters: 150,
+    Contact_info: 1234567890
   },
   {
     id: 6,
-    name:'artist6',
+    name: 'artist6',
     image: profile7,
     respecters: 1000,
-    Contact_info:1234567890
+    Contact_info: 1234567890
   }
 ]
 
 export const assets = {
-    profileTest,
-    linkedin_icon,
-    facebook_icon,
-    twitter_icon,
-    closeIcon,
-    logout_icon,
-    upload_photo,
-    empty_box,
-    minus_icon,
-    plus_icon,
-    background_image,
-    delivery_box,
-    order_delivery,
-    login_icon,
-    home_icon,
-    cart_icon,
-    cart_icon,
-    store_icon,
-    profile_icon,
-    chat_icon,
-    sendArrow,
-    feedImg,
-    img1,
-    searchImg,
+  profileTest,
+  linkedin_icon,
+  facebook_icon,
+  twitter_icon,
+  closeIcon,
+  logout_icon,
+  upload_photo,
+  empty_box,
+  minus_icon,
+  plus_icon,
+  background_image,
+  delivery_box,
+  order_delivery,
+  login_icon,
+  home_icon,
+  cart_icon,
+  cart_icon,
+  store_icon,
+  profile_icon,
+  chat_icon,
+  sendArrow,
+  feedImg,
+  img1,
+  searchImg,
 }
 
 export const forSecondProductDes = [
@@ -220,6 +224,29 @@ export const forSecondProductDes = [
 ]
 
 export const for_home = {
-    port_on_Landing,
-
+  port_on_Landing,
 }
+
+export const CrouselData = [
+  {
+    id: 1,
+    title: 'Handpainted Madhubani Art',
+    src: crouselImg1,
+    description1: 'Vibrant and intricate, Madhubani art tells stories through delicate brushstrokes.',
+    description2: 'Each piece is a reflection of centuries-old tradition, hand-painted to perfection.'
+  },
+  {
+    id: 2,
+    title: 'Handwoven Kanjivaram Saree',
+    src: crouselImg2,
+    description1: 'A masterpiece of textile art, woven with rich silk threads and intricate designs.',
+    description2: 'Perfect for special occasions, each saree is crafted with deep cultural significance and skilled craftsmanship.'
+  },
+  {
+    id: 3,
+    title: 'Brass Dhokra Sculpture',
+    src: crouselImg3,
+    description1: 'Dhokra art is an ancient craft of lost-wax metal casting, showcasing the richness of Indian heritage.',
+    description2: 'These sculptures, each unique, bring timeless elegance to your home or space.'
+  },
+]

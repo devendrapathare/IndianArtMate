@@ -2,8 +2,7 @@ import mongoose from 'mongoose';
 
 const connectToMongoDB = async () => {
     try {
-        // const mongoURI = process.env.MONGO_DB_URI || 'mongodb://localhost:27017/Indian_ArtMate';
-        const mongoURI = process.env.MONGO_DB_URI ;
+        const mongoURI = process.env.MONGO_DB_URI || 'mongodb://localhost:27017/Indian_ArtMate';
         // const mongoURI = 'mongodb://localhost:27017/Indian_ArtMate';
         // const mongoURI = process.env.MONGO_DB_URI || 'mongodb://localhost:27017/Indian_ArtMate'
         // const mongoURI = 'mongodb://localhost:27017/Indian_ArtMate';

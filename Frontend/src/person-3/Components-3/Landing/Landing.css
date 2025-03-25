@@ -1,21 +1,104 @@
-.landing{
+.carousel-container {
     display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 550px; 
+    width: 1536px; 
+    overflow: hidden; /* Prevent overflow */
+    position: relative; /* For positioning nav buttons */
+  }
+  
+  .carousel-content {
+    position: relative; /* For positioning text */
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
 }
-.landing .left img{
-    width: 50vw;
-    height: 100%;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+.carousel-content img {
+    width: 100%; /* Fill the width */
+    height: 100%; /* Fill the height */
+    object-fit: cover; /* Maintain aspect ratio */
 }
-.landing .right{
-    width: 50vw;
-    background: #FFF9D7; 
-    border: 2px solid #ddd;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+.carousel-text {
+    position: absolute; /* Position text */
+    top: 50%; /* Center vertically */
+    left: 100px; /* Shift right to make space for the arrow */
+    transform: translateY(-50%); /* Adjust for centering */
+    color: white; /* White text color */
+    padding: 10px; /* Add padding */
+    z-index: 1; /* Ensure text is above the image */
+    width: 50%; /* Use half screen width */
 }
-.landing .right h2{
-    margin-top: 10px;
+
+.carousel-text p{
+    font-size: 1.2rem;
 }
-.landing .right p{
-    margin-top:25px ;
-   font-size:20px ;
-}
+
+.nav-button {
+    background-color: transparent; /* No background */
+    color: #b8860b; 
+    border: none;
+    font-size: 48px; /* Larger buttons for better visibility */
+    cursor: pointer;
+    position: absolute; /* Position buttons */
+    top: 50%; /* Center vertically */
+    transform: translateY(-50%); /* Adjust for button height */
+    padding: 10px; /* Add padding */
+    z-index: 2; /* Ensure buttons are above the image */
+    border: 2px solid red;
+  }
+  
+  .nav-button:first-of-type {
+    left: 20px; /* Position left button */
+  }
+  
+  .nav-button:last-of-type {
+    right: 20px; /* Position right button */
+  }
+  
+  .indicators {
+    position: absolute; /* Position indicators */
+    bottom: 20px; /* Position at the bottom */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Adjust for centering */
+    display: flex; /* Flexbox for alignment */
+    gap: 10px; /* Space between indicators */
+  }
+  
+  .indicator {
+    width: 12px; /* Indicator size */
+    height: 12px; /* Indicator size */
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    border-radius: 50%; /* Round indicators */
+    cursor: pointer; /* Pointer cursor */
+  }
+  
+  .indicator.active {
+    background-color: rgba(0, 0, 0, 0.9); /* Darker for active indicator */
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 768px) {
+    .carousel-text {
+      left: 55px; /* Adjust left position for smaller screens */
+      width: 80%; /* Use more width on smaller screens */
+    }
+  
+    .nav-button {
+      font-size: 36px; /* Smaller buttons for smaller screens */
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .carousel-text {
+      left: 10px; /* Adjust left position for smaller screens */
+      width: 90%; /* Use more width on smaller screens */
+    }
+  
+    .nav-button {
+      font-size: 35px; /* Smaller buttons for smaller screens */
+      font-weight: bold;
+    }
+  }
+  

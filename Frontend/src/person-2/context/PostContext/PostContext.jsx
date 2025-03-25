@@ -11,8 +11,9 @@ const PostContextProvider = ({ children }) => {
     const [loggedInUserPosts, setLoggedInUserPosts] = useState([]);
     const { authUser } = useAuthContext();
     const [singleUserData, setsingleUserData] = useState([]);
+    const [TotalLikeDislikeRankAndRatio, setTotalLikeDislikeRankAndRatio] = useState()
     const url = 'http://localhost:5000';
-    
+
     // Memoize fetchPostList to prevent unnecessary re-renders
     const fetchPostList = useCallback(async (userId) => {
         try {
@@ -46,7 +47,7 @@ const PostContextProvider = ({ children }) => {
         // console.log("Fetching single user detail by ID:", artistId);
         try {
             const response = await axios.get(`${url}/users/${artistId}`);
-            setsingleUserData(response.data); 
+            setsingleUserData(response.data);
             // console.log("Fetched single user data:", response.data); 
         } catch (error) {
             console.error("Error fetching single user by ID:", error);
@@ -69,7 +70,7 @@ const PostContextProvider = ({ children }) => {
             return { success: true, data: response.data.data };
         } catch (error) {
             console.error("Error fetching posts by name:", error);
-            return { success: false, error:"Could not fetch the data" };
+            return { success: false, error: "Could not fetch the data" };
         }
     }, [url]);
 
@@ -83,7 +84,7 @@ const PostContextProvider = ({ children }) => {
                     withCredentials: true,  // Cookies ko request mein include karne ke liye
                 }
             );
-    
+
             if (response.status === 200) {
                 setLoggedInUserPosts((prevPosts) => prevPosts.filter(post => post._id !== id));
                 toast.success('Post deleted successfully');
@@ -96,6 +97,20 @@ const PostContextProvider = ({ children }) => {
             toast.error('Failed to delete Post');
         }
     };
+
+    const fetchPostLikesDislikesByPostId = async (postId) => {
+        try {
+            const response = await axios.get(`${url}/posts/getLikesDislikes`, {
+                params: { postId }
+            });
+            setTotalLikeDislikeRankAndRatio(response.data);
+        } catch (error) {
+            console.error("Error fetching likes and dislikes:", error);
+            return { error: "Could not fetch the data" };
+        }
+    }
+
+    // console.log("TotalLikeDislikeRankAndRatio:", TotalLikeDislikeRankAndRatio);
     
 
     const contextValue = {
@@ -109,9 +124,11 @@ const PostContextProvider = ({ children }) => {
         singleUserData,
         fetchPostsByName,
         deletePostById,
+        fetchPostLikesDislikesByPostId,
+        TotalLikeDislikeRankAndRatio,
     };
 
-    
+
 
 
     return (

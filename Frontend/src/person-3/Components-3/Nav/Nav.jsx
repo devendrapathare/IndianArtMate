@@ -103,9 +103,7 @@ const Nav = ({ setshowLogin }) => {
             // <h2 onClick={() => setshowLogin(true)}>Login</h2>
           ) : (
             <>
-              <div className="nav-icon">
-                <Link to='/myStore'><img className='img' src={assets.store_icon} alt="Store" onClick={() => onNavClick('store')} /></Link>
-              </div>
+             
               <div className="nav-icon">
                 <Link to='/SearchPost'><img className='img' src={assets.searchImg} alt="My Feed" onClick={() => onNavClick('Search')} /></Link>
               </div>
