@@ -6,7 +6,8 @@ DB_NAME = "Indian_ArtMate"
 COLLECTION_NAME = "userposts"
 
 # Fixed CSV file path
-CSV_PATH = r"C:\Users\91702\Documents\programming\projects\thired_year_project\comp\python\AL_ML\NLP\NLP.csv"
+# CSV_PATH = r"C:\Users\91702\Documents\programming\projects\thired_year_project\comp\python\AL_ML\NLP\NLP.csv"
+CSV_PATH = r"D:\VsCode\code_A_thon\IndianArtMate-2.O\python\AL_ML\NLP\NLP.csv"
 
 def fetch_mongo_data():
     """Fetch data from MongoDB and convert it to a DataFrame."""
