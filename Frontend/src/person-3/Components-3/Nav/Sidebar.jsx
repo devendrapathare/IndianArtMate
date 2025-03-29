@@ -19,25 +19,31 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   const [loadingWinners, setLoadingWinners] = useState({});
   const [postTitles, setPostTitles] = useState({});
   const [artistNames, setArtistNames] = useState({});
+  const [Time, setTime] = useState({});
   const navigate = useNavigate();
+  let biddingNotiLenght = 0;
   const { url } = usePostContext();
 
-  const [activeTab, setActiveTab] = useState('bidding'); // New state for active tab
+  const [activeTab, setActiveTab] = useState('bidding'); 
 
   const userId = authUser?._id;
 
   const NavigationForWinner = (userId) => {
-    console.log("userId:", userId);
+    // console.log("userId:", userId);
     navigate(`/temp/${userId}`);
   };
 
   useEffect(() => {
+    let biddingInterval; // To store the interval ID
+  
     const fetchBiddingNotifications = async () => {
       setLoadingNotifications(true);
       try {
         const response = await axios.get(`${url}/api/bidding/notifications/${userId}`);
         if (response.data.success) {
           setBiddingNotifications(response.data.activeBiddingsFromRespectedUsers);
+          const biddingNotiLength = response.data.activeBiddingsFromRespectedUsers.length; // Use `response.data` directly
+          setTime(response.data.activeBiddingsFromRespectedUsers.map(bid => bid.endTime)); // Assuming you want all endTimes
         } else {
           console.error("Failed to fetch bidding notifications:", response.data.message);
         }
@@ -47,7 +53,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         setLoadingNotifications(false);
       }
     };
-
+  
     const fetchOwnerBiddings = async () => {
       setLoadingOwnerBiddings(true);
       try {
@@ -63,12 +69,30 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         setLoadingOwnerBiddings(false);
       }
     };
-
-    if (userId) {
+  
+    const startFetching = () => {
       fetchBiddingNotifications();
       fetchOwnerBiddings();
+  
+      biddingInterval = setInterval(() => {
+        fetchBiddingNotifications();
+        fetchOwnerBiddings();
+      }, 5000); 
+    };
+  
+    if (userId) {
+      startFetching();
     }
-  }, [userId]);
+  
+    // Cleanup the interval when the component unmounts or `userId` changes
+    return () => {
+      if (biddingInterval) {
+        clearInterval(biddingInterval);
+      }
+    };
+  }, [userId]); // Dependency ensures the effect runs when `userId` changes
+  
+  
 
   useEffect(() => {
     const checkOwnerBiddings = async () => {
@@ -129,8 +153,8 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
       if (response.data.success) {
         const post = response.data.data;
         const { image, category, description, price, title, userId, _id: id } = post;
-        console.log("userId....:",userId)
-        console.log("userId---id....:",id)
+        // console.log("userId....:",userId)
+        // console.log("userId---id....:",id)
         const imageUrl = `${url}/images/${image}`;
 
         isOwnerBid = authUser?._id === userId
@@ -207,24 +231,21 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
             Hire
           </button>
         </div>
-
-        {/* Conditional Rendering Based on Active Tab */}
         {activeTab === 'bidding' ? (
           <>
-            {/* Bidding Notifications Section */}
             <div className="notifications-section">
               <h3>My Ongoing Bids</h3>
-              {loadingNotifications ? (
-                <p>Loading...</p>
-              ) : biddingNotifications.length > 0 ? (
+              { biddingNotifications.length > 0 ? (
                 <ul>
                   {biddingNotifications.map((bid) => (
+                    // () 
                     <li key={bid._id}>
                       <p>Starting Price: {bid.startingPrice}</p>
                       <p>Highest Bid: {bid.highestPriceReceivedDueToBidding}</p>
                       <p>End Time: {new Date(bid.endTime).toLocaleString()}</p>
                       <button onClick={() => getPostData(bid.postId)}>View</button>
                     </li>
+                    // ):<p></p>
                   ))}
                 </ul>
               ) : (
@@ -235,9 +256,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
             {/* My Biddings Section */}
             <div className="notifications-section">
               <h3>My Biddings</h3>
-              {loadingOwnerBiddings ? (
-                <p>Loading...</p>
-              ) : ownerBiddings.length > 0 ? (
+              { ownerBiddings.length > 0 ? (
                 <ul>
                   {ownerBiddings.map((bid) => (
                     <li key={bid._id}>

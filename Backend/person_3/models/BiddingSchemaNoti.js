@@ -11,7 +11,7 @@ const BiddingSchemaNoti = new mongoose.Schema({
   winnerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null }, // New field
   biddingNotiReceivers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   startTime: { type: Date, required: true },
-  endTime: { type: Date, required: true },
+  endTime: { type: Date, required: true, index: { expires: 0 } },
   endedAt: { type: Date }, // Optional: Record when bidding ended
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },

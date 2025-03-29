@@ -34,7 +34,6 @@ const Nav = ({ setshowLogin }) => {
       if (authUser) {
 
         try {
-          // console.log('url:', url);
           
           const response = await fetch(`${url}/users/${userId}`);
           // console.log("response:", response);
@@ -106,6 +105,9 @@ const Nav = ({ setshowLogin }) => {
             <>
               <div className="nav-icon">
                 <Link to='/myStore'><img className='img' src={assets.store_icon} alt="Store" onClick={() => onNavClick('store')} /></Link>
+              </div>
+              <div className="nav-icon">
+                <Link to='/SearchPost'><img className='img' src={assets.searchImg} alt="My Feed" onClick={() => onNavClick('Search')} /></Link>
               </div>
               <div className="nav-icon">
                 <Link to="/feedPage"><img className='img' src={assets.feedImg} alt="My Feed" onClick={() => onNavClick('feed')} /></Link>

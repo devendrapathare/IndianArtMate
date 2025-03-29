@@ -9,6 +9,7 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     text-align: center;
     transition: transform 0.2s;
+    background: #fff9d7;
 }
 
 .SearchInputs-form button {
@@ -24,7 +25,7 @@
 }
 
 .SearchInputs-form button:hover {
-    background: #A68B5B; 
+    background: #5b4319; 
     color: #FFF9D7; 
     transition:  0.2s ease-in; 
 }

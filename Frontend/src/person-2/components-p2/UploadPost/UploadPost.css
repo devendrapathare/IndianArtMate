@@ -5,6 +5,8 @@
     margin: 20px 0;
     background: #FFF9D7;
     border-radius: 1%;
+    border: 2px solid black;
+    padding: 0;
 }
 
 .header{
@@ -68,7 +70,7 @@
 }
 
 .add-image-upload>p{
-    color: #371c02;
+    /* color: #371c02; */
     padding-top: 20px;
     font-size: 18px;
     font-weight: 600;

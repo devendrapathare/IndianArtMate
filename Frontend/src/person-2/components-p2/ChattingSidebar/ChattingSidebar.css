@@ -5,6 +5,8 @@
   scrollbar-color: brown #f1f1f1;
   scrollbar-width: thin;
   height: 100vh;
+  /* border: 2px solid black; */
+  border-radius: 5px;
 }
 
 .ChattingSidebar-other-content {

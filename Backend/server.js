@@ -1,19 +1,36 @@
-import express from 'express';
-import dotenv from 'dotenv';
-import cors from 'cors';
+import express from 'express'
+import dotenv from 'dotenv'
+import cors from 'cors'
+import authRouters from './person2/routes/authRoutes.js'
+import userPosts from './person2/routes/userPosts.js'
+import connectToMongoDB from './person2/database/connectToMongoDB.js'
+import store_rout from './person_3/routes/StoreRoutes.js'
+import profile_rout from './person_3/routes/ProfileRoutes.js'
+import profile_pic_router from './person_3/routes/Profile_pic_routes.js'
+import cartRoutes  from './person2/routes/cartRoutes.js'
+import orderRouter from './person2/routes/OrderRoutes.js'
+import like_dislike_controlls from './person_3/routes/setLikeDislikeroutes.js'
+import setRespectingRoutes from './person_3/routes/setRespectingRoutes.js'
+import biddingRoutes from './person_3/routes/biddingRoutes.js'
+import HIringRouter from './person2/routes/HIringRouter.js'
+import CommentRoute from './person_3/routes/commentRoutes.js'
+// import './person_3/cron/biddingStatusUpdater.js'
+// import express from 'express';
+// import dotenv from 'dotenv';
+// import cors from 'cors';
 import http from 'http';
-import authRouters from './person2/routes/authRoutes.js';
-import userPosts from './person2/routes/userPosts.js';
-import connectToMongoDB from './person2/database/connectToMongoDB.js';
-import store_rout from './person_3/routes/StoreRoutes.js';
-import profile_rout from './person_3/routes/ProfileRoutes.js';
-import profile_pic_router from './person_3/routes/Profile_pic_routes.js';
-import cartRoutes from './person2/routes/cartRoutes.js';
-import orderRouter from './person2/routes/OrderRoutes.js';
-import like_dislike_controlls from './person_3/routes/setLikeDislikeroutes.js';
-import setRespectingRoutes from './person_3/routes/setRespectingRoutes.js';
-import biddingRoutes from './person_3/routes/biddingRoutes.js';
-import HIringRouter from './person2/routes/HIringRouter.js';
+// import authRouters from './person2/routes/authRoutes.js';
+// import userPosts from './person2/routes/userPosts.js';
+// import connectToMongoDB from './person2/database/connectToMongoDB.js';
+// import store_rout from './person_3/routes/StoreRoutes.js';
+// import profile_rout from './person_3/routes/ProfileRoutes.js';
+// import profile_pic_router from './person_3/routes/Profile_pic_routes.js';
+// import cartRoutes from './person2/routes/cartRoutes.js';
+// import orderRouter from './person2/routes/OrderRoutes.js';
+// import like_dislike_controlls from './person_3/routes/setLikeDislikeroutes.js';
+// import setRespectingRoutes from './person_3/routes/setRespectingRoutes.js';
+// import biddingRoutes from './person_3/routes/biddingRoutes.js';
+// import HIringRouter from './person2/routes/HIringRouter.js';
 import { initializeSocket } from './socket.js';
 import messageRoutes from './person2/routes/messageRoutes.js'
 import cookieParser from 'cookie-parser';
@@ -52,6 +69,9 @@ app.use("/posts", like_dislike_controlls);
 app.use('/profilePics', express.static('uploads/profilePic'));
 app.use('/api/bidding', biddingRoutes);
 app.use('/api/hiring', HIringRouter);
+app.use('/comment', CommentRoute);
+
+
 
 const server = http.createServer(app);
 initializeSocket(server);

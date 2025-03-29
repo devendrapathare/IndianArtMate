@@ -8,14 +8,15 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { HireContext } from '../../../context/HireContext/HIreContext';
 import { usePostContext } from '../../../../person-2/context/PostContext/PostContext';
+import Comment from '../../../../person-3/Components-3/Comments/Comment';
 import { useChatContext } from '../../../context/chatContext/chatContext';
 import { useConversation } from '../../../Zustand/UseConversation';
 
 
 const FirstProductDes = ({ image, category, description, price, title, userId, id, isOwner, totalLike, totaldisLike }) => {
 
-  console.log('id',id);
-  
+  // console.log('id', id);
+
 
   const { authUser } = useAuthContext();
   const { cartItems, addItemToCart, removeItemFromCart } = useContext(CartContext);
@@ -27,7 +28,13 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
   const [highestBidder, setHighestBidder] = useState(null);
   const [imageUrl, setImageUrl] = useState('');
   const [isHired, setIsHired] = useState(false);
-  const { url,deletePostById } = usePostContext()
+  const [timeleft, setTimeleft] = useState(0)
+  
+  let currentTime = new Date();
+  let endTime = biddingData?.endTime ? new Date(biddingData.endTime) : null;
+  // const { url } = usePostContext()
+  let checker = true;
+  const { url, deletePostById } = usePostContext()
 
   const { setMyId, setReceiverId, getMessageReceiverDetails } = useChatContext()
 
@@ -35,14 +42,14 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
 
   const { setSelectedConversation } = useConversation()
 
-  const handleChat = async() => {
+  const handleChat = async () => {
     setMyId(authUser._id)
     await getMessageReceiverDetails(userId)
     setSelectedConversation(userId)
     navigate('/myChats')
   }
 
-  const handleDeletePost = async() =>{
+  const handleDeletePost = async () => {
     await deletePostById(id)
     navigate('/profilePage')
   }
@@ -96,6 +103,7 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
   useEffect(() => {
     if (userData.profilePic) {
       let currentImageUrl = userData.profilePic;
+      // let currentImageUrl =userData.profilePic ;
       const desiredPath = 'https://avatar.iran.liara.run/public/';
 
       // Check if the profile picture URL matches the desired path
@@ -146,8 +154,10 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
     fetchBiddingData();
   }, [userId]);
 
-  const currentTime = new Date();
-  const endTime = biddingData?.endTime ? new Date(biddingData.endTime) : null;
+  useEffect(() => {
+    currentTime = new Date();
+    endTime = biddingData?.endTime ? new Date(biddingData.endTime) : null;
+  })
 
   const handleNavigate = () => {
     navigate('/cart');
@@ -162,6 +172,7 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
       alert('Your bid must be higher than the current highest bid!');
       return;
     }
+
     try {
       const response = await axios.post(`${url}/api/bidding/placeBid`, {
         postId: id,
@@ -189,8 +200,6 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
   const gotoProfile = (artistId) => {
     navigate(`/temp/${artistId}`);
   };
-
-
 
   return (
     <div className='FirstProductDes-container'>
@@ -240,6 +249,7 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
           </div>
         ) : isOwner === false ? (
           endTime && currentTime < endTime ? (
+
             <div className="bidding-section">
               <p>Current Highest Bid: ₹{biddingData?.highestPriceReceivedDueToBidding}</p>
               <p id="profileView" onClick={() => gotoProfile(highestBidder?._id)}>
@@ -293,6 +303,7 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
 
         <hr />
       </div>
+      <Comment postId={id} Recived_userId={userId} />
     </div>
 
   );

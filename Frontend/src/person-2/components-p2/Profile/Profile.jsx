@@ -1,4 +1,3 @@
-// Profile.js
 import React, { useState, useEffect } from 'react';
 import './Profile.css';
 import ProfileInfo from './ProfileInfo/ProfileInfo';
