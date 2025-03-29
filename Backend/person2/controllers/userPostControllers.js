@@ -5,6 +5,7 @@ const userPostData = async (req,res) =>{
 
     let image_fileName = `${req.file.filename}`;
 
+
     const post = new userPosts({
         userId: req.body.userId,
         image: image_fileName,
@@ -81,7 +82,6 @@ const get_post_data_by_post_id = async(req,res)=>{
         res.status(500).json({ error: "Error in userPostController.js" });
     }
 }
-
 const get_post_data_by_name = async (req, res) => {
     try {
         const name = req.body.postName; 
@@ -90,18 +90,17 @@ const get_post_data_by_name = async (req, res) => {
         }
 
         console.log("Received postName:", name);
-        const pythonResponse = await axios.get(`http://127.0.0.1:6000/nlp/search`, {
+        const pythonResponse = await axios.get('http://127.0.0.1:6000/nlp/search', {
+
             params: { input_text: name },
+           
         });
 
-        const posts = pythonResponse.data.results; 
+        const pythonData = typeof pythonResponse.data === "string" ? JSON.parse(pythonResponse.data) : pythonResponse.data;
+        console.log("Parsed Python response:", (pythonData.results));
+        
 
-        if (!posts || posts.length === 0) {
-            return res.status(404).json({ success: false, message: "No posts found" });
-        }
-
-        console.log("Posts found:", posts);
-        res.status(200).json({ success: true, data: posts });
+        res.status(200).json({ success: true, data: pythonResponse.data.results });
 
     } catch (error) {
         console.error("Error in getPostDataByName:", error.message);
@@ -113,6 +112,7 @@ const get_post_data_by_name = async (req, res) => {
         res.status(500).json({ success: false, error: "Internal server error" });
     }
 };
+
 const deletePostById = async (req, res) => {
     const { id: postId } = req.params;
 

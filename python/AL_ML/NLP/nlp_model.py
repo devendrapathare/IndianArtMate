@@ -10,9 +10,10 @@ from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 # import nltk
 # nltk.download('punkt')
+# from textblob import TextBlob
 
 # Define CSV path
-CSV_PATH = 'C:/Users/91702/Documents/programming/projects/thired_year_project/IndianArtMate_project_sem5/IndianArtMate-2.O/env/datasets/NLP.csv'
+CSV_PATH = r"C:\Users\91702\Documents\programming\projects\thired_year_project\comp\python\AL_ML\NLP\NLP.csv"
 
 # Initialize vectorizer
 vectorizer = TfidfVectorizer(stop_words='english')
@@ -51,7 +52,7 @@ def preprocess_text(text):
 
 def correct_spelling(text):
     """Corrects spelling in the input text."""
-    return str(TextBlob(text).correct())
+    # return str(TextBlob(text).correct())
     return text
 
 def extract_price_condition(input_text):
