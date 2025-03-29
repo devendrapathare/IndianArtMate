@@ -197,6 +197,49 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
     }
   };
 
+
+
+  // const handleBidSubmit = async () => {
+  //   const bidAmount = parseFloat(userBid);
+  //   if (isNaN(bidAmount) || bidAmount <= biddingData?.highestPriceReceivedDueToBidding) {
+  //     toast.error('Your bid must be higher than the current highest bid!');
+  //     return;
+  //   }
+  
+  //   try {
+  //     // Fetch updated user data to get wallet balance
+  //     const userResponse = await axios.get(`${url}/users/${authUser._id}`);
+  //     const userWalletBalance = userResponse.data.user.wallet; // Assuming 'wallet' holds the balance
+  
+  //     if (bidAmount > userWalletBalance) {
+  //       toast.error('Insufficient funds! Please add money to your wallet.');
+  //       return;
+  //     }
+  
+  //     // Proceed with placing the bid
+  //     const response = await axios.post(`${url}/api/bidding/placeBid`, {
+  //       postId: id,
+  //       userId: authUser._id,
+  //       bidAmount: bidAmount
+  //     });
+  
+  //     if (response.data.success) {
+  //       setBiddingData((prevData) => ({
+  //         ...prevData,
+  //         highestPriceReceivedDueToBidding: bidAmount,
+  //         highestBiddingAmountSetBy: authUser?._id
+  //       }));
+  //       toast.success('Bid placed successfully!');
+  //     } else {
+  //       toast.error('Failed to place the bid. Try again.');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error placing bid:', error.message);
+  //     toast.error('An error occurred. Please try again later.');
+  //   }
+  // };
+  
+
   const gotoProfile = (artistId) => {
     navigate(`/temp/${artistId}`);
   };
