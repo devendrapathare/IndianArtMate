@@ -148,7 +148,6 @@ const UploadPost = () => {
     };
     
     
-
     return (
         <div >
             <form className='UploadPost-container' onSubmit={handleSubmit}>
