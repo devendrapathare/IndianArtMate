@@ -4,26 +4,40 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { usePostContext } from '../../../context/PostContext/PostContext';
 import { useAuthContext } from '../../../context/AuthContext/AuthContext';
+import { useChatContext } from '../../../context/chatContext/chatContext';
+import { useConversation } from '../../../Zustand/UseConversation';
 
 
 const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
-    const [userData, setUserData] = useState(null); 
-    const [image, setImage] = useState(null); 
-    const {posts,loggedInUserPosts,url} = usePostContext()
+    const [userData, setUserData] = useState(null);
+    const [image, setImage] = useState(null);
+    const { posts, loggedInUserPosts, url } = usePostContext()
     const numOfPosts = posts.filter(post => post.userId === userId).length
+    const { setMyId, setReceiverId, getMessageReceiverDetails } = useChatContext()
+    const { setSelectedConversation } = useConversation()
+
+
     // console.log("done11",loggedInUserPosts);
-      
+
     const { authUser } = useAuthContext();
-  
-    const LogggedInUserId = authUser?._id; 
-  
-    
+
+    const LogggedInUserId = authUser?._id;
+
+
     const navigate = useNavigate();
+
+    const handleChat = async () => {
+        setMyId(authUser._id)
+        await getMessageReceiverDetails(userId)
+        setSelectedConversation(userId)
+        navigate('/myChats')
+    }
+
     const handleUpdateProfileClick = () => {
         navigate(`/UpdateProfilePage`);
     };
 
-    const handleShowRespec = (whatTodo) =>{
+    const handleShowRespec = (whatTodo) => {
         navigate(`/myProfileDetails/${whatTodo}/${userId}`)
     }
 
@@ -42,7 +56,7 @@ const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
                 console.error(e);
             }
         };
-    
+
         fetchRespectStatus();
     }, [userId]);
 
@@ -51,13 +65,13 @@ const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
             const response = await axios.post(`${url}/setRespect/${LogggedInUserId}`, {
                 userId
             });
-    
+
             console.log("LoggedInUserId:", LogggedInUserId);
             console.log("userId:", userId);
             console.log(response);
-    
+
             setHasRespected(!hasRespected);
-    
+
             const updatedUserData = !hasRespected ? {
                 ...userData,
                 respectors: [...userData.respectors, LogggedInUserId],
@@ -69,49 +83,49 @@ const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
                 respectors: userData.respectors.filter(id => id !== LogggedInUserId),
                 respecting: userData.respecting.filter(id => id !== userId),
             };
-    
+
             setUserData(updatedUserData);
-    
-    
+
+
         } catch (e) {
             console.error(e);
         }
     };
-    
-    
+
+
     useEffect(() => {
         const fetchUserProfile = async () => {
-          try {
-            const response = await fetch(`${url}/users/${userId}`);
-            if (!response.ok) throw new Error('Network response was not ok');
-            
-            const data = await response.json();
-            
-            const user = data.user;
-            setUserData(user);
-      
-            let fullImageUrl;
-            if (user.profilePic.startsWith('http')) {
-              fullImageUrl = user.profilePic;
-            } else {
-              fullImageUrl = `${url}/profilePics${user.profilePic.split('/profilePic')[1]}`;
+            try {
+                const response = await fetch(`${url}/users/${userId}`);
+                if (!response.ok) throw new Error('Network response was not ok');
+
+                const data = await response.json();
+
+                const user = data.user;
+                setUserData(user);
+
+                let fullImageUrl;
+                if (user.profilePic.startsWith('http')) {
+                    fullImageUrl = user.profilePic;
+                } else {
+                    fullImageUrl = `${url}/profilePics${user.profilePic.split('/profilePic')[1]}`;
+                }
+                setImage(fullImageUrl);
+            } catch (error) {
+                console.error('Error fetching user data:', error);
             }
-            setImage(fullImageUrl);
-          } catch (error) {
-            console.error('Error fetching user data:', error);
-          }
         };
-    
+
         fetchUserProfile();
-    }, [userId, hasRespected]); 
-    
+    }, [userId, hasRespected]);
+
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
             const reader = new FileReader();
             reader.onloadend = () => {
-                setImage(reader.result); 
+                setImage(reader.result);
             };
             reader.readAsDataURL(file);
         }
@@ -141,32 +155,39 @@ const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
                 <p>{userData.profile_type || 'Painter'}</p>
                 <p>{userData.email || 'Painter'}</p>
             </div>
-           
+
 
             <div className="profileInfo-buttons">
                 {!isOwnProfile && (
-                    <button 
-                    onClick={() => handleRespectToggle(userId)} 
-                    className="profileIcon-respect-button"
+                    <button
+                        onClick={() => handleRespectToggle(userId)}
+                        className="profileIcon-respect-button"
                     >
-                    {hasRespected ? 'Remove Respect' : 'Respect' }
+                        {hasRespected ? 'Remove Respect' : 'Respect'}
                     </button>
                 )}
                 {isOwnProfile && (
-                    <button onClick={()=>{handleUpdateProfileClick()}} className="profileIcon-update-profile-button profileIcon-respect-button">
+                    <button onClick={() => { handleUpdateProfileClick() }} className="profileIcon-update-profile-button profileIcon-respect-button">
                         Update Profile
                     </button>
                 )}
+                {
+                    !isOwnProfile && (
+                        <button onClick={handleChat}>Chat</button>
+                    )
+                }
+
+
             </div>
 
             <div className="middle">
                 <p>Posts: <span>{numOfPosts}</span></p>
-                <div onClick={()=>{handleShowRespec('Respectors')}}>
-                
+                <div onClick={() => { handleShowRespec('Respectors') }}>
+
                     <p><u>Respectors</u>: <span>{userData.respectors?.length || 0}</span></p>
                 </div>
-                <div onClick={()=>{handleShowRespec('Respecting')}}>
-            
+                <div onClick={() => { handleShowRespec('Respecting') }}>
+
                     <p><u>Respecting</u>: <span>{userData.respecting?.length || 0}</span></p>
                 </div>
             </div>
@@ -176,14 +197,14 @@ const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
             </div>
 
             <div className="profileInfo-buttons">
-    {isOwnProfile && (
-        <>
-            <button onClick={() => setshowUploadPost(false)} className="profileIcon-respect-button">Upload</button>
-            <button onClick={() => navigate('/receivedOrders')} className="profileIcon-respect-button">Received Orders</button>
-        </>
-    )}
-    {/* <button className="profileIcon-update-profile-button profileIcon-respect-button">Story</button> */}
-</div>
+                {isOwnProfile && (
+                    <>
+                        <button onClick={() => setshowUploadPost(false)} className="profileIcon-respect-button">Upload</button>
+                        <button onClick={() => navigate('/receivedOrders')} className="profileIcon-respect-button">Received Orders</button>
+                    </>
+                )}
+                {/* <button className="profileIcon-update-profile-button profileIcon-respect-button">Story</button> */}
+            </div>
         </div>
     );
 };

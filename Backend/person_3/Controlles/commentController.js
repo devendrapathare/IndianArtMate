@@ -17,29 +17,28 @@ export const addComment = async (req, res) => {
         }
 
         // Python executable and script path
-        const scriptPath = "C:\\Users\\91702\\Documents\\programming\\projects\\thired_year_project\\IndianArtMate_project_sem5\\IndianArtMate-2.O\\env\\src\\Krish\\predict.py";
-        const pythonPath = "C:\\Users\\91702\\Documents\\programming\\projects\\thired_year_project\\IndianArtMate_project_sem5\\IndianArtMate-2.O\\env\\Scripts\\python.exe";
+        const pythonPath = "D:\\VsCode\\miniproject-2A\\IndianArtMate-2.O\\env\\Scripts\\python.exe";
+        const scriptPath = "D:\\VsCode\\miniproject-2A\\IndianArtMate-2.O\\env\\src\\Krish\\predict.py";
 
         console.log('Python script paths:');
         
-        // *Step 1: Run Python Script for Sentiment Prediction*
+        // **Step 1: Run Python Script for Sentiment Prediction**
         console.log('Running sentiment prediction script...');
         await execPromise(`"${pythonPath}" "${scriptPath}" "${commentText}" "${postId}"`);
         console.log('Python script executed successfully');
         
-        // *Step 2: Run Python Script to Calculate Sentiment Ratio and Rank*
+        // **Step 2: Run Python Script to Calculate Sentiment Ratio and Rank**
         console.log('Calculating sentiment ratio and rank...');
-        const { stdout } = await execPromise(
-            `${pythonPath} -c "from predict import calculate_sentiment_ratio; result = calculate_sentiment_ratio('${postId}'); print(result['ratio'], result['rank'])"`,
-            { cwd: "C:\\Users\\91702\\Documents\\programming\\projects\\thired_year_project\\IndianArtMate_project_sem5\\IndianArtMate-2.O\\env\\src\\Krish" }
-        );
-        // *Step 3: Process Output*
+        const { stdout } = await execPromise(`"${pythonPath}" -c "from predict import calculate_sentiment_ratio; result = calculate_sentiment_ratio('${postId}'); print(result['ratio'], result['rank'])"`,
+            { cwd: "D:\\VsCode\\miniproject-2A\\IndianArtMate-2.O\\env\\src\\Krish" });
+
+        // **Step 3: Process Output**
         console.log('Processing output...');
         const [ratio, rank] = stdout.trim().split(" "); // Split Python output
         console.log('Ratio:', ratio);
         console.log('Rank:', rank);
 
-        // *Step 4: Find or Create Comment Document*
+        // **Step 4: Find or Create Comment Document**
         let commentDoc = await Comment.findOne({ postId });
 
         if (!commentDoc) {
@@ -55,7 +54,7 @@ export const addComment = async (req, res) => {
 
         await commentDoc.save();
 
-        // *Step 5: Update the commentRank in UserPosts*
+        // **Step 5: Update the commentRank in UserPosts**
         const updatedPost = await userPosts.findOneAndUpdate(
             { _id: postId }, // Find the post by postId
             { commentRank: parseFloat(rank) }, // Update the commentRank
