@@ -46,6 +46,8 @@ export const CommentProvider = ({ children }) => {
     const addComment = async (postId, userId, commentText) => {
         try {
             // setComments([])
+            // console.log(postId, userId, commentText);
+            
             const response = await axios.post(`${url}/comment/add`, { postId, userId, commentText });
     
             // Ensure `response.data` is accessed correctly
@@ -53,10 +55,11 @@ export const CommentProvider = ({ children }) => {
     
             // setComments((prev) => [...prev, ...newComments]);
             setComments(newComments)
-            // console.log("comme:",comments)
+            console.log("comme:",comments)
             setError(null);
         } catch (err) {
             setError(err.response?.data?.message || 'Failed to add comment');
+            // console.log("error:",error)
         }
     };
     
