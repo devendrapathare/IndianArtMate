@@ -1,8 +1,17 @@
-# React + Vite
+# Frontend of IndianArtMate
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
+The frontend of IndianArtMate is built using React. It provides a user-friendly interface for interacting with the backend services.
 
-Currently, two official plugins are available:
+## Main Entry Point
+The main entry point for the frontend application is `index.html`, which loads the React application.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Key Components
+- **React**: The core library for building the user interface.
+- **Axios**: Used for making HTTP requests to the backend.
+- **React Router**: Manages navigation within the application.
+
+## Running the Frontend
+To start the frontend application, run:
+```bash
+npm run dev

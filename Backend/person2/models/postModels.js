@@ -51,7 +51,11 @@ const userPostSchema = new mongoose.Schema({
     likeDislikeRank: {
         type: Number,
         default: 0
-    }
+    },
+    imageHash: {
+        type: String,
+        required: true // ⭐ NEW: Image hash added for duplicate detection
+    },   
 }, { timestamps: (true) })
 
 const userPosts = mongoose.model.Post || mongoose.model('UserPosts', userPostSchema)
