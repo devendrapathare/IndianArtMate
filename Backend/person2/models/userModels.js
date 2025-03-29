@@ -15,6 +15,10 @@ const userSchema = new mongoose.Schema({
         required: true,
         minlength: 8
     },
+    wallet:{
+        type: Number,
+        default: 2000
+    },
     bio: {
         type: String,
         default: ''
