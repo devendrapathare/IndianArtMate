@@ -324,9 +324,9 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
           ) : (
             <div className="impressions">
               <button onClick={handleChat}>Chat</button>
-              <button onClick={handleHireMe} disabled={isHired}>
+              {/* <button onClick={handleHireMe} disabled={isHired}>
                 {isHired ? 'Sent' : 'Hire me'}
-              </button>
+              </button> */}
               {!cartItems[id] ? (
                 <button onClick={() => addItemToCart(id)} className="buy-btn">Buy Now</button>
               ) : (

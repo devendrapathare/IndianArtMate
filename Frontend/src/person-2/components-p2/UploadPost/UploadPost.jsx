@@ -1,5 +1,3 @@
-
-
 import React, { useRef, useState, useEffect } from 'react';
 import './UploadPost.css';
 import { useAuthContext } from '../../context/AuthContext/AuthContext';
