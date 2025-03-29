@@ -61,12 +61,14 @@ const UploadPost = () => {
         event.preventDefault();
         setIsSubmitting(true);
         try {
+            console.log("Submitting data:", data, image, isBiddingActive);
+    
             if (!image) {
                 toast.error('Please upload an image.');
                 setIsSubmitting(false);
                 return;
             }
-
+    
             const formData = new FormData();
             formData.append('image', image);
             formData.append('title', data.title);
@@ -74,38 +76,44 @@ const UploadPost = () => {
             formData.append('category', data.category);
             formData.append('price', Number(data.price));
             formData.append('userId', data.userId);
+            formData.append('duration', Number(data.duration)); 
+    
             formData.append('duration', Number(data.duration));
 
             const uploadResponse = await axios.post(`${url}/api/post/uploadPost`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
-
+    
+            console.log("Server Response:", uploadResponse.data); // ✅ YEH LINE ADD KI HAI
+    
             if (uploadResponse.data.success) {
                 await fetchLoggedInUserPostList();
+                toast.success("Post uploaded successfully!");
+    
                 toast.success("Post uploaded successfully!");
 
                 if (isBiddingActive) {
                     const respectorsResponse = await axios.get(`${url}/users/${authUser._id}`);
                     if (respectorsResponse.data.success) {
                         const respectors = respectorsResponse.data.user.respectors;
-
+    
                         if (!Array.isArray(respectors)) {
                             toast.error('Respectors data is invalid.');
                             setIsSubmitting(false);
                             return;
                         }
-
+    
                         const biddingData = {
                             postId: uploadResponse.data.postId,
                             startingPrice: Number(data.price),
                             duration: Number(data.duration),
                             respectors: respectors
                         };
-
+    
                         const biddingResponse = await axios.post(`${url}/api/bidding/start`, biddingData, {
                             headers: { 'Content-Type': 'application/json' }
                         });
-
+    
                         if (biddingResponse.data.success) {
                             toast.success(biddingResponse.data.message);
                         } else {
@@ -116,17 +124,28 @@ const UploadPost = () => {
                     }
                 }
             } else {
+                toast.error(uploadResponse.data.error || "Something went wrong"); // ✅ YEH LINE ADD KI HAI
                 toast.error(uploadResponse.data.error || "Something went wrong");
             }
             window.location.reload();
         } catch (error) {
             setIsSubmitting(false);
-            console.error("Error submitting data:", error);
-            toast.error(error.response?.data?.message || 'Something went wrong while submitting the post.');
-        } finally {
             setIsSubmitting(false);
+            console.error("Error submitting data:", error);
+            
+            if (error.response && error.response.data && error.response.data.message) {
+                toast.error(error.response.data.message);  // Yeh line important hai
+            } else {
+                toast.error('Something went wrong while submitting the post.');
+            }
         }
+         finally {
+            // toast.error(error.response?.data?.message || 'Something went wrong while submitting the post.');
+            setIsSubmitting(false);
+        } 
     };
+    
+    
 
     return (
         <div>
