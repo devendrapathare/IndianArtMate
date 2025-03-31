@@ -15,7 +15,7 @@ import { useConversation } from '../../../Zustand/UseConversation';
 
 const FirstProductDes = ({ image, category, description, price, title, userId, id, isOwner, totalLike, totaldisLike }) => {
 
-  // console.log('id', id);
+  console.log('id', image);
 
 
   const { authUser } = useAuthContext();
@@ -29,7 +29,7 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
   const [imageUrl, setImageUrl] = useState('');
   const [isHired, setIsHired] = useState(false);
   const [timeleft, setTimeleft] = useState(0)
-  
+
   let currentTime = new Date();
   let endTime = biddingData?.endTime ? new Date(biddingData.endTime) : null;
   // const { url } = usePostContext()
@@ -53,6 +53,33 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
     await deletePostById(id)
     navigate('/profilePage')
   }
+
+  const handleDownloadCA = async () => {
+    try {
+      const response = await axios.get(`${url}/api/post/downloadPostCA/${id}`, {
+        responseType: 'blob', // Important for handling binary data
+      });
+
+      // Create a URL for the downloaded file
+      const fileURL = window.URL.createObjectURL(new Blob([response.data]));
+      const fileLink = document.createElement('a');
+      fileLink.href = fileURL;
+
+      // Set the file name (you can customize this based on your backend response)
+      fileLink.setAttribute('download', `Certificate_${id}.pdf`);
+      document.body.appendChild(fileLink);
+
+      // Trigger the download
+      fileLink.click();
+
+      // Clean up
+      fileLink.parentNode.removeChild(fileLink);
+      toast.success('Certificate downloaded successfully!');
+    } catch (error) {
+      console.error('Error downloading certificate:', error.message);
+      toast.error('Failed to download the certificate. Please try again.');
+    }
+  };
 
   const handleHireMe = async () => {
     const ProjectOwnerId = authUser?._id;
@@ -197,6 +224,49 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
     }
   };
 
+
+
+  // const handleBidSubmit = async () => {
+  //   const bidAmount = parseFloat(userBid);
+  //   if (isNaN(bidAmount) || bidAmount <= biddingData?.highestPriceReceivedDueToBidding) {
+  //     toast.error('Your bid must be higher than the current highest bid!');
+  //     return;
+  //   }
+
+  //   try {
+  //     // Fetch updated user data to get wallet balance
+  //     const userResponse = await axios.get(`${url}/users/${authUser._id}`);
+  //     const userWalletBalance = userResponse.data.user.wallet; // Assuming 'wallet' holds the balance
+
+  //     if (bidAmount > userWalletBalance) {
+  //       toast.error('Insufficient funds! Please add money to your wallet.');
+  //       return;
+  //     }
+
+  //     // Proceed with placing the bid
+  //     const response = await axios.post(`${url}/api/bidding/placeBid`, {
+  //       postId: id,
+  //       userId: authUser._id,
+  //       bidAmount: bidAmount
+  //     });
+
+  //     if (response.data.success) {
+  //       setBiddingData((prevData) => ({
+  //         ...prevData,
+  //         highestPriceReceivedDueToBidding: bidAmount,
+  //         highestBiddingAmountSetBy: authUser?._id
+  //       }));
+  //       toast.success('Bid placed successfully!');
+  //     } else {
+  //       toast.error('Failed to place the bid. Try again.');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error placing bid:', error.message);
+  //     toast.error('An error occurred. Please try again later.');
+  //   }
+  // };
+
+
   const gotoProfile = (artistId) => {
     navigate(`/temp/${artistId}`);
   };
@@ -277,13 +347,14 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
               <p>Likes <span>{totalLike}</span> </p>
               <p>Dislikes <span>{totaldisLike}</span> </p>
               <button onClick={handleDeletePost}>Delete Post</button>
+              <button onClick={handleDownloadCA}>Download CA</button>
             </div>
           ) : (
             <div className="impressions">
               <button onClick={handleChat}>Chat</button>
-              <button onClick={handleHireMe} disabled={isHired}>
+              {/* <button onClick={handleHireMe} disabled={isHired}>
                 {isHired ? 'Sent' : 'Hire me'}
-              </button>
+              </button> */}
               {!cartItems[id] ? (
                 <button onClick={() => addItemToCart(id)} className="buy-btn">Buy Now</button>
               ) : (
