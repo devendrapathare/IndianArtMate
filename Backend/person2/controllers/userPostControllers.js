@@ -3,7 +3,12 @@ import axios from "axios";
 import path from 'path';
 import fs from 'fs';
 import crypto from 'crypto';
+import generateCertificate from "../utils/certificateGenerator.js";
+import { fileURLToPath } from 'url'; // Import fileURLToPath
 
+// Define __dirname for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const userPostData = async (req, res) => {
 
@@ -49,10 +54,18 @@ const userPostData = async (req, res) => {
 
         const savedPost = await post.save();
 
+        // ✅ Certificate Generate Karna
+        const certPath = await generateCertificate(savedPost);
+
+        // ✅ Database Me Certificate Reference Update Karna
+        savedPost.certificate = certPath;
+        await savedPost.save();
+
         res.status(201).json({
             success: true,
             message: "Post created successfully",
-            postId: savedPost._id
+            postId: savedPost._id,
+            certificate: certPath  // Response me bhi bhej dena
         });
 
 
@@ -165,8 +178,38 @@ const deletePostById = async (req, res) => {
     }
 };
 
+const dowloadPostCA = async (req, res) => {
+    const { id: postId } = req.params;
+    try {
+        const post = await userPosts.findById(postId);
+        if (!post) {
+            return res.status(404).json({ error: "Post not found" });
+        }
 
-export { userPostData, listPostData, listLogedInUserPostData, get_post_data_by_post_id, deletePostById, get_post_data_by_name }
+        // ✅ Fixing the file path issue
+        const filePath = path.join(__dirname, '..',post.certificate); // Adjust the path as needed
+        console.log("File path:", filePath); // Log the file path for debugging
+        
+        if (!fs.existsSync(filePath)) {
+            console.error("Certificate file not found:", filePath);
+            return res.status(404).json({ error: "Certificate file not found" });
+        }
+
+        res.download(filePath, (err) => {
+            if (err) {
+                console.error("Error downloading file:", err);
+                res.status(500).send("Error downloading file");
+            }
+        });
+    } catch (error) {
+        console.error("Error in dowloadPostCA:", error.message);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+};
+
+
+
+export { userPostData, listPostData, listLogedInUserPostData, get_post_data_by_post_id, deletePostById, get_post_data_by_name, dowloadPostCA };
 
 
 // functions for python api

@@ -56,6 +56,10 @@ const userPostSchema = new mongoose.Schema({
         type: String,
         required: true // ⭐ NEW: Image hash added for duplicate detection
     },   
+    certificate: {
+        type: String,  
+        default: null  // Pehle null rahega, jab generate hoga tab path save karenge.
+    }    
 }, { timestamps: (true) })
 
 const userPosts = mongoose.model.Post || mongoose.model('UserPosts', userPostSchema)
