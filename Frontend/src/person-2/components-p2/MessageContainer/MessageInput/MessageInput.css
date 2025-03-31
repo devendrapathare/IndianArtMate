@@ -29,21 +29,24 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px; 
-    height: 40px; 
-    border-radius: 50%; 
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
     background-color: #fff9d7;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Increased visibility */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
     cursor: pointer;
     transition: transform 0.3s ease, background-color 0.3s ease;
+    border: 2px solid #e9a046;
 }
 
 .messageInput-button:hover {
     transform: scale(1.1);
     background-color: #fff9d7;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
 }
 
 .buttonImg {
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 2rem;
+    height: 2rem;
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
 }

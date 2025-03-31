@@ -2,103 +2,407 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 550px; 
-    width: 1536px; 
-    overflow: hidden; /* Prevent overflow */
-    position: relative; /* For positioning nav buttons */
-  }
+    height: calc(100vh - 80px); /* Match the new navbar height of 80px */
+    width: 100%;
+    position: relative;
+    background-color: #000000; /* Dark background like the reference */
+    margin: 0; /* Remove margin to make it flush with navbar */
+    box-shadow: none; /* Remove shadow */
+    padding: 40px 80px; /* Remove bottom padding since text is inside */
+    overflow: hidden;
+}
   
-  .carousel-content {
-    position: relative; /* For positioning text */
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
+.carousel-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.8s ease-in-out;
+    background-color: #000000; /* Dark background */
+    border-radius: 12px; /* Rounded corners */
+    overflow: hidden; /* Ensure content stays inside rounded corners */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+}
+
+.carousel-content.transitioning img {
+    opacity: 0.3;
+    transition: opacity 0.3s ease;
+}
+
+.carousel-content.transitioning .carousel-text {
+    opacity: 0 !important;
+    transition: opacity 0.3s ease !important;
+    animation: none !important;
 }
 
 .carousel-content img {
-    width: 100%; /* Fill the width */
-    height: 100%; /* Fill the height */
-    object-fit: cover; /* Maintain aspect ratio */
+    width: 100%; /* Fill container width */
+    height: 100%; /* Fill container height */
+    object-fit: cover; /* Cover the area */
+    object-position: center;
+    filter: brightness(0.7); /* Slightly darker for text visibility */
+    transition: opacity 1s ease, transform 1.2s ease;
+    animation: zoom-in 15s ease infinite alternate;
+    opacity: 1; /* Fully visible */
+    border-radius: 12px; /* Rounded corners */
+}
+
+@keyframes zoom-in {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(1.02); /* Even more subtle zoom */
+    }
+}
+
+/* Light gradient overlay for better text visibility */
+.carousel-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(0deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.2) 100%);
+    z-index: 1;
+    border-radius: 12px; /* Match container */
 }
 
 .carousel-text {
-    position: absolute; /* Position text */
-    top: 50%; /* Center vertically */
-    left: 100px; /* Shift right to make space for the arrow */
-    transform: translateY(-50%); /* Adjust for centering */
-    color: white; /* White text color */
-    padding: 10px; /* Add padding */
-    z-index: 1; /* Ensure text is above the image */
-    width: 50%; /* Use half screen width */
+    position: absolute;
+    bottom: 100px; /* Position at bottom like reference */
+    left: 80px;
+    color: white; /* Light text for contrast against dark overlay */
+    z-index: 2;
+    width: 60%; /* Narrower text area */
+    text-align: left;
+    padding: 0;
+    max-width: 800px;
 }
 
-.carousel-text p{
-    font-size: 1.2rem;
+.carousel-text::before {
+    content: 'EXPLORE THE ARTISTRY';
+    display: block;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+    opacity: 0.9;
 }
 
+.carousel-text h2 {
+    font-size: 3.5rem;
+    margin-bottom: 15px;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.5px; /* Negative letter spacing like in reference */
+    color: white;
+}
+
+/* Fix the sub-text content */
+.carousel-container::before {
+    content: none;
+}
+
+.carousel-text h2 span {
+    color: #3498db; /* Blue highlight */
+    display: inline;
+    position: relative;
+}
+
+/* Make p text more visible */
+.carousel-text p {
+    font-size: 1.15rem;
+    line-height: 1.6;
+    margin-top: 8px;
+    max-width: 95%;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.7); /* Light gray text color like reference */
+    opacity: 1; /* Always visible */
+}
+
+/* Hide navigation buttons for cleaner look */
 .nav-button {
-    background-color: transparent; /* No background */
-    color: #b8860b; 
-    border: none;
-    font-size: 48px; /* Larger buttons for better visibility */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 2px solid rgba(255, 255, 255, 0.3);
     cursor: pointer;
-    position: absolute; /* Position buttons */
-    top: 50%; /* Center vertically */
-    transform: translateY(-50%); /* Adjust for button height */
-    padding: 10px; /* Add padding */
-    z-index: 2; /* Ensure buttons are above the image */
-    border: 2px solid red;
-  }
-  
-  .nav-button:first-of-type {
-    left: 20px; /* Position left button */
-  }
-  
-  .nav-button:last-of-type {
-    right: 20px; /* Position right button */
-  }
-  
-  .indicators {
-    position: absolute; /* Position indicators */
-    bottom: 20px; /* Position at the bottom */
-    left: 50%; /* Center horizontally */
-    transform: translateX(-50%); /* Adjust for centering */
-    display: flex; /* Flexbox for alignment */
-    gap: 10px; /* Space between indicators */
-  }
-  
-  .indicator {
-    width: 12px; /* Indicator size */
-    height: 12px; /* Indicator size */
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-    border-radius: 50%; /* Round indicators */
-    cursor: pointer; /* Pointer cursor */
-  }
-  
-  .indicator.active {
-    background-color: rgba(0, 0, 0, 0.9); /* Darker for active indicator */
-  }
-  
-  /* Responsive styles */
-  @media (max-width: 768px) {
+    z-index: 3;
+    transition: all 0.3s ease;
+}
+
+.nav-button:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.nav-button.prev {
+    left: 30px;
+}
+
+.nav-button.next {
+    right: 30px;
+}
+
+.nav-button img {
+    width: 24px;
+    height: 24px;
+    filter: brightness(0) invert(1);
+    transition: transform 0.3s ease;
+}
+
+.nav-button:hover img {
+    transform: scale(1.2);
+}
+
+/* Hide indicators for cleaner look */
+.indicators {
+    display: none;
+}
+
+/* Small dot in corner like reference */
+.carousel-content::after {
+    content: '';
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+    width: 8px;
+    height: 8px;
+    background-color: #e9a046; /* Orange color matching the navbar dot */
+    border-radius: 50%;
+    z-index: 2;
+    opacity: 0.9;
+}
+
+/* Loading indicator */
+.loading-indicator {
+    position: absolute;
+    bottom: 30px;
+    right: 50px;
+    color: #e9a046; /* Orange color matching the navbar dot */
+    font-size: 14px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 400;
+    z-index: 2;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .carousel-container {
+        padding: 20px;
+    }
+    
     .carousel-text {
-      left: 55px; /* Adjust left position for smaller screens */
-      width: 80%; /* Use more width on smaller screens */
+        left: 30px;
+        width: 80%;
+        bottom: 80px;
     }
-  
+    
+    .carousel-text h2 {
+        font-size: 2.8rem;
+    }
+    
     .nav-button {
-      font-size: 36px; /* Smaller buttons for smaller screens */
+        width: 50px;
+        height: 50px;
     }
-  }
+    
+    .nav-button img {
+        width: 20px;
+        height: 20px;
+    }
+}
   
-  @media (max-width: 480px) {
+@media (max-width: 480px) {
     .carousel-text {
-      left: 10px; /* Adjust left position for smaller screens */
-      width: 90%; /* Use more width on smaller screens */
+        left: 20px;
+        width: 85%;
+        bottom: 60px;
     }
   
-    .nav-button {
-      font-size: 35px; /* Smaller buttons for smaller screens */
-      font-weight: bold;
+    .carousel-text h2 {
+        font-size: 2.2rem;
     }
+  
+    .carousel-text p {
+        font-size: 1rem;
+    }
+    
+    .nav-button {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .nav-button img {
+        width: 16px;
+        height: 16px;
+    }
+}
+
+/* Services section styles */
+.services-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 60px 40px;
+  max-width: 1400px;
+  margin: 20px auto 40px;
+  background: linear-gradient(135deg, #dfe6ff 0%, #f5f8ff 100%);
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+.services-row::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transform: skewX(-25deg);
+  animation: services-flow 8s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes services-flow {
+  0% {
+    left: -150%;
   }
+  100% {
+    left: 150%;
+  }
+}
+
+.service-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 200px;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(50px) scale(0.8);
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: absolute;
+  left: 50%;
+  margin-left: -100px;
+  filter: hue-rotate(0deg);
+}
+
+.service-item.active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  position: relative;
+  left: auto;
+  margin-left: 0;
+}
+
+.service-item.active:nth-child(1) {
+  transition-delay: 0.1s;
+}
+
+.service-item.active:nth-child(2) {
+  transition-delay: 0.2s;
+}
+
+.service-item.active:nth-child(3) {
+  transition-delay: 0.3s;
+}
+
+.service-item.active:nth-child(4) {
+  transition-delay: 0.4s;
+}
+
+.service-icon {
+  width: 70px;
+  height: 70px;
+  margin-bottom: 20px;
+  background: linear-gradient(135deg, #dfe6ff 0%, #f5f8ff 100%);
+  box-shadow: 0 8px 20px rgba(122, 136, 184, 0.2);
+  border-radius: 50%;
+  padding: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.service-icon svg {
+  width: 100%;
+  height: 100%;
+  color: #7a88b8;
+  transition: all 0.5s ease;
+}
+
+.service-item:hover .service-icon {
+  transform: translateY(-8px) scale(1.1);
+  box-shadow: 0 15px 30px rgba(122, 136, 184, 0.3);
+}
+
+.service-item:hover .service-icon svg {
+  color: #5162a8;
+}
+
+.service-title {
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: #333;
+  position: relative;
+  padding-bottom: 8px;
+  transition: color 0.3s ease;
+}
+
+.service-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(135deg, #dfe6ff 0%, #f5f8ff 100%);
+  transition: all 0.5s ease;
+  transform: translateX(-50%);
+}
+
+.service-item:hover .service-title {
+  color: #7a88b8;
+}
+
+.service-item:hover .service-title::after {
+  width: 60%;
+}
+
+/* Media query for responsive design */
+@media (max-width: 768px) {
+  .services-row {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .service-item {
+    margin-bottom: 30px;
+    width: 80%;
+    max-width: 250px;
+    margin-left: -125px;
+  }
+  
+  .service-item.active {
+    margin-left: 0;
+  }
+}
   

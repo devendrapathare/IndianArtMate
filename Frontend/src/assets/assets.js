@@ -244,9 +244,9 @@ export const CrouselData = [
   },
   {
     id: 3,
-    title: 'Brass Dhokra Sculpture',
+    title: 'Discover the Soul of <span>Indian Art</span>',
     src: crouselImg3,
-    description1: 'Dhokra art is an ancient craft of lost-wax metal casting, showcasing the richness of Indian heritage.',
+    description1: 'Connect with talented artists, collect unique pieces, and become part of a thriving creative community.',
     description2: 'These sculptures, each unique, bring timeless elegance to your home or space.'
-  },
+  }
 ]

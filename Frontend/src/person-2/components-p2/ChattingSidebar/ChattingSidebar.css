@@ -1,12 +1,16 @@
 .ChattingSidebar-container {
-  background: #FFF9D7;
+  background: #F8FAFC;
   padding: 20px;
-  border-right: 2px solid #a0522d;  
-  scrollbar-color: brown #f1f1f1;
+  border-right: 2px solid #000000;  
+  scrollbar-color: #000000 #F8FAFC;
   scrollbar-width: thin;
   height: 100vh;
   /* border: 2px solid black; */
-  border-radius: 5px;
+  border-radius: 20px 0 0 20px;
+  box-shadow: 5px 0 15px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
 }
 
 .ChattingSidebar-other-content {
@@ -22,14 +26,50 @@
 .Conversation-container {
   display: flex;
   align-items: center;
-  padding: 10px;
-  border-bottom: 1px solid #a0522d; /* Consistent with brown theme */
+  padding: 15px;
+  margin: 10px 0;
+  border: 2px solid #3B82F6;
+  border-radius: 20px;
+  background: rgba(59, 130, 246, 0.05);
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.1);
+  animation: zoomOutFade 0.5s ease-out;
+  transform-origin: center;
+  transition: all 0.3s ease-out;
+}
+
+.Conversation-container:hover {
+  transform: scale(0.98) translateY(-2px);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.2);
+  background: rgba(59, 130, 246, 0.1);
+  border-color: #60A5FA;
+}
+
+@keyframes zoomOutFade {
+  0% {
+    opacity: 0;
+    transform: scale(1.2) translateY(20px);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.1) translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
 .Conversation-dp img {
   width: 50px;
   height: 50px;
   border-radius: 50%;
+  border: 2px solid #3B82F6;
+  transition: transform 0.3s ease;
+}
+
+.Conversation-dp img:hover {
+  transform: scale(1.1) rotate(5deg);
+  border-color: #60A5FA;
 }
 
 .Conversation-other-info {
@@ -39,12 +79,12 @@
 .user-name p {
   font-weight: bold;
   font-size: 16px;
-  color: #5d4037; /* Brownish for text */
+  color: #1E40AF;
 }
 
 .latestMessage p {
   font-size: 14px;
-  color: #8b6f47; /* Lighter brown */
+  color: #3B82F6;
 }
 
 .LogOutButton-container {
@@ -56,27 +96,27 @@
 .icon {
   font-size: 24px;
   cursor: pointer;
-  color: #a0522d;
+  color: #3B82F6;
 }
 
 .icon:hover {
-  color: #5d4037;
+  color: #60A5FA;
 }
 
 .ChattingSidebar-container::-webkit-scrollbar {
-  width: 8px !important;
+  width: 8px;
 }
 
 .ChattingSidebar-container::-webkit-scrollbar-track {
-  background-color: #f1f1f1 !important;
+  background-color: #F8FAFC !important;
   border-radius: 10px !important;
 }
 
 .ChattingSidebar-container::-webkit-scrollbar-thumb {
-  background-color: brown !important;
+  background-color: #000000 !important;
   border-radius: 10px !important;
 }
 
 .ChattingSidebar-container::-webkit-scrollbar-thumb:hover {
-  background-color: #723115 !important;
+  background-color: #333333 !important;
 }

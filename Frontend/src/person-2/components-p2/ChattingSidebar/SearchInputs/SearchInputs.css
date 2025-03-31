@@ -6,7 +6,7 @@
     padding: 10px;
     border: 2px solid #ddd;
     border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Enhanced shadow */
     text-align: center;
     transition: transform 0.2s;
     background: #fff9d7;
@@ -18,49 +18,95 @@
     width: 6.5vh;
     height: 6.5vh;
     background: #6f3d00;
-    color: #000; 
+    color: #000;
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer; /* Added for better UX */
 }
 
 .SearchInputs-form button:hover {
-    background: #5b4319; 
-    color: #FFF9D7; 
-    transition:  0.2s ease-in; 
+    background: #5b4319;
+    color: #fff9d7;
+    transition: background-color 0.2s ease-in, color 0.2s ease-in; /* Improved transition */
 }
 
-.SearchInputs-form-Search-icon{
+.SearchInputs-form-Search-icon {
     font-size: 25px;
-    color: #FFF9D7; 
+    color: #fff9d7;
 }
 
 .SearchInputs-form-Search-icon:hover {
-    color: black;
+    color: #000; /* Changed to hex for consistency */
 }
 
 .SearchInputs-form-input {
-    border: 2px solid #BFAE8C; 
-    border-radius: 25px; 
-    padding: 10px 15px; 
-    width: 100%; 
+    border: 2px solid #bfae8c;
+    border-radius: 25px;
+    padding: 10px 15px;
+    width: 100%;
     height: 85%;
-    font-size: 16px; 
-    background: #F6E8D6; 
-    color: #4F3B2F; 
-    outline: none; 
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: border-color 0.3s ease, box-shadow 0.3s ease; 
+    font-size: 16px;
+    background: #f6e8d6;
+    color: #4f3b2f;
+    outline: none;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15); /* Enhanced shadow */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .SearchInputs-form-input:focus {
-    border-color: #6f3d00; 
-    box-shadow: 0 0 8px rgba(111, 61, 0, 0.5); 
-    background: #E0D0B0; 
+    border-color: #6f3d00;
+    box-shadow: 0 0 10px rgba(111, 61, 0, 0.6); /* Enhanced focus shadow */
+    background: #e0d0b0;
 }
 
 .SearchInputs-form-input::placeholder {
-    color: #BFAE8C; 
-    opacity: 1; 
+    color: #bfae8c;
+    opacity: 1;
     font-size: 14px;
+}
+
+.SearchInputs-results-wrapper {
+    position: relative;
+}
+
+.SearchInputs-results {
+    position: absolute;
+    top: calc(-100% - 55px); /* Adjusted to connect with a small gap */
+    left: 0;
+    width: 100%;
+    background: #fff9d7;
+    border: 1px solid #ccc;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    max-height: 100vh; /* Limit height to viewport */
+    overflow-y: auto; /* Enable scrolling if content exceeds max height */
+    border-radius: 8px; /* Rounded corners for the bottom */
+}
+
+.SearchInputs-results {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+    /* border: 2px solid #ddd; */
+    margin: 30px 0;
+}
+
+.SearchInputs-results .SearchInputs-user {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 8px;
+    background: #fff9d7;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Enhanced shadow */
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    gap: 50px;
+}
+
+.SearchInputs-user img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
 }

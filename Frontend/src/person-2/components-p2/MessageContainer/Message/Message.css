@@ -4,6 +4,23 @@
     width: auto;
     height: auto;
     /* border: 2px solid #6f3d00; */
+    animation: messageZoomOut 0.5s ease-out;
+    transform-origin: center;
+}
+
+@keyframes messageZoomOut {
+    0% {
+        opacity: 0;
+        transform: scale(1.2) translateY(20px);
+    }
+    50% {
+        opacity: 0.5;
+        transform: scale(1.1) translateY(10px);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
 }
 
 .Chat-end {
@@ -14,22 +31,33 @@
 
 .Chat-end .chat-image-div {
     order: 2;
+    margin-left: 10px;
 }
 
 .chat-start {
     display: flex;
     justify-content: flex-start;
-    align-items: start
+    align-items: start;
+}
+
+.chat-start .chat-image-div {
+    margin-right: 10px;
 }
 
 .chat-image-div {
-    width: 40px;
-    height: 40px;
+    width: 45px;
+    height: 45px;
     overflow: hidden;
     border-radius: 50%;
-    border: 2px solid black;
+    border: 3px solid #3B82F6;
     display: flex;
     flex-direction: column;
+    transition: all 0.3s ease;
+}
+
+.chat-image-div:hover {
+    transform: scale(1.1) rotate(5deg);
+    border-color: #60A5FA;
 }
 
 .chat-image {
@@ -42,37 +70,52 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    border-radius: 12px;
-    padding: 8px 12px;
-    background-color: #edbb7e;
-    /* Matching color */
+    border-radius: 25px;
+    padding: 12px 18px;
+    background-color: #3B82F6;
     max-width: 20vw;
     word-wrap: break-word;
     overflow-wrap: break-word;
+    transition: all 0.3s ease-out;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
+}
+
+.Chat-end .chat-data-div {
+    border-radius: 25px 25px 5px 25px;
+    background-color: #3B82F6;
+}
+
+.chat-start .chat-data-div {
+    border-radius: 25px 25px 25px 5px;
+    background-color: #6366F1;
+}
+
+.Chat-end .chat-data-div:hover,
+.chat-start .chat-data-div:hover {
+    transform: scale(0.98) translateY(-2px);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3);
 }
 
 .chat-content p {
     margin: 0;
     font-size: 14px;
     line-height: 1.5;
-    color: #4a4a4a;
-    /* Matching color */
+    color: #FFFFFF;
 }
 
 .time-div {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    margin-top: 4px;
+    margin-top: 6px;
 }
 
 .time-div p {
     font-size: 10px;
-    color: #7a7a7a;
-    /* Matching color */
+    color: rgba(255, 255, 255, 0.9);
+    opacity: 0.8;
 }
 
 .text-color {
-    color: #4a4a4a;
-    /* Matching color */
+    color: #FFFFFF;
 }

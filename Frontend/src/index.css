@@ -1,14 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Inknut Antiqua", serif;
+    font-family: "Inter", sans-serif;
 }
 
 body {
-    background: #f5ead2;
+    /* background: #BFAE8C;     */
+    background: #f5ead2;    
 }
 
 button {
@@ -33,38 +34,11 @@ button:hover{
 }
 
 .scrollable-hidden-scrollbar {
-    overflow-y: scroll;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+    overflow-y: scroll; /* Enable scrolling */
+    scrollbar-width: none; /* For Firefox */
+    -ms-overflow-style: none;  /* For Internet Explorer and Edge */
 }
 
 .scrollable-hidden-scrollbar::-webkit-scrollbar {
-    display: none;
+    display: none; /* For Chrome, Safari, and Opera */
 }
-
-/* 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Inter", sans-serif;
-}
-
-body {
-   
-    background: #f5ead2;    
-}
-
-button {
-    cursor: pointer;
-    font-family: 'Poppins', sans-serif;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 6px;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    background: linear-gradient(135deg, #dfe6ff 0%, #c4d0ff 100%);
-    color: #333;
-} */

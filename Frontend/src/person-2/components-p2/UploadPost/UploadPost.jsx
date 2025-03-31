@@ -1,5 +1,3 @@
-
-
 import React, { useRef, useState, useEffect } from 'react';
 import './UploadPost.css';
 import { useAuthContext } from '../../context/AuthContext/AuthContext';
@@ -146,7 +144,6 @@ const UploadPost = () => {
     };
     
     
-
     return (
         <div>
             <form className='UploadPost-container' onSubmit={handleSubmit}>

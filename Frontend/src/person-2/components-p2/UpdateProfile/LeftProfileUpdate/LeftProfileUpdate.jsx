@@ -14,9 +14,13 @@ const LeftProfileUpdate = () => {
 
   const [image, setImage] = useState(null);
   const [file, setFile] = useState(null); 
+  const [isLoading, setIsLoading] = useState(false);
+  const [uploadStatus, setUploadStatus] = useState({ message: '', type: '' });
+  const [animation, setAnimation] = useState(false);
 
   useEffect(() => {
     const fetchUserProfile = async () => {
+      setIsLoading(true);
       try {
         const response = await fetch(`${url}/users/${userId}`);
         if (!response.ok) throw new Error('Network response was not ok');
@@ -42,22 +46,53 @@ const LeftProfileUpdate = () => {
   
         setImage(imageUrl);
         console.log("Profile Pic URL image:", imageUrl); // Updated to log 'fullImageUrl' directly
+        setTimeout(() => setAnimation(true), 300);
       } catch (error) {
         console.error('Error fetching user data:', error);
+        setUploadStatus({ 
+          message: 'Failed to load profile image. Please try again later.', 
+          type: 'error' 
+        });
+      } finally {
+        setIsLoading(false);
       }
     };
   
     fetchUserProfile();
-  }, [userId]);
+  }, [userId, url, authUser]);
   
   
 
   const handleImageChange = (e) => {
     const selectedFile = e.target.files[0];
     if (selectedFile) {
+      // Validate file type
+      const validTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'];
+      if (!validTypes.includes(selectedFile.type)) {
+        setUploadStatus({ 
+          message: 'Please select a valid image file (JPEG, PNG, GIF)', 
+          type: 'error' 
+        });
+        return;
+      }
+      
+      // Validate file size (max 5MB)
+      if (selectedFile.size > 5 * 1024 * 1024) {
+        setUploadStatus({ 
+          message: 'Image size should be less than 5MB', 
+          type: 'error' 
+        });
+        return;
+      }
+
+      // Temporarily set animation false to retrigger it
+      setAnimation(false);
+      
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImage(reader.result);  
+        setImage(reader.result);
+        setUploadStatus({ message: 'Image selected! Click Save to update your profile.', type: 'info' });
+        setTimeout(() => setAnimation(true), 100);
       };
       reader.readAsDataURL(selectedFile);
       setFile(selectedFile); 
@@ -65,8 +100,14 @@ const LeftProfileUpdate = () => {
   };
 
   const handleImageUpload = async () => {
-    if (!file) return;
+    if (!file) {
+      setUploadStatus({ message: 'Please select an image first', type: 'error' });
+      return;
+    }
   
+    setIsLoading(true);
+    setUploadStatus({ message: 'Uploading your image...', type: 'info' });
+    
     const formData = new FormData();
     formData.append('profilePic', file);
   
@@ -79,6 +120,9 @@ const LeftProfileUpdate = () => {
       if (!response.ok) throw new Error('Failed to upload image');
       const data = await response.json();
   
+      // Temporarily set animation false to retrigger it
+      setAnimation(false);
+      
       const newImageUrl = `${url}/profilePics${data.profilePic.split('/profilePic')[1]}`;
       setImage(newImageUrl);
       const userData = JSON.parse(localStorage.getItem('user-info'));
@@ -87,9 +131,15 @@ const LeftProfileUpdate = () => {
             localStorage.setItem('user-info', JSON.stringify(userData));
 
   
-      alert('Profile picture updated successfully');
+      setUploadStatus({ message: '✓ Profile picture updated successfully!', type: 'success' });
+      setFile(null); // Reset file after successful upload
+      
+      setTimeout(() => setAnimation(true), 100);
     } catch (error) {
       console.error('Error uploading profile picture:', error);
+      setUploadStatus({ message: 'Failed to upload image. Please try again.', type: 'error' });
+    } finally {
+      setIsLoading(false);
     }
   };
   
@@ -100,18 +150,47 @@ const LeftProfileUpdate = () => {
         <p>Profile Pic</p>
       </div>
       <div className="LeftProfileUpdate-image">
-        <img src={image || ''} alt="Profile" />
+        {isLoading && !image ? (
+          <div className="profile-image-placeholder">
+            <div className="loading-spinner"></div>
+          </div>
+        ) : (
+          <img 
+            src={image || 'https://avatar.iran.liara.run/public/boy'} 
+            alt="Profile" 
+            className={`${isLoading ? 'loading' : ''} ${animation ? 'animate' : ''}`}
+          />
+        )}
+        
+        {uploadStatus.message && (
+          <div className={`upload-status ${uploadStatus.type}`}>
+            {uploadStatus.message}
+          </div>
+        )}
+        
         <input
           type="file"
           id="file-input"
           style={{ display: 'none' }}
           accept="image/*"
           onChange={handleImageChange}
+          disabled={isLoading}
         />
-        <button onClick={() => document.getElementById('file-input').click()}>
-          Change Photo
+        <button 
+          onClick={() => document.getElementById('file-input').click()}
+          disabled={isLoading}
+          className="change-photo-btn"
+        >
+          {isLoading ? 'Please wait...' : 'Change Photo'}
         </button>
-        <button onClick={handleImageUpload}>Save Photo</button>
+        
+        <button 
+          onClick={handleImageUpload}
+          disabled={isLoading || !file}
+          className="save-photo-btn"
+        >
+          {isLoading ? 'Saving...' : 'Save Photo'}
+        </button>
       </div>
     </div>
   );

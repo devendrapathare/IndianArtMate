@@ -8,13 +8,20 @@ import UploadPost from '../UploadPost/UploadPost';
 const Profile = ({ isOwnProfile, userId }) => {
   const [showUploadPost, setShowUploadPost] = useState(true); 
 
-
   return (
     <div className='profile-container'>
-     <ProfileInfo setshowUploadPost={setShowUploadPost} isOwnProfile={isOwnProfile} userId={userId} />
-      {/* {showUploadPost ?<ProfilefeedDisplay />:<UploadPost/>} */}
-      {!showUploadPost ?<UploadPost/>:<ProfilefeedDisplay isOwnProfile={isOwnProfile} current_id = {userId} />}
-      <TopArtistProfileDisplay userId={userId} /> 
+      <div className="profile-main-column">
+        <div className="profile-info-section">
+          <ProfileInfo setshowUploadPost={setShowUploadPost} isOwnProfile={isOwnProfile} userId={userId} />
+        </div>
+        <div className="profile-feed-section">
+          <h2 className="profile-section-title">Posts</h2>
+          {!showUploadPost ? <UploadPost /> : <ProfilefeedDisplay isOwnProfile={isOwnProfile} current_id={userId} />}
+        </div>
+      </div>
+      <div className="profile-sidebar">
+        <TopArtistProfileDisplay userId={userId} /> 
+      </div>
     </div>
   );
 };

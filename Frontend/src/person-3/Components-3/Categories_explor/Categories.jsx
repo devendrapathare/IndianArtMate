@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useRef } from 'react';
 import './Categories.css';
 import axios from 'axios';
 import { PostContext, usePostContext } from '../../../person-2/context/PostContext/PostContext';
@@ -8,6 +8,7 @@ import CategoryComp from '../../../person-2/components-p2/HomePageComp/CategoryC
 
 const Categories = () => {
   const [showAll, setShowAll] = useState(false);
+  const [animateNewCards, setAnimateNewCards] = useState(false);
   const { posts, fetchPostList } = useContext(PostContext);
   const { authUser } = useAuthContext(); // Check if the user is logged in
   const [userNames, setUserNames] = useState({});
@@ -16,6 +17,100 @@ const Categories = () => {
   const [count, setCount] = useState(0);
   const { url } = usePostContext();
   const userId = authUser?._id;
+  
+  // Refs for scroll animation
+  const topRef = useRef(null);
+  const firstTitleRef = useRef(null);
+  const secondTitleRef = useRef(null);
+  const bottomRef = useRef(null);
+  const cardRefs = useRef([]);
+  const lastScrollY = useRef(0);
+  const isHeadingVisible = useRef(false);
+
+  // Trigger top heading animation on mount
+  useEffect(() => {
+    // Add a small delay to ensure DOM is fully rendered
+    const timer = setTimeout(() => {
+      if (topRef.current) {
+        topRef.current.classList.add('animate');
+      }
+    }, 300);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Scroll animation handler with reset functionality
+  useEffect(() => {
+    const resetHeadingAnimation = () => {
+      if (topRef.current) {
+        topRef.current.classList.remove('animate');
+        // Force reflow to reset the animation
+        void topRef.current.offsetWidth;
+        // Re-add the class after a short delay
+        setTimeout(() => {
+          if (topRef.current) {
+            topRef.current.classList.add('animate');
+          }
+        }, 50);
+      }
+    };
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      const scrollingUp = currentScrollY < lastScrollY.current;
+      
+      // Create IntersectionObserver
+      const scrollObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            // Handle the top heading specially
+            if (entry.target === topRef.current) {
+              if (entry.isIntersecting) {
+                if (!isHeadingVisible.current && scrollingUp) {
+                  // Reset animation when scrolling up into view
+                  resetHeadingAnimation();
+                }
+                isHeadingVisible.current = true;
+              } else {
+                isHeadingVisible.current = false;
+              }
+              entry.target.classList.toggle('animate', entry.isIntersecting);
+            } 
+            // Handle other elements normally
+            else if (entry.isIntersecting) {
+              entry.target.classList.add('animate');
+            }
+          });
+        },
+        { threshold: 0.1 }
+      );
+
+      // Observe main sections
+      if (topRef.current) scrollObserver.observe(topRef.current);
+      if (firstTitleRef.current) scrollObserver.observe(firstTitleRef.current);
+      if (secondTitleRef.current) scrollObserver.observe(secondTitleRef.current);
+      if (bottomRef.current) scrollObserver.observe(bottomRef.current);
+
+      // Observe all card elements
+      cardRefs.current.forEach((ref) => {
+        if (ref) scrollObserver.observe(ref);
+      });
+      
+      // Update last scroll position
+      lastScrollY.current = currentScrollY;
+    };
+
+    handleScroll();
+    window.addEventListener('scroll', handleScroll);
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [filteredPosts]);
+
+  // Initialize card refs
+  useEffect(() => {
+    cardRefs.current = cardRefs.current.slice(0, filteredPosts.length);
+  }, [filteredPosts]);
 
   const fetchUserName = async (userId, postId) => {
     try {
@@ -95,10 +190,6 @@ const Categories = () => {
     }
   }, [posts]);
 
-  // useEffect(() => {
-  //   fetchPostList();
-  // }, [fetchPostList]);
-
   useEffect(() => {
     filteredPosts.forEach((post) => {
       if (!userNames[post._id]) {
@@ -106,147 +197,133 @@ const Categories = () => {
       }
     });
   }, [filteredPosts, userNames]);
-  // console.log('userNames',userNames);
-
-
-  const handleLikeDislike = async (postId, actionType) => {
-    if (authUser) {
-      try {
-        await axios.post(`${url}/posts/${postId}/${actionType}`, { userId });
-
-        setFilteredPosts((prevPosts) =>
-          prevPosts.map((post) => {
-            if (post._id === postId) {
-              if (actionType === 'like') {
-                const updatedLikes = post.like.includes(userId)
-                  ? post.like.filter((id) => id !== userId)
-                  : [...post.like, userId];
-                const updatedDislikes = post.disLike.includes(userId)
-                  ? post.disLike.filter((id) => id !== userId)
-                  : post.disLike;
-
-                return { ...post, like: updatedLikes, disLike: updatedDislikes };
-              } else if (actionType === 'dislike') {
-                const updatedDislikes = post.disLike.includes(userId)
-                  ? post.disLike.filter((id) => id !== userId)
-                  : [...post.disLike, userId];
-                const updatedLikes = post.like.includes(userId)
-                  ? post.like.filter((id) => id !== userId)
-                  : post.like;
-
-                return { ...post, like: updatedLikes, disLike: updatedDislikes };
-              }
-            }
-            console.log('psto', post);
-
-            return post;
-          })
-        );
-      } catch (error) {
-        console.error('Error updating like/dislike:', error);
-        alert('Failed to update. Please try again.');
-      }
-    } else {
-      alert('Please log in to like or dislike a post.');
-    }
-  };
 
   const handleShowMore = () => {
-    setShowAll((prev) => !prev);
+    if (!showAll) {
+      // When showing more cards, set the animation flag
+      setAnimateNewCards(true);
+      // Scroll to the "Our Arts" heading
+      secondTitleRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      // When showing fewer cards, reset the animation flag
+      setAnimateNewCards(false);
+    }
+    setShowAll(!showAll);
+  };
+
+  const handleLikeDislike = async (postId, action) => {
+    if (!authUser) {
+      alert('Please log in to like or dislike posts.');
+      return;
+    }
+
+    try {
+      // Make API request to like/dislike endpoint
+      await axios.post(`${url}/posts/${postId}/${action}`, {
+        userId: authUser._id,
+      });
+
+      // Refresh posts to update UI
+      fetchPostList();
+    } catch (error) {
+      console.error(`Error ${action === 'like' ? 'liking' : 'disliking'} post:`, error);
+    }
   };
 
   const renderStars = (rating) => {
     const maxStars = 5;
-    const fullStars = Math.floor(rating); // Full stars
-    const hasHalfStar = rating % 1 >= 0.5; // Half star check
-    const emptyStars = maxStars - fullStars - (hasHalfStar ? 1 : 0); // Empty stars
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 >= 0.5;
+    const emptyStars = maxStars - fullStars - (hasHalfStar ? 1 : 0);
 
     return (
       <span className="star-rating">
-        {"★".repeat(fullStars)} {/* Full stars */}
-        {hasHalfStar ? "⯪" : ""} {/* Half star */}
-        {"☆".repeat(emptyStars)} {/* Empty stars */}
+        {"★".repeat(fullStars)}
+        {hasHalfStar ? "⯪" : ""}
+        {"☆".repeat(emptyStars)}
       </span>
     );
   };
 
-  // console.log('commentr3eanks', CommentRanks);
-
-  const visiblePosts = showAll ? filteredPosts : filteredPosts.slice(0, 6);
-  // console.log(posts);
+  // Determine visible posts
+  const visiblePosts = showAll ? filteredPosts.slice(0, 12) : filteredPosts.slice(0, 6);
 
   const sortedPosts = [...visiblePosts].sort((a, b) => {
     const rankA = (a.commentRank + a.likeDislikeRank) / 2;
     const rankB = (b.commentRank + b.likeDislikeRank) / 2;
-    return rankB - rankA; // Descending order
+    return rankB - rankA;
   });
-
 
   return (
     <div className='cat'>
-      <center>
-        <div className="top">
-          <h2>Authentic and Modern Indian</h2>
-          <h2>Painting Handloom and Handcraft</h2>
-        </div>
-        <div className="Title">
-          <h1>Masterpieces of Our Collection</h1>
-        </div>
-        <div className="mid">
-          {sortedPosts.slice(0, 3).map((post) => (
-            <div key={post._id}>
-              <CategoryComp post={post} userNames={userNames} url={url} renderStars={renderStars} handleLikeDislike={handleLikeDislike} GotoPost={GotoPost} />
-            </div>
-          ))}
-
-        </div>
-        {/* <center> */}
-        {/* <center>
-          <div className="bottom">
-            {!showAll ? (
-              <button className='explore-button' onClick={handleShowMore}>
-                Show More
-              </button>
-            ) : (
-              <button className='explore-button' onClick={handleShowMore}>
-                Show Less
-              </button>
-            )}
-          </div>
-        </center> */}
-        {/* <center/> */}
-      </center>
+      <div className="top" ref={topRef}>
+        <h2 className="headline-text">Authentic and Modern Indian</h2>
+        <h2 className="headline-text">Painting Handloom and Handcraft</h2>
+      </div>
       
-      <center>
-        <div className="Title">
-          <h1>Our Arts</h1>
-        </div>
-        <div className="mid">
-          {visiblePosts
-            .filter(post => post.userId !== authUser?._id)
-            .map((post) => (
-              <div key={post._id}>
-                <CategoryComp post={post} userNames={userNames} url={url} renderStars={renderStars} handleLikeDislike={handleLikeDislike} GotoPost={GotoPost} />
-              </div>
-            ))}
-        </div>
-
-        <center>
-          <div className="bottom">
-            {!showAll ? (
-              <button className='explore-button' onClick={handleShowMore}>
-                Show More
-              </button>
-            ) : (
-              <button className='explore-button' onClick={handleShowMore}>
-                Show Less
-              </button>
-            )}
+      <div className="Title" ref={firstTitleRef}>
+        <h1>Masterpieces of Our Collection</h1>
+      </div>
+      
+      <div className="mid">
+        {sortedPosts.slice(0, 3).map((post, index) => (
+          <div key={post._id} ref={el => cardRefs.current[index] = el}>
+            <CategoryComp 
+              post={post} 
+              userNames={userNames} 
+              url={url} 
+              renderStars={renderStars} 
+              handleLikeDislike={handleLikeDislike} 
+              GotoPost={GotoPost} 
+            />
           </div>
-        </center>
+        ))}
+      </div>
+      
+      <div className="Title" ref={secondTitleRef}>
+        <h1>Our Arts</h1>
+      </div>
+      
+      <div className="mid">
+        {sortedPosts.slice(3, 6).map((post, index) => (
+          <div 
+            key={post._id} 
+            ref={el => cardRefs.current[index + 3] = el}
+          >
+            <CategoryComp 
+              post={post} 
+              userNames={userNames} 
+              url={url} 
+              renderStars={renderStars} 
+              handleLikeDislike={handleLikeDislike} 
+              GotoPost={GotoPost} 
+            />
+          </div>
+        ))}
+        
+        {showAll && sortedPosts.slice(6, 12).map((post, index) => (
+          <div 
+            key={post._id} 
+            ref={el => cardRefs.current[index + 6] = el}
+            className={animateNewCards ? 'pop-animation' : ''}
+          >
+            <CategoryComp 
+              post={post} 
+              userNames={userNames} 
+              url={url} 
+              renderStars={renderStars} 
+              handleLikeDislike={handleLikeDislike} 
+              GotoPost={GotoPost} 
+            />
+          </div>
+        ))}
+      </div>
 
-      </center>
-
+      <div className="bottom" ref={bottomRef}>
+        <button className='explore-button' onClick={handleShowMore}>
+          {!showAll ? 'Show More' : 'Show Less'}
+        </button>
+      </div>
     </div>
   );
 };

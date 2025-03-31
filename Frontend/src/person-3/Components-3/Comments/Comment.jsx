@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useComments } from '../../context/CommentContext.jsx';
 import { useAuthContext } from '../../../person-2/context/AuthContext/AuthContext.jsx';
 import { usePostContext } from '../../../person-2/context/PostContext/PostContext.jsx';
@@ -16,20 +16,28 @@ const Comment = ({ postId }) => {
     const [userMap, setUserMap] = useState({});
     const [editingCommentId, setEditingCommentId] = useState(null);
     const navigate = useNavigate();
-
+    const [animateNewComment, setAnimateNewComment] = useState(false);
+    const commentsEndRef = useRef(null);
+    
     useEffect(() => {
         if (Curr_post) fetchComments(Curr_post);
     }, [postId, comments.length]);
+
+    useEffect(() => {
+        if (comments.length > 0 && commentsEndRef.current) {
+            commentsEndRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [comments.length]);
 
     const handleAddComment = () => {
         if (!comment.trim()) return;
         const userId = Curr_userId;
         if (editingCommentId) {
-
             updateComment(postId, editingCommentId, comment.trim());
         } else {
-
             addComment(Curr_post, userId, comment.trim());
+            setAnimateNewComment(true);
+            setTimeout(() => setAnimateNewComment(false), 1000);
         }
         setComment('');
         setEditingCommentId(null);
@@ -101,15 +109,15 @@ const Comment = ({ postId }) => {
     return (
         <>
             <div className="parent">
-
-
                 <div className="comments">
                     <h3>Comments</h3>
                     {/* {comments = []} */}
                     {comments.length > 0 ? (
-                        comments.map((comment) => (
-
-                            <div className="card" key={comment._id}>
+                        comments.map((comment, index) => (
+                            <div 
+                                className={`card ${index === comments.length - 1 && animateNewComment ? 'new-comment' : ''}`} 
+                                key={comment._id}
+                            >
                                 <div className="clickable card-left" onClick={() => gotoProfile(comment.userId._id)}>
                                     <div className="profile-picture-date">
                                         <img
@@ -141,11 +149,11 @@ const Comment = ({ postId }) => {
                                     )}
                                 </div>
                             </div>
-
                         ))
                     ) : (
                         <p>No comments yet. Be the first to comment!</p>
                     )}
+                    <div ref={commentsEndRef} />
 
                     <form
                         onSubmit={(e) => {
@@ -160,9 +168,9 @@ const Comment = ({ postId }) => {
                                 type="text"
                                 value={comment}
                                 onChange={(e) => {
-                                    const words = e.target.value.split(/\s+/).filter((word) => word.length > 0); // Count non-empty words
+                                    const words = e.target.value.split(/\s+/).filter((word) => word.length > 0);
                                     if (words.length <= 30) {
-                                        setComment(e.target.value); // Allow input only if words are 30 or fewer
+                                        setComment(e.target.value);
                                     }
                                 }}
                                 placeholder="Write your comment here..."

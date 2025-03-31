@@ -189,3 +189,29 @@ export const fetchUserByName = async (req, res) => {
     }
 };
 
+export const getAllUserData = async (req, res) => {
+    
+    try {
+
+        const users = await User.find({});
+        if (!users || users.length === 0) {
+            return res.status(404).json({ error: "No users found" });
+        }
+
+        const response = users.map((user) => ({
+            _id: user._id,
+            userName: user.userName,
+            profilePic: user.profilePic,
+        }));
+
+        res.status(200).json(response);
+        
+    } catch (error) {
+        console.log("Error in authController.js getAllUserData", error.message);
+        res.status(500).json({ error: "Error in authController.js getAllUserData" })     
+    }
+
+}
+
+
+

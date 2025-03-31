@@ -49,8 +49,6 @@ const fetchCartData = async (req, res) => {
             await User.findByIdAndUpdate(userId, { cartData: {} });
             cartData = {}; // Set cartData to empty for response
         }
-        console.log("order.payment",order.payment);
-        
 
         res.status(200).json({success:true,message: "Cart data fetched successfully", cartData})
     } catch (error) {

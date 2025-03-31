@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import './index.css'
 import ProfilePage from './person-2/Pages-p2/profilePage/ProfilePage';
@@ -20,17 +20,30 @@ import MyOrders from './person-2/Pages-p2/MyOrders/MyOrders';
 import Verify from './person-2/Pages-p2/Verify/Verify';
 import ReceivedOrder from './person-2/Pages-p2/ReceivedOrder/ReceivedOrder';
 import Show_resp_respting from './person-3/Components-3/Show_resp_respting';
-// import ProfileFeed from './person-2/components-p2/Profile/ProfileFeed/ProfileFeed';
-// import ProfilefeedDisplay from './person-2/components-p2/ProfileDisplay/ProfilefeedDisplay/ProfilefeedDisplay';
 import Search from './person-3/Components-3/search/Search';
 import ChattingPage from './person-2/Pages-p2/ChattingPage/ChattingPage';
 import FeedPage from './person-2/Pages-p2/FeedPage/FeedPage';
+import LoadingScreen from './components/LoadingScreen';
 
 function App() {
     const { authUser } = useAuthContext();
     const userId = authUser?._id;
     const [showLogin, setshowLogin] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const location = useLocation();
+
+    useEffect(() => {
+        // This simulates initial app loading
+        const timer = setTimeout(() => {
+            setIsLoading(false);
+        }, 6000); // 6 seconds total loading time (matching our animation duration)
+        
+        return () => clearTimeout(timer);
+    }, []);
+
+    if (isLoading) {
+        return <LoadingScreen onLoadingComplete={() => setIsLoading(false)} />;
+    }
 
     return (
         <>
@@ -45,20 +58,13 @@ function App() {
                     <Route path="/myChats" element={<ChattingPage />} />
                     <Route path="/productDes" element={<ProductDesPage />} />
                     <Route path="/UpdateProfilePage" element={<UpdateProfilePage />} />
-                    <Route path = "/temp/:id" element={<Temp/>}/>
-                    <Route path = "/order" element={<PlaceOrder />}/>
-                    <Route path = "/myOrders" element={<MyOrders />}/>
-                    <Route path = "/verify" element={<Verify />}/>
-                    <Route path = "/receivedOrders" element={<ReceivedOrder />}/>
-                    {/* <Route path = "/myProfileDetails/:whatToDo/:userId" element={<ProfilePage current_id = {userId}/>}/> */}
-                    <Route path = "/myProfileDetails/:whatToDo/:userId" element={<Show_resp_respting/>}/>
-                    <Route path = "/SearchPost" element={<Search/>}/>
-                    <Route path="/temp/:id" element={<Temp />} />
-                    <Route path="/order" element={<PlaceOrder />} />
-                    <Route path="/myOrders" element={<MyOrders />} />
-                    <Route path="/verify" element={<Verify />} />
-                    <Route path="/receivedOrders" element={<ReceivedOrder />} />
-                    <Route path="/myProfileDetails/:whatToDo/:userId" element={<Show_resp_respting />} />
+                    <Route path="/temp/:id" element={<Temp/>}/>
+                    <Route path="/order" element={<PlaceOrder />}/>
+                    <Route path="/myOrders" element={<MyOrders />}/>
+                    <Route path="/verify" element={<Verify />}/>
+                    <Route path="/receivedOrders" element={<ReceivedOrder />}/>
+                    <Route path="/myProfileDetails/:whatToDo/:userId" element={<Show_resp_respting/>}/>
+                    <Route path="/SearchPost" element={<Search/>}/>
                     <Route path="/feedPage" element={<FeedPage />} />
                 </Routes>
 

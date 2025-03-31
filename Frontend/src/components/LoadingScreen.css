@@ -1,0 +1,134 @@
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  transition: opacity 1s ease;
+}
+
+.logo-container {
+  position: relative;
+  margin-bottom: 40px;
+}
+
+.animate-logo {
+  animation: fadeInScale 1.2s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
+}
+
+@keyframes fadeInScale {
+  0% {
+    opacity: 0;
+    transform: scale(1.3);
+    filter: blur(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+
+.split-logo {
+  font-size: 7.5rem;
+  font-family: 'Arial', sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  position: relative;
+  margin: 0;
+  padding: 0;
+}
+
+/* Updated font styling to match NeoLeaf reference */
+.logo-dark, .logo-light {
+  color: white;
+  font-family: 'Helvetica Neue', 'Arial', sans-serif;
+  font-weight: 900;
+  text-transform: none;
+  letter-spacing: -3px;
+}
+
+.logo-light {
+  position: relative;
+}
+
+.logo-container::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+  top: 0;
+  left: -100%;
+  transform: skewX(-15deg);
+  animation: lightSweep 2s cubic-bezier(0.19, 1, 0.22, 1) 1.5s forwards;
+}
+
+@keyframes lightSweep {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 200%;
+  }
+}
+
+.loading-info {
+  margin-top: 20px;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.2rem;
+  font-family: 'Helvetica Neue', 'Arial', sans-serif;
+  font-weight: 300;
+  letter-spacing: 1px;
+}
+
+/* Add dark overlay patches to logo for NeoLeaf style */
+.logo-dark::before,
+.logo-light::after {
+  content: '';
+  position: absolute;
+  background-color: #333;
+  z-index: -1;
+}
+
+.logo-dark::before {
+  width: 25%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  clip-path: polygon(0 0, 100% 0, 60% 100%, 0 100%);
+}
+
+.logo-light::after {
+  width: 35%;
+  height: 100%;
+  top: 0;
+  right: 0;
+  clip-path: polygon(40% 0, 100% 0, 100% 100%, 0 100%);
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .split-logo {
+    font-size: 5rem;
+  }
+  
+  .loading-info {
+    bottom: 15%;
+    right: 5%;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .split-logo {
+    font-size: 3.5rem;
+  }
+} 

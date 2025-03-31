@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState, useContext } from 'react';
 import './Sidebar.css';
 import { useAuthContext } from '../../../person-2/context/AuthContext/AuthContext';
@@ -20,7 +19,40 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   const [postTitles, setPostTitles] = useState({});
   const [artistNames, setArtistNames] = useState({});
   const [activeTab, setActiveTab] = useState('bidding');
+  const [profileImage, setProfileImage] = useState('/defaultProfilePic.png');
+  const [imageError, setImageError] = useState(false);
   const userId = authUser?._id;
+
+  // Get user initials for placeholder
+  const getUserInitials = () => {
+    if (!authUser?.userName) return 'U';
+    
+    const nameParts = authUser.userName.split(' ');
+    if (nameParts.length === 1) return nameParts[0][0].toUpperCase();
+    
+    return (nameParts[0][0] + nameParts[nameParts.length - 1][0]).toUpperCase();
+  };
+
+  // Load profile picture
+  useEffect(() => {
+    if (authUser?.profilePic && url) {
+      const constructedUrl = `${url}/profilePics${authUser.profilePic.replace('/uploads/profilePic', '')}`;
+      
+      // Check if the image URL is valid
+      const checkImage = new Image();
+      checkImage.onload = () => {
+        setProfileImage(constructedUrl);
+        setImageError(false);
+      };
+      checkImage.onerror = () => {
+        setProfileImage('/defaultProfilePic.png');
+        setImageError(true);
+      };
+      checkImage.src = constructedUrl;
+    } else {
+      setImageError(true);
+    }
+  }, [authUser, url]);
 
   useEffect(() => {
     const fetchBiddingNotifications = async () => {
@@ -139,15 +171,26 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
     }
   };
 
-  const imageUrl = authUser?.profilePic ? `${url}/profilePics${authUser.profilePic.replace('/uploads/profilePic', '')}` : '/defaultProfilePic.png';
-
   return (
     <div className={`sidebar ${isOpen ? 'sidebar-open' : ''}`}>
       <h2 className="Notifications">Notifications</h2>
       <hr />
       <div className="top-work">
         <div className='sidebar-profile'>
-          <img src={imageUrl} alt="ProfilePic" />
+          {!imageError ? (
+            <img 
+              src={profileImage} 
+              alt="ProfilePic" 
+              onError={(e) => {
+                e.target.onerror = null; 
+                setImageError(true);
+              }} 
+            />
+          ) : (
+            <div className="profile-placeholder">
+              <span>{getUserInitials()}</span>
+            </div>
+          )}
         </div>
         <div className="close-button">
           <p className="close-btn" onClick={toggleSidebar}>
@@ -157,18 +200,18 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
       </div>
       <hr />
       <div className="sidebar-navigation">
-        {/* <button
+        <button
           className={`nav-button ${activeTab === 'bidding' ? 'active' : ''}`}
           onClick={() => setActiveTab('bidding')}
         >
           Bidding
-        </button> */}
-        {/* <button
+        </button>
+        <button
           className={`nav-button ${activeTab === 'hire' ? 'active' : ''}`}
           onClick={() => setActiveTab('hire')}
         >
           Hire
-        </button> */}
+        </button>
       </div>
       {activeTab === 'bidding' ? (
         <>
@@ -190,6 +233,8 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
             )}
           </div>
 
+          <hr />
+
           <div className="notifications-section">
             <h3>My Biddings</h3>
             {ownerBiddings.length > 0 ? (
@@ -204,7 +249,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                     {new Date(bid.endTime) < new Date() ? (
                       winners[bid._id] ? (
                         <div className="winner-info">
-                          <p onClick={() => navigate(`/temp/${winners[bid._id].winnerId}`)} style={{ cursor: 'pointer', color: 'blue' }}>
+                          <p onClick={() => navigate(`/temp/${winners[bid._id].winnerId}`)} style={{ cursor: 'pointer', color: '#dfe6ff' }}>
                             Winner: {winners[bid._id].userName}
                           </p>
                           <p>Email: {winners[bid._id].email}</p>
@@ -225,8 +270,14 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
           </div>
         </>
       ) : (
-        <div className="hire-section">
-          <HireMeDisplay />
+        <div className="no-notifications">
+          <p>You Don't Have any Hire Request Now.</p>
+          <button 
+            className="hire-button"
+            onClick={() => navigate('/hire')}
+          >
+            Hire
+          </button>
         </div>
       )}
     </div>

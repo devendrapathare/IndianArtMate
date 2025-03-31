@@ -56,6 +56,42 @@
     background-color: #fff;
 }
 
+/* Password input container and toggle button styles */
+.password-input-container {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.password-input-container input {
+    width: 100%;
+    padding-right: 70px; /* Make room for the toggle button */
+}
+
+.password-toggle {
+    position: absolute;
+    right: 5px;
+    height: 80%;
+    padding: 0 10px;
+    background-color: #ff9717;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+}
+
+.password-toggle:hover {
+    background-color: #e58200;
+}
+
+.password-toggle:active {
+    transform: scale(0.95);
+}
+
 .login-popup-container button {
     background-color: #8E4800;
     color: #FFF9D7;
