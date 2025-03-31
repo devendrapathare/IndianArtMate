@@ -157,18 +157,18 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
       </div>
       <hr />
       <div className="sidebar-navigation">
-        <button
+        {/* <button
           className={`nav-button ${activeTab === 'bidding' ? 'active' : ''}`}
           onClick={() => setActiveTab('bidding')}
         >
           Bidding
-        </button>
-        <button
+        </button> */}
+        {/* <button
           className={`nav-button ${activeTab === 'hire' ? 'active' : ''}`}
           onClick={() => setActiveTab('hire')}
         >
           Hire
-        </button>
+        </button> */}
       </div>
       {activeTab === 'bidding' ? (
         <>

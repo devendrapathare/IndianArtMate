@@ -189,5 +189,3 @@ export const fetchUserByName = async (req, res) => {
     }
 };
 
-
-
