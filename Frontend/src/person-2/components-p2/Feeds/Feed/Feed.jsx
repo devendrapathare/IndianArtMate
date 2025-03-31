@@ -4,6 +4,8 @@ import { like_dislike_images } from '../../../../assets/assets.js';
 import { usePostContext } from '../../../context/PostContext/PostContext.jsx';
 import { useAuthContext } from '../../../context/AuthContext/AuthContext.jsx';
 import axios from 'axios';
+import toast from 'react-hot-toast';
+
 
 const Feed = ({ post }) => {
     const { url } = usePostContext();
@@ -32,19 +34,22 @@ const Feed = ({ post }) => {
 
     const handleLikeDislike = async (actionType) => {
         if (!authUser) {
-            alert('Please log in to like or dislike a post.');
+            toast.error('Please log in to like or dislike a post.');
             return;
         }
 
         try {
             const response = await axios.post(`${url}/posts/${post._id}/${actionType}`, { userId });
-            const { like: updatedLikes, disLike: updatedDislikes } = response.data;
+            const { likeCount: updatedLikes, dislikeCount: updatedDislikes } = response.data;
+            // console.log('Updated Likes:', updatedLikes);
+            // console.log('Updated Dislikes:', updatedDislikes);
+            // console.log(response.data);           
 
-            setLike(updatedLikes.length);
-            setDisLike(updatedDislikes.length);
+            setLike(updatedLikes);
+            setDisLike(updatedDislikes);
         } catch (error) {
             console.error('Error updating like/dislike:', error);
-            alert('Failed to update. Please try again.');
+            toast.error('Failed to update. Please try again.');
         }
     };
 

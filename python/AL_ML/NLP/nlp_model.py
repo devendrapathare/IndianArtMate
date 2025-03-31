@@ -13,7 +13,7 @@ from nltk.stem import WordNetLemmatizer
 # from textblob import TextBlob
 
 # Define CSV path
-# CSV_PATH = r"C:\Users\91702\Documents\programming\projects\thired_year_project\comp\python\AL_ML\NLP\NLP.csv"
+# CSV_PATH = r"IndianArtMate-2.O\python\AL_ML\NLP\NLP.csv"
 CSV_PATH = r"D:\VsCode\code_A_thon\IndianArtMate-2.O\python\AL_ML\NLP\NLP.csv"
 
 # Initialize vectorizer

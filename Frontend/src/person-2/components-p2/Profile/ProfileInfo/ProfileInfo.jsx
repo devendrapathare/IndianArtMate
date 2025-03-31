@@ -154,6 +154,11 @@ const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
                 <h2>{userData.userName || 'Krish Mishra'}</h2>
                 <p>{userData.profile_type || 'Painter'}</p>
                 <p>{userData.email || 'Painter'}</p>
+                {/* {
+                    userData._id === LogggedInUserId ?<p>{userData.wallet || '0'}</p>:null
+                }
+                 */}
+
             </div>
 
 
