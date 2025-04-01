@@ -1,4 +1,4 @@
-.TopArtistProfileDisplay-container {
+/* .TopArtistProfileDisplay-container {
     background-color: white;
     border-radius: 12px;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
@@ -9,8 +9,28 @@
     position: relative;
     border: 1px solid #dfe6ff;
     margin: 20px;
-    min-width: 300px;
+    width: 25vw;
+    right: 0;
+} */
+
+.TopArtistProfileDisplay-container{
+    margin: 20px;
+    margin-left: auto;
+    background: #FFF9D7;
+    border-radius: 8px; 
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+    height: fit-content;
+    transform: translateY(0);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    border: 1px solid #dfe6ff;
+    /* min-width: ; */
+    width: 25vw;
 }
+
 
 .TopArtistProfileDisplay-container:hover {
     transform: translateY(-5px);

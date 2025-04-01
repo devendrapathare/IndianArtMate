@@ -8,6 +8,8 @@
     min-height: 400px;
     box-shadow: 0 8px 20px rgba(93, 123, 157, 0.1);
     animation: fadeIn 0.6s ease-out;
+    /* border: 2px solid red; */
+    width: 65vw;
 }
 
 @keyframes fadeIn {
