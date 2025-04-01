@@ -6,11 +6,14 @@ import MessageContainer from '../../components-p2/MessageContainer/MessageContai
 const ChattingPage = () => {
   return (
     <div className='ChattingPage-container'>
-      <ChattingSidebar />
-      <MessageContainer />
+      <div className="chat-left-block">
+        <ChattingSidebar />
+      </div>
+      <div className="chat-right-block">
+        <MessageContainer />
+      </div>
     </div>
   )
 }
 
 export default ChattingPage
-1

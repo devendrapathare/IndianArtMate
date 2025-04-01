@@ -1,154 +1,309 @@
-
 .comments {
-    margin-left: 10vh;
-    /* border: 2px solid red; */
-    width: 600px;
+    width: 100%;
     height: auto;
-    max-height: 600px;
-    overflow-y: auto; /* Make it scrollable vertically */
-    border: 1px solid #191919; 
-    padding: 10px;
-    border-radius: 8px; /* Rounded corners for a polished look */
-    margin: 20px auto; /* Center the div horizontally */
+    max-height: 700px;
+    overflow-y: auto;
+    background-color: #222;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 25px 30px;
+    border-radius: 12px;
+    margin: 40px auto;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 900px;
+}
+
+.parent {
+    background-color: #121212;
+    padding: 20px;
+    margin-top: 10px;
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.comments h3 {
+    color: #FFF9D7;
+    margin-bottom: 15px;
+    font-size: 18px;
+    border-left: 3px solid #FFF9D7;
+    padding-left: 10px;
 }
 
 /* Custom scrollbar styling */
 .comments::-webkit-scrollbar {
-    width: 8px; /* Width of the scrollbar */
+    width: 6px;
 }
 
 .comments::-webkit-scrollbar-thumb {
-    background-color: brown; /* Brown scrollbar thumb */
-    border-radius: 4px; /* Rounded corners for the scrollbar thumb */
+    background-color: rgba(255, 151, 23, 0.6);
+    border-radius: 3px;
 }
 
 .comments::-webkit-scrollbar-track {
-    background: #f1f1f1; /* Light background for the track */
+    background: rgba(255, 255, 255, 0.05);
 }
 
 /* Style individual comment blocks */
-.comments > div {
+.card {
     display: flex;
-    align-items: flex-start; /* Align items to the top */
-    margin-bottom: 10px; /* Space between comments */
-    padding: 10px;
-    border-bottom: 1px solid #e0e0e0; /* Separate comments with a light line */
+    align-items: flex-start;
+    margin-bottom: 15px;
+    padding: 15px;
+    background-color: #333;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: commentFadeIn 0.5s forwards;
+}
+
+@keyframes commentFadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card:nth-child(2) { animation-delay: 0.1s; }
+.card:nth-child(3) { animation-delay: 0.2s; }
+.card:nth-child(4) { animation-delay: 0.3s; }
+.card:nth-child(5) { animation-delay: 0.4s; }
+.card:nth-child(6) { animation-delay: 0.5s; }
+.card:nth-child(7) { animation-delay: 0.6s; }
+.card:nth-child(n+8) { animation-delay: 0.7s; }
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    border-color: rgba(255, 151, 23, 0.2);
 }
 
 /* Image styling */
 .comments img {
-    width: 40px; /* Size of the profile picture */
-    height: 40px;
-    border-radius: 50%; /* Circular image */
-    margin-right: 10px; /* Space between image and text */
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    margin-right: 12px;
+    border: 2px solid #ff9717;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.clickable:hover img {
+    transform: scale(1.05);
 }
 
 /* Username styling */
 .comments strong {
-    font-size: 14px;
-    font-weight: bold;
+    font-size: 16px;
+    font-weight: 700;
     margin-right: 5px;
+    color: #fff;
 }
 
 /* Comment text styling */
 .comments p {
     margin: 0;
-    line-height: 1.5; /* Improve readability */
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.card-center {
+    font-size: 15px;
+    line-height: 1.6;
+    padding: 0 10px;
 }
 
 /* Button styling */
 .comments button {
-    /* background: transparent; */
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 5px 10px;
+    background: #333;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    padding: 8px 12px;
     margin-right: 5px;
-    /* margin-left: 90%; */
     cursor: pointer;
+    color: white;
+    font-weight: 600;
+    transition: all 0.2s ease;
 }
 
-.clickable{
+.comments button:hover {
+    background: #444;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.modify-btn button:first-child {
+    border-color: rgba(255, 151, 23, 0.3);
+}
+
+.modify-btn button:last-child {
+    border-color: rgba(255, 0, 0, 0.3);
+}
+
+.clickable {
     display: flex;
     cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.clickable:hover {
+    transform: translateY(-2px);
 }
 
 /* Form styling */
-.comments form {
-    display: flex;
-    flex-direction: column;
-    margin-top: 20px;
-}
-
-.comments input[type="text"] {
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-bottom: 10px;
-}
-
-.comments button[type="submit"] {
-    align-self: flex-start; /* Align the submit button to the left */
-    padding: 8px 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.modify-btn{
-    display: flex;
-    margin-left: 10%;
-}
-form{
-    display: flex;
-    /* background: #8E4800; */
-    position: sticky;
-    bottom: 0;
-    background: #BFAE8C;
-    padding: 15px;
-    border-radius: 5px;
-        /* color :white; */
-}
-
-form .form-left{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-form .form-left label{
-    font-size: 13px;
-    margin-right: 10px;
-}
-form .form-right{
+form {
     display: flex;
     justify-content: space-between;
+    position: sticky;
+    bottom: 0;
+    background: #333;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.1);
 }
 
-.profile-picture-date{
+form .form-left {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 70%;
+}
+
+form .form-left label {
+    font-size: 16px;
+    margin-right: 15px;
+    color: #fff;
+    font-weight: 600;
+}
+
+form .form-left input {
+    flex: 1;
+    padding: 12px 15px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+form .form-left input:focus {
+    outline: none;
+    border-color: #ff9717;
+    box-shadow: 0 0 0 2px rgba(255, 151, 23, 0.2);
+}
+
+form .form-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    width: 25%;
+}
+
+form .form-right button {
+    width: 100%;
+    padding: 12px;
+    background-color: #ff9717;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    margin-bottom: 5px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+form .form-right button:hover {
+    background-color: #e58200;
+    transform: translateY(-2px);
+}
+
+form .form-right small {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.7);
+    text-align: right;
+}
+
+.profile-picture-date {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
-.profile-picture-date small{
-    font-size: 11px;
+
+.profile-picture-date small {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-top: 5px;
 }
 
-.card{
-    width: 100%;
+.card-left {
+    width: 25%;
+    display: flex;
     align-items: center;
-    border-radius:10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-.card-left{
-    width: 30%;
-}
-.card-center{
-    width: 40%;
-}
-.card-right{
-    width: 30%;
 }
 
-.card:hover{
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+.card-center {
+    width: 50%;
 }
+
+.card-right {
+    width: 25%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* Empty state styling */
+.comments > p {
+    text-align: center;
+    padding: 30px;
+    color: rgba(255, 255, 255, 0.7);
+    font-style: italic;
+    animation: pulse 1.5s infinite alternate;
+}
+
+@keyframes pulse {
+    from { opacity: 0.7; }
+    to { opacity: 1; }
+}
+
+/* Animation for new comment */
+@keyframes newCommentAnimation {
+    0% {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    70% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.new-comment {
+    animation: newCommentAnimation 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.commentContainer {
+    width: 100%;
+    margin-top: 10px;
+    padding: 0;
+}
+
+/* Add other necessary styles */

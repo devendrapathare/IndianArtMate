@@ -6,7 +6,8 @@
     margin-top: 0.75rem;
     margin-bottom: 0.75rem;
     /* border: 2px solid black; */
-    background: #fff9d7;
+    background: linear-gradient(180deg, rgb(140, 173, 232) 0%, rgb(130, 164, 230) 100%);
+    border-radius: 0 0 15px 15px;
 }
 
 .messageInput-container {
@@ -15,35 +16,94 @@
     justify-content: space-between;
     gap: 10px;
     width: 100%;
+    padding: 10px 0;
 }
 
 .messageInput-input {
-    border-width: 1px;
-    border-radius: 0.5rem;
+    border: none;
+    border-radius: 25px;
     display: block;
     width: 100%;
-    padding: 0.625rem;
+    padding: 12px 20px;
+    background: rgb(255, 249, 215);
+    color: #4f3b2f;
+    box-shadow: inset 0 2px 5px rgba(111, 61, 0, 0.05);
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+.messageInput-input:focus {
+    outline: none;
+    box-shadow: inset 0 2px 8px rgba(111, 61, 0, 0.08);
 }
 
 .messageInput-button {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px; 
-    height: 40px; 
-    border-radius: 50%; 
-    background-color: #fff9d7;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Increased visibility */
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #6f3d00, #a05800);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
     cursor: pointer;
-    transition: transform 0.3s ease, background-color 0.3s ease;
+    transition: all 0.3s ease;
+    border: none;
+    position: relative;
+    overflow: hidden;
 }
 
 .messageInput-button:hover {
-    transform: scale(1.1);
-    background-color: #fff9d7;
+    transform: scale(1.05);
+    background: linear-gradient(145deg, #a05800, #6f3d00);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.messageInput-button.sending {
+    animation: send-pulse 0.5s ease;
+}
+
+@keyframes send-pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(0.85);
+    }
+    75% {
+        transform: scale(1.15);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 
 .buttonImg {
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 1.8rem;
+    height: 1.8rem;
+    filter: brightness(0) invert(1);
+    transition: transform 0.3s ease;
+}
+
+.sending .buttonImg {
+    animation: fly-away 0.5s ease-out;
+}
+
+@keyframes fly-away {
+    0% {
+        transform: translate(0, 0);
+        opacity: 1;
+    }
+    50% {
+        transform: translate(15px, -15px);
+        opacity: 0;
+    }
+    51% {
+        transform: translate(-15px, 15px);
+        opacity: 0;
+    }
+    100% {
+        transform: translate(0, 0);
+        opacity: 1;
+    }
 }

@@ -25,11 +25,15 @@ const MainProfileUpdate = () => {
     profile_type: '',  
   });
 
+  const [isLoading, setIsLoading] = useState(false);
+  const [message, setMessage] = useState({ text: '', type: '' });
+
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true);
       try {
         const response = await axios.get(`http://localhost:5000/users/${userId}`);
-        const userData = response.data.user; // Access the 'user' object from the response
+        const userData = response.data.user;
   
         setUser(userData); 
         setFormData({
@@ -38,10 +42,13 @@ const MainProfileUpdate = () => {
           email: userData.email || '',
           addressLine1: userData.addressLine1 || '',
           addressLine2: userData.addressLine2 || '',
-          profile_type: userData.profile_type || '',  // Fetching profile_type from the 'user' object
+          profile_type: userData.profile_type || '',
         });
       } catch (e) {
         console.log("Error fetching data:", e);
+        setMessage({ text: 'Failed to load profile data. Please try again.', type: 'error' });
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchData();
@@ -54,24 +61,27 @@ const MainProfileUpdate = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+    setMessage({ text: '', type: '' });
 
-    // If fields are empty, use the original user data fetched from the API
     const updatedData = {
       userName: formData.userName || user.userName,
       bio: formData.bio || user.bio,
       email: formData.email || user.email,
       addressLine1: formData.addressLine1 || user.addressLine1,
       addressLine2: formData.addressLine2 || user.addressLine2,
-      profile_type: formData.profile_type || user.profile_type,  // Include profile_type
+      profile_type: formData.profile_type || user.profile_type,
     };
 
     try {
       const response = await axios.put(`http://localhost:5000/profile/update/${userId}`, updatedData);
-      alert('Profile updated successfully!');
+      setMessage({ text: 'Profile updated successfully!', type: 'success' });
       console.log("Updated data:", response.data);
     } catch (error) {
       console.error('Error updating profile:', error);
-      alert('Failed to update profile.');
+      setMessage({ text: 'Failed to update profile. Please try again.', type: 'error' });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -81,84 +91,105 @@ const MainProfileUpdate = () => {
         Update Details Here
       </div>
       <form className='address-detail-container' onSubmit={handleSubmit}>
-        <div className="name-update">
-          <span>Name:</span>
-          <input 
-            type="text" 
-            name="userName" 
-            value={formData.userName} 
-            onChange={handleChange} 
-            placeholder="Enter your name" 
-            required 
-          />
+        <div className="form-section">
+          <div className="form-field name-update">
+            <label htmlFor="userName">Name:</label>
+            <input 
+              type="text" 
+              id="userName"
+              name="userName" 
+              value={formData.userName} 
+              onChange={handleChange} 
+              placeholder="Enter your name" 
+              required 
+            />
+          </div>
+
+          <div className="form-field email-update">
+            <label htmlFor="email">Email:</label>
+            <input 
+              type="email" 
+              id="email"
+              name="email" 
+              value={formData.email} 
+              onChange={handleChange} 
+              placeholder="Enter your email" 
+              required 
+            />
+          </div>
+
+          <div className="form-field profile-type-update">
+            <label htmlFor="profile_type">Profile Type:</label>
+            <select 
+              id="profile_type"
+              name="profile_type" 
+              value={formData.profile_type} 
+              onChange={handleChange} 
+              required
+            >
+              <option value="">Select a profile type</option>
+              <option value="Painting">Painter</option>
+              <option value="Handlooms">Handloom Artist</option>
+              <option value="Handcrafts">Handcraft Artist</option>
+            </select>
+          </div>
+
+          <div className="form-field bio-update">
+            <label htmlFor="bio">Bio:</label>
+            <textarea 
+              id="bio"
+              name="bio" 
+              value={formData.bio} 
+              onChange={handleChange} 
+              placeholder="Tell us about yourself and your art"
+              rows="4"
+            ></textarea>
+          </div>
         </div>
 
-        <div className="bio-update">
-          <span>Bio:</span>
-          <textarea 
-            name="bio" 
-            value={formData.bio} 
-            onChange={handleChange} 
-            placeholder="Enter your bio"
-          ></textarea>
-        </div>
-
-        <div className="email-update">
-          <span>Email:</span>
-          <input 
-            type="email" 
-            name="email" 
-            value={formData.email} 
-            onChange={handleChange} 
-            placeholder="Enter your email" 
-            required 
-          />
-        </div>
-        <div className="profile-type-update">
-          <span>Profile Type:</span>
-          <select 
-            name="profile_type" 
-            value={formData.profile_type} 
-            onChange={handleChange} 
-            required
-          >
-            <option value="">Select a profile type</option>
-            <option value="Painting">Painter</option>
-            <option value="Handlooms">Handloom Artiest</option>
-            <option value="Handcrafts">Handcraft Artiest</option>
-          </select>
-        </div>
-
-        <div className="update-address">
-          <span>Address:</span>
-          <div className="address-differentiate">
-            <div className="address-line">
-              <span>Address Line 1:</span>
-              <input 
-                type="text" 
-                name="addressLine1" 
-                value={formData.addressLine1} 
-                onChange={handleChange} 
-                placeholder="Enter address line 1" 
-                required
-              />
-            </div>
-            <div className="address-line">
-              <span>Address Line 2:</span>
-              <input 
-                type="text" 
-                name="addressLine2" 
-                value={formData.addressLine2} 
-                onChange={handleChange} 
-                placeholder="Enter address line 2"
-                required
-              />
+        <div className="form-section">
+          <div className="form-field address-update">
+            <label>Address:</label>
+            <div className="address-fields">
+              <div className="address-field">
+                <label htmlFor="addressLine1">Address Line 1:</label>
+                <input 
+                  type="text" 
+                  id="addressLine1"
+                  name="addressLine1" 
+                  value={formData.addressLine1} 
+                  onChange={handleChange} 
+                  placeholder="Street address" 
+                  required
+                />
+              </div>
+              <div className="address-field">
+                <label htmlFor="addressLine2">Address Line 2:</label>
+                <input 
+                  type="text" 
+                  id="addressLine2"
+                  name="addressLine2" 
+                  value={formData.addressLine2} 
+                  onChange={handleChange} 
+                  placeholder="City, State, Pin code"
+                  required
+                />
+              </div>
             </div>
           </div>
         </div>
 
+        {message.text && (
+          <div className={`message ${message.type}`}>
+            {message.text}
+          </div>
+        )}
        
-        <button type="submit" >Update</button>
+        <div className="form-actions">
+          <button type="submit" disabled={isLoading}>
+            {isLoading ? 'Updating...' : 'Update Profile'}
+          </button>
+        </div>
       </form>
     </div>
   );

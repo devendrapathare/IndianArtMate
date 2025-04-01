@@ -5,9 +5,12 @@ import GenderCheckbox from '../../../../person-2/components-p2/GenderCheckbox/Ge
 import UseSignup from '../../../../person-2/hooks/UseSignup/UseSignup';
 import { useNavigate } from 'react-router-dom';
 import UseLogin from '../../../../person-2/hooks/UseLogin/UseLogin';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const Login = ({ setshowLogin }) => {
     const [currState, setcurrState] = useState('Login');
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [data, setdata] = useState({
         userName: "",
         email: "",
@@ -29,6 +32,14 @@ const Login = ({ setshowLogin }) => {
         } else if (currState === "Login") {
             setloginData(prev => ({ ...prev, [name]: value }));
         }
+    };
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
+
+    const toggleConfirmPasswordVisibility = () => {
+        setShowConfirmPassword(!showConfirmPassword);
     };
 
     const handleCheckboxChange = (gender) => {
@@ -87,22 +98,42 @@ const Login = ({ setshowLogin }) => {
                                 placeholder='Enter Email'
                                 required
                             />
-                            <input
-                                name='password'
-                                onChange={onChangehandler}
-                                value={data.password}
-                                type="password"
-                                placeholder='Password'
-                                required
-                            />
-                            <input
-                                name='confirmPassword'
-                                onChange={onChangehandler}
-                                value={data.confirmPassword}
-                                type="password"
-                                placeholder='Confirm Password'
-                                required
-                            />
+                            <div className="password-input-container">
+                                <input
+                                    name='password'
+                                    onChange={onChangehandler}
+                                    value={data.password}
+                                    type={showPassword ? "text" : "password"}
+                                    placeholder='Password'
+                                    required
+                                />
+                                <button 
+                                    type="button" 
+                                    className="password-toggle" 
+                                    onClick={togglePasswordVisibility}
+                                    aria-label={showPassword ? "Hide password" : "Show password"}
+                                >
+                                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                                </button>
+                            </div>
+                            <div className="password-input-container">
+                                <input
+                                    name='confirmPassword'
+                                    onChange={onChangehandler}
+                                    value={data.confirmPassword}
+                                    type={showConfirmPassword ? "text" : "password"}
+                                    placeholder='Confirm Password'
+                                    required
+                                />
+                                <button 
+                                    type="button" 
+                                    className="password-toggle" 
+                                    onClick={toggleConfirmPasswordVisibility}
+                                    aria-label={showConfirmPassword ? "Hide confirm password" : "Show confirm password"}
+                                >
+                                    {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                                </button>
+                            </div>
                             <GenderCheckbox onCheckboxChange={handleCheckboxChange} selectedGender={data.gender} />
                         </>
                     ) : (
@@ -115,14 +146,24 @@ const Login = ({ setshowLogin }) => {
                                 placeholder='Enter username or email'
                                 required
                             />
-                            <input
-                                name='password'
-                                onChange={onChangehandler}
-                                value={loginData.password}
-                                type="password"
-                                placeholder='Password'
-                                required
-                            />
+                            <div className="password-input-container">
+                                <input
+                                    name='password'
+                                    onChange={onChangehandler}
+                                    value={loginData.password}
+                                    type={showPassword ? "text" : "password"}
+                                    placeholder='Password'
+                                    required
+                                />
+                                <button 
+                                    type="button" 
+                                    className="password-toggle" 
+                                    onClick={togglePasswordVisibility}
+                                    aria-label={showPassword ? "Hide password" : "Show password"}
+                                >
+                                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                                </button>
+                            </div>
                         </>
                     )}
                 </div>

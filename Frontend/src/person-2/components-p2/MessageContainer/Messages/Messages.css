@@ -1,9 +1,18 @@
-.Messages-container{
+.Messages-container {
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
 .start-conv {
     text-align: center;
-    font-size: 14px;
-    color: gray;
+    font-size: 16px;
+    color: rgb(255, 249, 215);
+    background: rgba(61, 79, 112, 0.2);
+    padding: 15px;
+    border-radius: 12px;
+    margin: 20px auto;
+    max-width: 80%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }

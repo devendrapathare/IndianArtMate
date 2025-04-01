@@ -15,6 +15,7 @@ const Feed = ({ post }) => {
     const [like, setLike] = useState(post.like.length);
     const [disLike, setDisLike] = useState(post.disLike.length);
     const [action, setAction] = useState('');
+    const [isLiking, setIsLiking] = useState(false);
 
     const userId = authUser._id;
 
@@ -38,27 +39,48 @@ const Feed = ({ post }) => {
             return;
         }
 
+        if (isLiking) return; // Prevent multiple rapid clicks
+        
+        setIsLiking(true);
+        
         try {
             const response = await axios.post(`${url}/posts/${post._id}/${actionType}`, { userId });
             const { likeCount: updatedLikes, dislikeCount: updatedDislikes } = response.data;
-            // console.log('Updated Likes:', updatedLikes);
-            // console.log('Updated Dislikes:', updatedDislikes);
-            // console.log(response.data);           
-
+            
+            // Update state with new counts
             setLike(updatedLikes);
             setDisLike(updatedDislikes);
+            
+            // Show success toast
+            toast.success(actionType === 'like' ? 'Post liked!' : 'Post disliked!', {
+                duration: 2000,
+                position: 'bottom-center',
+                style: {
+                    background: '#7B96D9',
+                    color: '#fff'
+                }
+            });
+            
         } catch (error) {
             console.error('Error updating like/dislike:', error);
             toast.error('Failed to update. Please try again.');
+        } finally {
+            setIsLiking(false);
+            setAction(''); // Reset action after handling
         }
     };
 
-    useEffect(() => {
-        if (action) {
-            handleLikeDislike(action);
-            setAction(''); 
-        }
-    }, [action]);
+    const handleLikeClick = (e) => {
+        e.stopPropagation(); // Stop event propagation
+        setAction('like');
+        handleLikeDislike('like');
+    };
+    
+    const handleDislikeClick = (e) => {
+        e.stopPropagation(); // Stop event propagation
+        setAction('dislike');
+        handleLikeDislike('dislike');
+    };
 
     const fullImageUrl = userDetail?.profilePic?.startsWith('http')
         ? userDetail.profilePic
@@ -81,13 +103,13 @@ const Feed = ({ post }) => {
                 <img src={`${url}/images/${post.image}`} alt="Post" />
             </div>
 
-            <div className="feed-like-dislike-div">
+            <div className="feed-like-dislike-div" onClick={(e) => e.stopPropagation()}>
                 <div className="like imgs">
                     <img
                         className="respons"
                         src={like_dislike_images.like}
                         alt="Like"
-                        onClick={() => setAction('like')}
+                        onClick={handleLikeClick}
                     />
                     <p>{like}</p>
                 </div>
@@ -96,7 +118,7 @@ const Feed = ({ post }) => {
                         className="respons"
                         src={like_dislike_images.dislike}
                         alt="Dislike"
-                        onClick={() => setAction('dislike')}
+                        onClick={handleDislikeClick}
                     />
                     <p>{disLike}</p>
                 </div>
