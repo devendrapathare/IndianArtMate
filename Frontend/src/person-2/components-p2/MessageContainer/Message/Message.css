@@ -49,7 +49,8 @@
     height: 45px;
     overflow: hidden;
     border-radius: 50%;
-    border: 3px solid #3B82F6;
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
     transition: all 0.3s ease;
@@ -57,7 +58,7 @@
 
 .chat-image-div:hover {
     transform: scale(1.1) rotate(5deg);
-    border-color: #60A5FA;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .chat-image {
@@ -72,28 +73,52 @@
     justify-content: space-between;
     border-radius: 25px;
     padding: 12px 18px;
-    background-color: #3B82F6;
+    background-color: rgba(0, 0, 0, 0.8);
     max-width: 20vw;
     word-wrap: break-word;
     overflow-wrap: break-word;
     transition: all 0.3s ease-out;
-    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .Chat-end .chat-data-div {
     border-radius: 25px 25px 5px 25px;
-    background-color: #3B82F6;
+    background: linear-gradient(145deg, rgba(0, 0, 0, 0.85), rgba(20, 20, 20, 0.9));
+    animation: slide-in-right 0.3s ease-out forwards;
 }
 
 .chat-start .chat-data-div {
     border-radius: 25px 25px 25px 5px;
-    background-color: #6366F1;
+    background: linear-gradient(145deg, rgba(10, 10, 10, 0.9), rgba(30, 30, 30, 0.95));
+    animation: slide-in-left 0.3s ease-out forwards;
+}
+
+@keyframes slide-in-right {
+    0% {
+        transform: translateX(30px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slide-in-left {
+    0% {
+        transform: translateX(-30px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
 }
 
 .Chat-end .chat-data-div:hover,
 .chat-start .chat-data-div:hover {
     transform: scale(0.98) translateY(-2px);
-    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
 }
 
 .chat-content p {
@@ -101,6 +126,7 @@
     font-size: 14px;
     line-height: 1.5;
     color: #FFFFFF;
+    font-weight: 500;
 }
 
 .time-div {
@@ -112,7 +138,7 @@
 
 .time-div p {
     font-size: 10px;
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(255, 255, 255, 0.75);
     opacity: 0.8;
 }
 

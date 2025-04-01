@@ -17,18 +17,20 @@
 }
 
 .parent {
-    position: relative;
+    background-color: #121212;
+    padding: 20px;
+    margin-top: 10px;
     width: 100%;
-    max-width: 1400px;
-    margin: 0 auto;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
 .comments h3 {
-    font-size: 24px;
-    font-weight: 700;
-    margin-bottom: 20px;
-    color: #fff;
-    letter-spacing: -0.5px;
+    color: #FFF9D7;
+    margin-bottom: 15px;
+    font-size: 18px;
+    border-left: 3px solid #FFF9D7;
+    padding-left: 10px;
 }
 
 /* Custom scrollbar styling */
@@ -297,3 +299,11 @@ form .form-right small {
 .new-comment {
     animation: newCommentAnimation 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
+
+.commentContainer {
+    width: 100%;
+    margin-top: 10px;
+    padding: 0;
+}
+
+/* Add other necessary styles */

@@ -1,16 +1,82 @@
 .ChattingSidebar-container {
-  background: #F8FAFC;
+  background: linear-gradient(180deg, rgb(140, 173, 232) 0%, rgb(130, 164, 230) 100%);
   padding: 20px;
-  border-right: 2px solid #000000;  
-  scrollbar-color: #000000 #F8FAFC;
+  border-right: none;  
+  scrollbar-color: rgb(61, 79, 112) rgb(140, 173, 232);
   scrollbar-width: thin;
   height: 100vh;
   /* border: 2px solid black; */
   border-radius: 20px 0 0 20px;
-  box-shadow: 5px 0 15px rgba(0, 0, 0, 0.1);
+  box-shadow: inset -5px 0 15px rgba(0, 0, 0, 0.08);
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  gap: 25px;
+}
+
+.sidebar-main-block {
+  background-color: rgb(255, 249, 215);
+  border-radius: 15px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  height: 100%;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.search-section, .conversations-section {
+  background-color: rgb(255, 249, 215);
+  border-radius: 12px;
+  padding: 15px;
+  border: none;
+  box-shadow: 0 4px 12px rgba(111, 61, 0, 0.08);
+}
+
+.search-section {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.conversations-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  animation: slideUp 0.5s ease-out;
+  max-height: calc(100vh - 250px);
+}
+
+.section-title {
+  color: #6f3d00;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+  text-align: center;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  letter-spacing: 0.5px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .ChattingSidebar-other-content {
@@ -20,7 +86,7 @@
 
 .Conversations-container {
   overflow-y: auto;
-  max-height: calc(100vh - 100px);  
+  max-height: 100%;
 }
 
 .Conversation-container {
@@ -28,10 +94,10 @@
   align-items: center;
   padding: 15px;
   margin: 10px 0;
-  border: 2px solid #3B82F6;
+  border: none;
   border-radius: 20px;
-  background: rgba(59, 130, 246, 0.05);
-  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.1);
+  background: linear-gradient(to right, rgba(255, 249, 215, 0.9), rgba(255, 247, 200, 0.9));
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
   animation: zoomOutFade 0.5s ease-out;
   transform-origin: center;
   transition: all 0.3s ease-out;
@@ -39,9 +105,8 @@
 
 .Conversation-container:hover {
   transform: scale(0.98) translateY(-2px);
-  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.2);
-  background: rgba(59, 130, 246, 0.1);
-  border-color: #60A5FA;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+  background: linear-gradient(to right, rgba(255, 249, 215, 1), rgba(255, 247, 200, 1));
 }
 
 @keyframes zoomOutFade {
@@ -63,13 +128,15 @@
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  border: 2px solid #3B82F6;
+  border: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
+  object-fit: cover;
 }
 
 .Conversation-dp img:hover {
   transform: scale(1.1) rotate(5deg);
-  border-color: #60A5FA;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .Conversation-other-info {
@@ -79,12 +146,12 @@
 .user-name p {
   font-weight: bold;
   font-size: 16px;
-  color: #1E40AF;
+  color: #6f3d00;
 }
 
 .latestMessage p {
   font-size: 14px;
-  color: #3B82F6;
+  color: #8B5A2B;
 }
 
 .LogOutButton-container {
@@ -96,27 +163,31 @@
 .icon {
   font-size: 24px;
   cursor: pointer;
-  color: #3B82F6;
+  color: rgb(92, 118, 169);
 }
 
 .icon:hover {
-  color: #60A5FA;
+  color: rgb(123, 157, 224);
 }
 
-.ChattingSidebar-container::-webkit-scrollbar {
+.ChattingSidebar-container::-webkit-scrollbar,
+.conversations-section::-webkit-scrollbar {
   width: 8px;
 }
 
-.ChattingSidebar-container::-webkit-scrollbar-track {
-  background-color: #F8FAFC !important;
+.ChattingSidebar-container::-webkit-scrollbar-track,
+.conversations-section::-webkit-scrollbar-track {
+  background-color: rgb(123, 157, 224) !important;
   border-radius: 10px !important;
 }
 
-.ChattingSidebar-container::-webkit-scrollbar-thumb {
-  background-color: #000000 !important;
+.ChattingSidebar-container::-webkit-scrollbar-thumb,
+.conversations-section::-webkit-scrollbar-thumb {
+  background-color: rgb(92, 118, 169) !important;
   border-radius: 10px !important;
 }
 
-.ChattingSidebar-container::-webkit-scrollbar-thumb:hover {
-  background-color: #333333 !important;
+.ChattingSidebar-container::-webkit-scrollbar-thumb:hover,
+.conversations-section::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(61, 79, 112) !important;
 }

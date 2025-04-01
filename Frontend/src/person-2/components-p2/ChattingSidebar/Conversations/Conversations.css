@@ -28,11 +28,35 @@
     scrollbar-color: #6f3d00 #FFF9D7; 
 } */
 .Conversations-container {
-    overflow-y: auto;
-    max-height: 100vh;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    /* border: 2px solid black; */
-  }
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  overflow-y: auto;
+  max-height: calc(100vh - 250px);
+  padding-right: 5px;
+}
+
+.Conversations-container hr {
+  border: none;
+  border-top: 1px solid rgba(111, 61, 0, 0.1);
+  margin: 0 10px;
+}
+
+/* Custom scrollbar styling */
+.Conversations-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.Conversations-container::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.Conversations-container::-webkit-scrollbar-thumb {
+  background-color: rgba(111, 61, 0, 0.2);
+  border-radius: 10px;
+}
+
+.Conversations-container::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(111, 61, 0, 0.3);
+}
   

@@ -7,6 +7,7 @@ import { useChatContext } from '../../../context/chatContext/chatContext'
 const MessageInput = () => {
 
   const [Message, setMessage] = useState('')
+  const [isSending, setIsSending] = useState(false)
 
   const { loading, sendMessage } = UseSendMessage()
 
@@ -18,8 +19,14 @@ const MessageInput = () => {
     e.preventDefault()
     if (!Message) return
     // console.log('message',Message); 
+    setIsSending(true)
     await sendMessage(Message)
     setMessage('')
+    
+    // Add a small delay for the animation to complete
+    setTimeout(() => {
+      setIsSending(false)
+    }, 500)
   }
 
   return (
@@ -33,7 +40,7 @@ const MessageInput = () => {
           onChange={(e) => setMessage(e.target.value)}
         />
 
-        <button className='messageInput-button'>
+        <button className={`messageInput-button ${isSending ? 'sending' : ''}`}>
           <img className='buttonImg' src={assets.sendArrow} alt="" />
         </button>
       </div>

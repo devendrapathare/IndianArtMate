@@ -5,6 +5,7 @@ import GenderCheckbox from '../../../../person-2/components-p2/GenderCheckbox/Ge
 import UseSignup from '../../../../person-2/hooks/UseSignup/UseSignup';
 import { useNavigate } from 'react-router-dom';
 import UseLogin from '../../../../person-2/hooks/UseLogin/UseLogin';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const Login = ({ setshowLogin }) => {
     const [currState, setcurrState] = useState('Login');
@@ -110,8 +111,9 @@ const Login = ({ setshowLogin }) => {
                                     type="button" 
                                     className="password-toggle" 
                                     onClick={togglePasswordVisibility}
+                                    aria-label={showPassword ? "Hide password" : "Show password"}
                                 >
-                                    {showPassword ? "Hide" : "Show"}
+                                    {showPassword ? <FaEyeSlash /> : <FaEye />}
                                 </button>
                             </div>
                             <div className="password-input-container">
@@ -127,8 +129,9 @@ const Login = ({ setshowLogin }) => {
                                     type="button" 
                                     className="password-toggle" 
                                     onClick={toggleConfirmPasswordVisibility}
+                                    aria-label={showConfirmPassword ? "Hide confirm password" : "Show confirm password"}
                                 >
-                                    {showConfirmPassword ? "Hide" : "Show"}
+                                    {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
                                 </button>
                             </div>
                             <GenderCheckbox onCheckboxChange={handleCheckboxChange} selectedGender={data.gender} />
@@ -156,8 +159,9 @@ const Login = ({ setshowLogin }) => {
                                     type="button" 
                                     className="password-toggle" 
                                     onClick={togglePasswordVisibility}
+                                    aria-label={showPassword ? "Hide password" : "Show password"}
                                 >
-                                    {showPassword ? "Hide" : "Show"}
+                                    {showPassword ? <FaEyeSlash /> : <FaEye />}
                                 </button>
                             </div>
                         </>

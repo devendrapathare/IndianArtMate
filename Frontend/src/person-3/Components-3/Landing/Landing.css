@@ -2,16 +2,17 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: calc(100vh - 80px); /* Match the new navbar height of 80px */
-    width: 100%;
+    height: calc(100vh - 140px); /* Reduced height for equal spacing */
+    width: 95%; /* Increased width from 90% to 95% */
+    max-width: 1600px; /* Increased max-width from 1400px to 1600px */
     position: relative;
-    background-color: #000000; /* Dark background like the reference */
-    margin: 0; /* Remove margin to make it flush with navbar */
-    box-shadow: none; /* Remove shadow */
-    padding: 40px 80px; /* Remove bottom padding since text is inside */
-    overflow: hidden;
+    background-color: transparent;
+    margin: 30px auto; /* Equal margin top and bottom */
+    box-shadow: none;
+    padding: 0;
+    overflow: visible; /* Allow buttons to be visible outside container */
 }
-  
+
 .carousel-content {
     position: relative;
     width: 100%;
@@ -21,9 +22,9 @@
     align-items: center;
     transition: transform 0.8s ease-in-out;
     background-color: #000000; /* Dark background */
-    border-radius: 12px; /* Rounded corners */
+    border-radius: 16px;
     overflow: hidden; /* Ensure content stays inside rounded corners */
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+    box-shadow: none; /* Remove shadow */
 }
 
 .carousel-content.transitioning img {
@@ -42,11 +43,12 @@
     height: 100%; /* Fill container height */
     object-fit: cover; /* Cover the area */
     object-position: center;
-    filter: brightness(0.7); /* Slightly darker for text visibility */
+    filter: brightness(0.8); /* Slightly darker for text visibility */
     transition: opacity 1s ease, transform 1.2s ease;
     animation: zoom-in 15s ease infinite alternate;
     opacity: 1; /* Fully visible */
-    border-radius: 12px; /* Rounded corners */
+    border-radius: 16px;
+    display: block; /* Ensure proper rendering */
 }
 
 @keyframes zoom-in {
@@ -68,16 +70,16 @@
     height: 100%;
     background: linear-gradient(0deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.2) 100%);
     z-index: 1;
-    border-radius: 12px; /* Match container */
+    border-radius: 16px;
 }
 
 .carousel-text {
     position: absolute;
-    bottom: 100px; /* Position at bottom like reference */
-    left: 80px;
-    color: white; /* Light text for contrast against dark overlay */
+    bottom: 100px;
+    left: 60px;
+    color: white;
     z-index: 2;
-    width: 60%; /* Narrower text area */
+    width: 65%;
     text-align: left;
     padding: 0;
     max-width: 800px;
@@ -96,11 +98,11 @@
 }
 
 .carousel-text h2 {
-    font-size: 3.5rem;
+    font-size: 3.2rem;
     margin-bottom: 15px;
     font-weight: 700;
     line-height: 1.1;
-    letter-spacing: -0.5px; /* Negative letter spacing like in reference */
+    letter-spacing: -0.5px;
     color: white;
 }
 
@@ -117,45 +119,45 @@
 
 /* Make p text more visible */
 .carousel-text p {
-    font-size: 1.15rem;
+    font-size: 1.1rem;
     line-height: 1.6;
     margin-top: 8px;
     max-width: 95%;
     font-weight: 400;
-    color: rgba(255, 255, 255, 0.7); /* Light gray text color like reference */
-    opacity: 1; /* Always visible */
+    color: rgba(255, 255, 255, 0.8);
+    opacity: 1;
 }
 
-/* Hide navigation buttons for cleaner look */
+/* Navigation buttons - position outside the image */
 .nav-button {
     display: flex;
     align-items: center;
     justify-content: center;
     position: absolute;
     top: 50%;
-    transform: translateY(-50%);
-    width: 60px;
-    height: 60px;
+    transform: translateY(-650%); /* Return to previous higher position */
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     background-color: rgba(0, 0, 0, 0.5);
     border: 2px solid rgba(255, 255, 255, 0.3);
     cursor: pointer;
-    z-index: 3;
+    z-index: 10;
     transition: all 0.3s ease;
 }
 
 .nav-button:hover {
     background-color: rgba(0, 0, 0, 0.7);
     border-color: rgba(255, 255, 255, 0.5);
-    transform: translateY(-50%) scale(1.1);
+    transform: translateY(-650%) scale(1.1); /* Keep consistent with new position */
 }
 
 .nav-button.prev {
-    left: 30px;
+    left: -25px; /* Keep outside the image */
 }
 
 .nav-button.next {
-    right: 30px;
+    right: -25px; /* Keep outside the image */
 }
 
 .nav-button img {
@@ -169,9 +171,31 @@
     transform: scale(1.2);
 }
 
-/* Hide indicators for cleaner look */
+/* Indicator dots - positioned at bottom center */
 .indicators {
-    display: none;
+    display: flex;
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    gap: 8px;
+    z-index: 3;
+}
+
+.indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.indicator.active {
+    background-color: #e9a046;
+    transform: scale(1.2);
+    border: 1px solid rgba(255, 255, 255, 0.7);
 }
 
 /* Small dot in corner like reference */
@@ -192,217 +216,418 @@
 .loading-indicator {
     position: absolute;
     bottom: 30px;
-    right: 50px;
-    color: #e9a046; /* Orange color matching the navbar dot */
+    right: 30px;
+    color: #e9a046;
     font-size: 14px;
     font-family: 'Helvetica Neue', Arial, sans-serif;
     font-weight: 400;
     z-index: 2;
 }
 
-/* Responsive styles */
-@media (max-width: 768px) {
-    .carousel-container {
-        padding: 20px;
-    }
-    
+@media (max-width: 1200px) {
     .carousel-text {
-        left: 30px;
-        width: 80%;
-        bottom: 80px;
+        width: 70%;
     }
     
     .carousel-text h2 {
-        font-size: 2.8rem;
+        font-size: 3rem;
+    }
+    
+    .loading-indicator {
+        bottom: 25px;
+        right: 40px;
+    }
+}
+
+/* Tablet */
+@media (max-width: 992px) {
+    .carousel-container {
+        padding: 0;
+        height: calc(100vh - 140px);
+        width: 96%; /* Increased from 92% to 96% */
+    }
+    
+    .landing {
+        padding: 25px 0;
+    }
+    
+    .carousel-text {
+        bottom: 80px;
+        left: 50px;
+        width: 75%;
+    }
+    
+    .carousel-text h2 {
+        font-size: 2.5rem;
+    }
+    
+    .carousel-text p {
+        font-size: 1rem;
     }
     
     .nav-button {
-        width: 50px;
-        height: 50px;
+        width: 45px;
+        height: 45px;
+        transform: translateY(-650%);
+    }
+    
+    .nav-button:hover {
+        transform: translateY(-650%) scale(1.1);
+    }
+    
+    .nav-button.prev {
+        left: -22px;
+    }
+    
+    .nav-button.next {
+        right: -22px;
+    }
+    
+    .loading-indicator {
+        bottom: 20px;
+        right: 30px;
+    }
+    
+    .indicators {
+        bottom: 25px;
+    }
+    
+    .indicator {
+        width: 10px;
+        height: 10px;
+    }
+}
+
+/* Mobile Landscape */
+@media (max-width: 768px) {
+    .carousel-container {
+        width: 97%; /* Increased from 94% to 97% */
+        height: calc(100vh - 130px);
+        margin: 20px auto;
+        overflow: visible;
+    }
+    
+    .landing {
+        padding: 20px 0;
+    }
+    
+    .carousel-text {
+        bottom: 70px;
+        left: 30px;
+        width: 80%;
+    }
+    
+    .carousel-text::before {
+        font-size: 0.75rem;
+        margin-bottom: 10px;
+    }
+    
+    .carousel-text h2 {
+        font-size: 2rem;
+        margin-bottom: 10px;
+    }
+    
+    .carousel-text p {
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+    
+    .nav-button {
+        width: 40px;
+        height: 40px;
+        transform: translateY(-650%);
+    }
+    
+    .nav-button:hover {
+        transform: translateY(-650%) scale(1.1);
     }
     
     .nav-button img {
         width: 20px;
         height: 20px;
     }
+    
+    .nav-button.prev {
+        left: -20px;
+    }
+    
+    .nav-button.next {
+        right: -20px;
+    }
+    
+    .indicators {
+        bottom: 20px;
+    }
+    
+    .indicator {
+        width: 8px;
+        height: 8px;
+    }
+    
+    .loading-indicator {
+        bottom: 15px;
+        right: 25px;
+        font-size: 12px;
+    }
 }
-  
-@media (max-width: 480px) {
+
+/* Mobile Portrait */
+@media (max-width: 576px) {
+    .carousel-container {
+        width: 98%; /* Increased from 96% to 98% */
+        margin: 15px auto;
+        height: calc(100vh - 120px);
+    }
+    
+    .landing {
+        padding: 15px 0;
+    }
+    
     .carousel-text {
-        left: 20px;
-        width: 85%;
         bottom: 60px;
+        left: 20px;
+        width: 90%;
     }
-  
+    
     .carousel-text h2 {
-        font-size: 2.2rem;
+        font-size: 1.75rem;
     }
-  
+    
     .carousel-text p {
-        font-size: 1rem;
+        font-size: 0.85rem;
+        max-width: 100%;
+        margin-top: 5px;
     }
     
     .nav-button {
-        width: 40px;
-        height: 40px;
+        width: 35px;
+        height: 35px;
+        transform: translateY(-650%);
+    }
+    
+    .nav-button:hover {
+        transform: translateY(-650%) scale(1.1);
     }
     
     .nav-button img {
-        width: 16px;
-        height: 16px;
+        width: 18px;
+        height: 18px;
+    }
+    
+    .nav-button.prev {
+        left: -17px;
+    }
+    
+    .nav-button.next {
+        right: -17px;
+    }
+    
+    .loading-indicator {
+        bottom: 10px;
+        right: 20px;
+        font-size: 11px;
+    }
+    
+    .indicators {
+        bottom: 15px;
+        gap: 8px;
     }
 }
 
-/* Services section styles */
+/* Small Mobile */
+@media (max-width: 480px) {
+    .carousel-container {
+        padding: 0; /* Keep consistent with other breakpoints */
+    }
+    
+    .carousel-text {
+        bottom: 70px;
+        left: 15px;
+        width: 92%;
+    }
+    
+    .carousel-text::before {
+        font-size: 0.7rem;
+        margin-bottom: 8px;
+    }
+    
+    .carousel-text h2 {
+        font-size: 1.5rem;
+        margin-bottom: 8px;
+    }
+    
+    .carousel-text p {
+        font-size: 0.8rem;
+        line-height: 1.4;
+    }
+    
+    .loading-indicator {
+        bottom: 10px;
+        right: 15px;
+        font-size: 10px;
+    }
+}
+
+/* Service Row (Keeping the existing CSS with responsive improvements) */
 .services-row {
-  display: flex;
-  justify-content: space-between;
-  padding: 60px 40px;
-  max-width: 1400px;
-  margin: 20px auto 40px;
-  background: linear-gradient(135deg, #dfe6ff 0%, #f5f8ff 100%);
-  border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
-  position: relative;
-  overflow: hidden;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 40px 80px;
+    position: relative;
+    z-index: 1;
+    gap: 20px;
+}
+
+@media (max-width: 992px) {
+    .services-row {
+        padding: 30px 50px;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .services-row {
+        padding: 30px 20px;
+    }
 }
 
 .services-row::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -150%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  transform: skewX(-25deg);
-  animation: services-flow 8s linear infinite;
-  pointer-events: none;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, #f5ead2 30%, #fff 100%);
+    z-index: -1;
+    animation: services-flow 10s ease infinite alternate;
+    clip-path: polygon(0 0, 100% 0, 100% 85%, 0% 100%);
 }
 
 @keyframes services-flow {
-  0% {
-    left: -150%;
-  }
-  100% {
-    left: 150%;
-  }
+    0% {
+        background-position: 0% 50%;
+    }
+    100% {
+        background-position: 100% 50%;
+    }
 }
 
 .service-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 200px;
-  text-align: center;
-  opacity: 0;
-  transform: translateY(50px) scale(0.8);
-  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  position: absolute;
-  left: 50%;
-  margin-left: -100px;
-  filter: hue-rotate(0deg);
+    flex: 0 0 calc(25% - 30px);
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+    opacity: 0.9;
+    transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transform: translateY(30px);
+    cursor: pointer;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+@media (max-width: 1200px) {
+    .service-item {
+        flex: 0 0 calc(50% - 20px);
+    }
+}
+
+@media (max-width: 768px) {
+    .service-item {
+        flex: 0 0 calc(100% - 20px);
+        padding: 25px;
+    }
 }
 
 .service-item.active {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-  position: relative;
-  left: auto;
-  margin-left: 0;
+    opacity: 1;
+    transform: translateY(0);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
 }
 
 .service-item.active:nth-child(1) {
-  transition-delay: 0.1s;
+    transition-delay: 0.1s;
 }
 
 .service-item.active:nth-child(2) {
-  transition-delay: 0.2s;
+    transition-delay: 0.3s;
 }
 
 .service-item.active:nth-child(3) {
-  transition-delay: 0.3s;
+    transition-delay: 0.5s;
 }
 
 .service-item.active:nth-child(4) {
-  transition-delay: 0.4s;
+    transition-delay: 0.7s;
 }
 
 .service-icon {
-  width: 70px;
-  height: 70px;
-  margin-bottom: 20px;
-  background: linear-gradient(135deg, #dfe6ff 0%, #f5f8ff 100%);
-  box-shadow: 0 8px 20px rgba(122, 136, 184, 0.2);
-  border-radius: 50%;
-  padding: 15px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    width: 60px;
+    height: 60px;
+    background: #fff9d7;
+    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    transition: all 0.5s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
 .service-icon svg {
-  width: 100%;
-  height: 100%;
-  color: #7a88b8;
-  transition: all 0.5s ease;
+    width: 30px;
+    height: 30px;
+    color: #8E4800;
+    transition: all 0.5s ease;
 }
 
 .service-item:hover .service-icon {
-  transform: translateY(-8px) scale(1.1);
-  box-shadow: 0 15px 30px rgba(122, 136, 184, 0.3);
+    transform: rotate(15deg) scale(1.1);
+    background: #e9a046;
 }
 
 .service-item:hover .service-icon svg {
-  color: #5162a8;
+    color: white;
 }
 
 .service-title {
-  font-weight: 600;
-  margin-bottom: 5px;
-  color: #333;
-  position: relative;
-  padding-bottom: 8px;
-  transition: color 0.3s ease;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: #333;
+    position: relative;
+    padding-bottom: 15px;
 }
 
 .service-title::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  width: 0;
-  height: 2px;
-  background: linear-gradient(135deg, #dfe6ff 0%, #f5f8ff 100%);
-  transition: all 0.5s ease;
-  transform: translateX(-50%);
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background-color: #8E4800;
+    transition: all 0.5s ease;
 }
 
 .service-item:hover .service-title {
-  color: #7a88b8;
+    color: #8E4800;
 }
 
 .service-item:hover .service-title::after {
-  width: 60%;
+    width: 80px;
+    background-color: #e9a046;
 }
 
-/* Media query for responsive design */
-@media (max-width: 768px) {
-  .services-row {
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .service-item {
-    margin-bottom: 30px;
-    width: 80%;
-    max-width: 250px;
-    margin-left: -125px;
-  }
-  
-  .service-item.active {
-    margin-left: 0;
-  }
+.landing {
+    background-color: #000000; /* Background black for the sides */
+    min-height: calc(100vh - 80px);
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Center vertically */
+    padding: 30px 0; /* Equal padding top and bottom */
 }
   

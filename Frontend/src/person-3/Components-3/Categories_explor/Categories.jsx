@@ -219,7 +219,7 @@ const Categories = () => {
 
     try {
       // Make API request to like/dislike endpoint
-      await axios.post(`${url}/posts/${postId}/${action}`, {
+      await axios.post(`${url}/posts/${action}/${postId}`, {
         userId: authUser._id,
       });
 

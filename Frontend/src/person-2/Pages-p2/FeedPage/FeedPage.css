@@ -1,19 +1,16 @@
-.FeedPage-container{
-    display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
-    min-height: 100vh;
-    margin-bottom: 4rem;
-    margin-top: 1.5rem;
+.FeedPage-main {
     padding: 20px;
     background: linear-gradient(135deg, #dfe6ff 0%, #ffffff 100%);
     position: relative;
-    overflow: hidden;
+    overflow-x: hidden;
     animation: fadeIn 0.5s ease;
+    min-height: 100vh;
+    scroll-behavior: smooth;
 }
 
 /* Background decorative elements */
-.FeedPage-container::before,
-.FeedPage-container::after {
+.FeedPage-main::before,
+.FeedPage-main::after {
     content: '';
     position: absolute;
     border-radius: 50%;
@@ -22,7 +19,7 @@
     z-index: 0;
 }
 
-.FeedPage-container::before {
+.FeedPage-main::before {
     width: 400px;
     height: 400px;
     background: radial-gradient(circle, #dfe6ff 0%, rgba(223, 230, 255, 0) 70%);
@@ -31,7 +28,7 @@
     animation: float 15s ease-in-out infinite;
 }
 
-.FeedPage-container::after {
+.FeedPage-main::after {
     width: 600px;
     height: 600px;
     background: radial-gradient(circle, #dfe6ff 0%, rgba(223, 230, 255, 0) 70%);
@@ -52,16 +49,238 @@
     to { opacity: 1; }
 }
 
-.FeedPage-scrollable {
-    height: 100%;
-    overflow-y: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+/* Top section with profile and more artists */
+.FeedPage-top-section {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    margin-bottom: 30px;
     position: relative;
     z-index: 1;
-    padding: 10px;
-    animation: slideUp 0.6s ease backwards;
+}
+
+.FeedPage-profile-section {
+    flex: 1;
+    min-width: 0;
+    animation: slideInLeft 0.8s ease-out backwards;
+    animation-delay: 0.1s;
+    transform-origin: left center;
+}
+
+.FeedPage-more-artists-section {
+    flex: 1;
+    min-width: 0;
+    animation: slideInRight 0.8s ease-out backwards;
     animation-delay: 0.2s;
+    transform-origin: right center;
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Horizontal post sections */
+.FeedPage-posts-sections {
+    position: relative;
+    z-index: 1;
+    animation: fadeIn 0.8s ease backwards;
+    animation-delay: 0.4s;
+}
+
+.FeedPage-category-section {
+    margin-bottom: 40px;
+    animation: fadeInUp 0.8s ease both;
+    position: relative;
+}
+
+.FeedPage-category-section:nth-child(1) { animation-delay: 0.5s; }
+.FeedPage-category-section:nth-child(2) { animation-delay: 0.7s; }
+.FeedPage-category-section:nth-child(3) { animation-delay: 0.9s; }
+.FeedPage-category-section:nth-child(4) { animation-delay: 1.1s; }
+.FeedPage-category-section:nth-child(5) { animation-delay: 1.3s; }
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.FeedPage-category-title {
+    font-size: 22px;
+    font-weight: 600;
+    color: #4b5563;
+    margin-bottom: 15px;
+    padding-left: 10px;
+    border-left: 4px solid #7B96D9;
+    position: relative;
+    overflow: hidden;
+}
+
+.FeedPage-category-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 10px;
+    width: 0;
+    height: 2px;
+    background-color: #7B96D9;
+    animation: lineExpand 1s ease-out forwards;
+    animation-delay: 0.5s;
+}
+
+@keyframes lineExpand {
+    from { width: 0; }
+    to { width: 50%; }
+}
+
+.FeedPage-horizontal-posts {
+    display: flex;
+    overflow-x: auto;
+    gap: 20px;
+    padding: 10px 0;
+    scrollbar-width: thin;
+    scrollbar-color: #7B96D9 #f0f0f0;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 15px;
+    scroll-snap-type: x proximity;
+    position: relative;
+    overscroll-behavior-x: contain;
+    scroll-padding: 20px;
+    will-change: scroll-position;
+    transition: scroll 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    cursor: grab;
+    cursor: -webkit-grab;
+}
+
+/* Use modern scroll behavior APIs where supported */
+@supports (scroll-behavior: smooth) and (overscroll-behavior: contain) {
+    .FeedPage-horizontal-posts {
+        scroll-snap-type: x proximity;
+        overscroll-behavior-x: contain;
+        scroll-padding: 20px;
+    }
+}
+
+/* Optimize performance with hardware acceleration */
+.FeedPage-post-card {
+    min-width: 250px;
+    max-width: 300px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: fadeIn 0.5s ease-out;
+    animation-fill-mode: both;
+    opacity: 1;
+    scroll-snap-align: start;
+    border-radius: 8px;
+    overflow: hidden;
+    transform: translateZ(0);
+    will-change: transform;
+    backface-visibility: hidden;
+    z-index: 1;
+}
+
+.FeedPage-horizontal-posts:after {
+    content: '';
+    min-width: 10px;
+}
+
+/* Improve scrollbar for better UX */
+.FeedPage-horizontal-posts::-webkit-scrollbar {
+    height: 8px;
+}
+
+.FeedPage-horizontal-posts::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 10px;
+    margin: 0 60px;
+}
+
+.FeedPage-horizontal-posts::-webkit-scrollbar-thumb {
+    background-color: #7B96D9;
+    border-radius: 10px;
+    border: 2px solid #f0f0f0;
+}
+
+.FeedPage-horizontal-posts:hover .FeedPage-post-card {
+    opacity: 1;
+}
+
+.FeedPage-horizontal-posts .FeedPage-post-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    z-index: 2;
+}
+
+.FeedPage-post-card:nth-child(1) { animation-delay: 0.1s; }
+.FeedPage-post-card:nth-child(2) { animation-delay: 0.2s; }
+.FeedPage-post-card:nth-child(3) { animation-delay: 0.3s; }
+.FeedPage-post-card:nth-child(4) { animation-delay: 0.4s; }
+.FeedPage-post-card:nth-child(5) { animation-delay: 0.5s; }
+
+.FeedPage-see-more {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 150px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.FeedPage-see-more button {
+    background: #7B96D9;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(123, 150, 217, 0.3);
+}
+
+.FeedPage-see-more button:hover {
+    background: #6580c9;
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(123, 150, 217, 0.4);
+}
+
+.FeedPage-all-posts {
+    padding: 10px;
+    animation: fadeInUp 0.8s ease both;
 }
 
 @keyframes slideUp {
@@ -75,56 +294,94 @@
     }
 }
 
-.FeedPage-scrollable::-webkit-scrollbar {
-    display: none;
-}
-
-/* Make the profile and artist sections sticky */
-.FeedPage-container > div:first-child,
-.FeedPage-container > div:last-child {
-    position: sticky;
-    top: 20px;
-    height: fit-content;
-    z-index: 1;
-    animation: slideUp 0.6s ease backwards;
-}
-
-.FeedPage-container > div:first-child {
-    animation-delay: 0.1s;
-}
-
-.FeedPage-container > div:last-child {
-    animation-delay: 0.3s;
-}
-
-/* Responsive adjustments */
+/* Media Queries */
 @media (max-width: 1100px) {
-    .FeedPage-container {
-        grid-template-columns: 1fr 2fr;
-        gap: 20px;
+    .FeedPage-top-section {
+        flex-direction: column;
     }
     
-    .FeedPage-container > div:last-child {
-        display: none;
-    }
-    
-    .FeedPage-container::before,
-    .FeedPage-container::after {
-        opacity: 0.3;
+    .FeedPage-more-artists-section {
+        animation: slideUp 0.8s ease-out backwards;
+        animation-delay: 0.3s;
     }
 }
 
 @media (max-width: 768px) {
-    .FeedPage-container {
-        grid-template-columns: 1fr;
+    .FeedPage-main {
         padding: 10px;
     }
     
-    .FeedPage-container > div:first-child {
-        position: static;
+    .FeedPage-category-title {
+        font-size: 18px;
     }
     
-    .FeedPage-scrollable {
-        padding: 5px;
+    .FeedPage-post-card {
+        min-width: 200px;
     }
+}
+
+/* Remove scroll button styles */
+.scroll-button,
+.scroll-button:hover,
+.scroll-left,
+.scroll-right {
+    display: none;
+}
+
+/* Fix for momentum scrolling on iOS */
+@supports (-webkit-touch-callout: none) {
+    .FeedPage-horizontal-posts {
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+.FeedPage-horizontal-posts.active-scroll {
+    cursor: grabbing;
+    cursor: -webkit-grabbing;
+    user-select: none;
+}
+
+@media (pointer: coarse) {
+    /* Optimizations for touch devices */
+    .FeedPage-horizontal-posts {
+        scroll-snap-type: x proximity;
+        transition: none; /* Remove transitions for smoother touch scrolling */
+    }
+}
+
+/* Support for older browsers */
+@supports not (overscroll-behavior-x: contain) {
+    .FeedPage-horizontal-posts {
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+/* Ensure like/dislike buttons are clickable */
+.feed-like-dislike-div {
+    position: relative;
+    z-index: 20 !important; /* Higher z-index to ensure clickable */
+    pointer-events: auto !important;
+    cursor: default !important;
+}
+
+.feed-like-dislike-div img,
+.feed-like-dislike-div .imgs,
+.feed-like-dislike-div .imgs img,
+.like.imgs,
+.dislike.imgs {
+    cursor: pointer !important;
+    pointer-events: auto !important;
+    z-index: 25 !important;
+}
+
+/* Ensure the feed card isn't blocking clicks */
+.feed-container {
+    pointer-events: auto !important;
+}
+
+/* Specifically target painting and artwork categories */
+.FeedPage-horizontal-posts[data-category="Painting"] .feed-like-dislike-div,
+.FeedPage-horizontal-posts[data-category="Artwork"] .feed-like-dislike-div,
+.FeedPage-horizontal-posts[data-category="Art"] .feed-like-dislike-div {
+    z-index: 50 !important; /* Extra high z-index for these categories */
 }

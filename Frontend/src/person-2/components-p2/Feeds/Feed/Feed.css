@@ -134,44 +134,36 @@
 
 .feed-like-dislike-div {
     display: flex;
-    gap: 5%;
-    padding-top: 0.5rem;
-    border-top: 1px solid rgba(223, 230, 255, 0.5);
-}
-
-.feed-like-dislike-div img {
-    height: 2.2rem;
-    width: 2.2rem;
-    transition: transform 0.3s ease;
-}
-
-.feed-like-dislike-div img:hover {
-    transform: scale(1.15);
-}
-
-.imgs {
-    display: flex;
-    justify-content: space-evenly;
+    width: 100%;
+    padding: 5px 10px;
     align-items: center;
-    cursor: pointer;
-    gap: 15px;
-    padding: 8px 15px;
-    border-radius: 25px;
-    transition: all 0.3s ease;
+    justify-content: flex-start;
+    gap: 20px;
+    z-index: 10;
+    position: relative;
 }
 
-.imgs:hover {
-    background-color: rgba(223, 230, 255, 0.3);
+.feed-like-dislike-div .imgs {
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
-.imgs p {
-    font-weight: 600;
-    color: #445b7c;
-    transition: all 0.3s ease;
+.feed-like-dislike-div .imgs img {
+    width: 24px;
+    height: 24px;
+    cursor: pointer !important; 
+    transition: transform 0.2s ease;
+    z-index: 20;
+    position: relative;
 }
 
-.imgs:hover p {
-    color: #445b7c;
+.feed-like-dislike-div .imgs img:hover {
+    transform: scale(1.2);
+}
+
+.feed-like-dislike-div .imgs img:active {
+    transform: scale(0.9);
 }
 
 .feed-title-div {
