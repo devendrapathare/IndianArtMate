@@ -5,8 +5,8 @@ const router = express.Router()
 
 router.post('/:postId/like',for_like)
 router.post('/:postId/dislike',for_dislike)
-// Krish
-// router.get('/getLikesDislikes',getAllLIkesDislikesByPostId)
+router.post('/like/:postId',for_like)
+router.post('/dislike/:postId',for_dislike)
 
 export default router
 

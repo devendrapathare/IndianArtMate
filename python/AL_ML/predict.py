@@ -77,7 +77,6 @@ def calculate_sentiment_ratio(text, post_id):
         logging.error(f"Error calculating sentiment ratio: {e}")
         return {"positive": 0, "negative": 0, "ratio": "N/A", "rank": "N/A"}
 
-# Start a simple Flask server
 app = Flask(__name__)
 
 @app.route("/predict", methods=["POST"])
