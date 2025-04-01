@@ -58,14 +58,14 @@ const UploadPost = () => {
             }, 1000);
         } else if (uploadSuccess && redirectCount === 0) {
             // Navigate to profile page with a hash to scroll to posts
-            navigate('/profile#posts');
+            navigate('/ProfilePage');
         }
         return () => clearTimeout(timer);
     }, [uploadSuccess, redirectCount, navigate]);
 
     // Handle automatic scrolling when redirected to profile with #posts
     const ensureScroll = () => {
-        if (location.hash === '#posts') {
+        if (location.hash === 'Page') {
             // Add a small delay to ensure the DOM has updated
             setTimeout(() => {
                 const postsElement = document.getElementById('posts');
@@ -265,7 +265,7 @@ const UploadPost = () => {
                         <p className="success-redirect">Redirecting to your posts in {redirectCount} seconds...</p>
                         <button
                             className="view-posts-button"
-                            onClick={() => navigate('/profile#posts')}
+                            onClick={() => navigate('/ProfilePage')}
                         >
                             View My Posts Now
                         </button>
