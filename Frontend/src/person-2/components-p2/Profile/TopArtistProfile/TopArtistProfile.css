@@ -4,16 +4,17 @@
     justify-content: flex-start;
     align-items: flex-start;
     margin: 20px auto;
-    max-width: 1200px;
+    /* max-width: 00px; */
     overflow-y: auto;
     height: 100vh;
+
 }
 
 .artist-card{
-    display: grid;
+    display: flex;
     grid-template-columns: 1fr 2fr 2fr;
     align-items: center;
-    justify-content: center;
+    justify-content: space-evenly;
     border: 2px solid #ddd;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -21,6 +22,9 @@
     padding: 15px;
     text-align: center;
     transition: transform 0.2s;
+    min-width: 300px;
+
+    /* border: 2px solid ; */
 }
 
 .top-artists-list::-webkit-scrollbar {

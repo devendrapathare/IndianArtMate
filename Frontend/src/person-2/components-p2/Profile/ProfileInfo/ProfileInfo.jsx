@@ -4,49 +4,30 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { usePostContext } from '../../../context/PostContext/PostContext';
 import { useAuthContext } from '../../../context/AuthContext/AuthContext';
-import { useChatContext } from '../../../context/chatContext/chatContext';
-import { useConversation } from '../../../Zustand/UseConversation';
 
 
 const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
-    const [userData, setUserData] = useState(null);
-    const [image, setImage] = useState(null);
-    const { posts, loggedInUserPosts, url } = usePostContext()
+    const [userData, setUserData] = useState(null); 
+    const [image, setImage] = useState(null); 
+    const {posts,loggedInUserPosts,url} = usePostContext()
     const numOfPosts = posts.filter(post => post.userId === userId).length
-    const { setMyId, setReceiverId, getMessageReceiverDetails } = useChatContext()
-    const { setSelectedConversation } = useConversation()
-
-
-    // console.log("done11",loggedInUserPosts);
-
+    
     const { authUser } = useAuthContext();
-
-    const LogggedInUserId = authUser?._id;
-
-
+  
+    const LogggedInUserId = authUser?._id; 
+  
+    
     const navigate = useNavigate();
-
-    const handleChat = async () => {
-        setMyId(authUser._id)
-        await getMessageReceiverDetails(userId)
-        setSelectedConversation(userId)
-        navigate('/myChats')
-    }
-
     const handleUpdateProfileClick = () => {
         navigate(`/UpdateProfilePage`);
     };
 
-    const handleShowRespec = (whatTodo) => {
+    const handleShowRespec = (whatTodo) =>{
         navigate(`/myProfileDetails/${whatTodo}/${userId}`)
     }
 
     const [hasRespected, setHasRespected] = useState(false);
 
-    // useEffect(()=>{
-    //     console.log("in useEffect")
-    //     handleRespectToggle(userId)
-    // },[])
     useEffect(() => {
         const fetchRespectStatus = async () => {
             try {
@@ -56,7 +37,7 @@ const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
                 console.error(e);
             }
         };
-
+    
         fetchRespectStatus();
     }, [userId]);
 
@@ -65,13 +46,13 @@ const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
             const response = await axios.post(`${url}/setRespect/${LogggedInUserId}`, {
                 userId
             });
-
+    
             console.log("LoggedInUserId:", LogggedInUserId);
             console.log("userId:", userId);
             console.log(response);
-
+    
             setHasRespected(!hasRespected);
-
+    
             const updatedUserData = !hasRespected ? {
                 ...userData,
                 respectors: [...userData.respectors, LogggedInUserId],
@@ -83,49 +64,49 @@ const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
                 respectors: userData.respectors.filter(id => id !== LogggedInUserId),
                 respecting: userData.respecting.filter(id => id !== userId),
             };
-
+    
             setUserData(updatedUserData);
-
-
+    
+    
         } catch (e) {
             console.error(e);
         }
     };
-
-
+    
+    
     useEffect(() => {
         const fetchUserProfile = async () => {
-            try {
-                const response = await fetch(`${url}/users/${userId}`);
-                if (!response.ok) throw new Error('Network response was not ok');
-
-                const data = await response.json();
-
-                const user = data.user;
-                setUserData(user);
-
-                let fullImageUrl;
-                if (user.profilePic.startsWith('http')) {
-                    fullImageUrl = user.profilePic;
-                } else {
-                    fullImageUrl = `${url}/profilePics${user.profilePic.split('/profilePic')[1]}`;
-                }
-                setImage(fullImageUrl);
-            } catch (error) {
-                console.error('Error fetching user data:', error);
+          try {
+            const response = await fetch(`${url}/users/${userId}`);
+            if (!response.ok) throw new Error('Network response was not ok');
+            
+            const data = await response.json();
+            
+            const user = data.user;
+            setUserData(user);
+      
+            let fullImageUrl;
+            if (user.profilePic.startsWith('http')) {
+              fullImageUrl = user.profilePic;
+            } else {
+              fullImageUrl = `${url}/profilePics${user.profilePic.split('/profilePic')[1]}`;
             }
+            setImage(fullImageUrl);
+          } catch (error) {
+            console.error('Error fetching user data:', error);
+          }
         };
-
+    
         fetchUserProfile();
-    }, [userId, hasRespected]);
-
+    }, [userId, hasRespected]); 
+    
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
             const reader = new FileReader();
             reader.onloadend = () => {
-                setImage(reader.result);
+                setImage(reader.result); 
             };
             reader.readAsDataURL(file);
         }
@@ -137,78 +118,97 @@ const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
 
     return (
         <div className="profileInfo-container">
-            <div className="profileInfo-profile-icon">
-                <img src={image || 'defaultProfilePic.png'} alt="Profile" />
-                {isOwnProfile && (
-                    <input
-                        type="file"
-                        id="file-input"
-                        style={{ display: 'none' }}
-                        accept="image/*"
-                        onChange={handleImageChange}
-                    />
-                )}
-            </div>
-
-            <div className="above">
-                <h2>{userData.userName || 'Krish Mishra'}</h2>
-                <p>{userData.profile_type || 'Painter'}</p>
-                <p>{userData.email || 'Painter'}</p>
-                {/* {
-                    userData._id === LogggedInUserId ?<p>{userData.wallet || '0'}</p>:null
-                }
-                 */}
-
-            </div>
-
-
-            <div className="profileInfo-buttons">
-                {!isOwnProfile && (
-                    <button
-                        onClick={() => handleRespectToggle(userId)}
-                        className="profileIcon-respect-button"
-                    >
-                        {hasRespected ? 'Remove Respect' : 'Respect'}
-                    </button>
-                )}
-                {isOwnProfile && (
-                    <button onClick={() => { handleUpdateProfileClick() }} className="profileIcon-update-profile-button profileIcon-respect-button">
-                        Update Profile
-                    </button>
-                )}
-                {
-                    !isOwnProfile && (
-                        <button onClick={handleChat}>Chat</button>
-                    )
-                }
-
-
-            </div>
-
-            <div className="middle">
-                <p>Posts: <span>{numOfPosts}</span></p>
-                <div onClick={() => { handleShowRespec('Respectors') }}>
-
-                    <p><u>Respectors</u>: <span>{userData.respectors?.length || 0}</span></p>
+            <div className="profile-horizontal-layout">
+                <div className="profile-left-section">
+                    <div className="profileInfo-profile-icon">
+                        <img src={image || 'defaultProfilePic.png'} alt="Profile" />
+                        {isOwnProfile && (
+                            <input
+                                type="file"
+                                id="file-input"
+                                style={{ display: 'none' }}
+                                accept="image/*"
+                                onChange={handleImageChange}
+                            />
+                        )}
+                    </div>
+                    
+                    <div className="profile-user-details">
+                        <h2>{userData.userName || 'Krish Mishra'}</h2>
+                        <p className="profile-type">{userData.profile_type || 'Painter'}</p>
+                        <p className="profile-email">{userData.email || 'artist@example.com'}</p>
+                        
+                        <div className="profile-primary-actions">
+                            {!isOwnProfile && (
+                                <button 
+                                onClick={() => handleRespectToggle(userId)} 
+                                className="profileIcon-respect-button"
+                                >
+                                {hasRespected ? 'Remove Respect' : 'Respect' }
+                                </button>
+                            )}
+                            {isOwnProfile && (
+                                <button onClick={()=>{handleUpdateProfileClick()}} className="profileIcon-update-profile-button">
+                                    Update Profile
+                                </button>
+                            )}
+                        </div>
+                    </div>
                 </div>
-                <div onClick={() => { handleShowRespec('Respecting') }}>
-
-                    <p><u>Respecting</u>: <span>{userData.respecting?.length || 0}</span></p>
+                
+                <div className="profile-right-section">
+                    <div className="profile-stats">
+                        <div className="stat-item">
+                            <p className="stat-label">Posts</p>
+                            <p className="stat-value">{numOfPosts}</p>
+                        </div>
+                        <div className="stat-item clickable" onClick={()=>{handleShowRespec('Respectors')}}>
+                            <p className="stat-label">Respectors</p>
+                            <p className="stat-value">{userData.respectors?.length || 0}</p>
+                        </div>
+                        <div className="stat-item clickable" onClick={()=>{handleShowRespec('Respecting')}}>
+                            <p className="stat-label">Respecting</p>
+                            <p className="stat-value">{userData.respecting?.length || 0}</p>
+                        </div>
+                    </div>
+                    
+                    <div className="profile-bio">
+                        <h3>About</h3>
+                        <p className="bio">{userData.bio || 'Write About You Here'}</p>
+                    </div>
                 </div>
             </div>
 
-            <div className="lower">
-                <p className="bio">{userData.bio || 'Write About You Here'}</p>
-            </div>
-
-            <div className="profileInfo-buttons">
+            <div className="profile-secondary-actions">
                 {isOwnProfile && (
                     <>
-                        <button onClick={() => setshowUploadPost(false)} className="profileIcon-respect-button">Upload</button>
+                        <button onClick={() => {
+                            setshowUploadPost(false);
+                            
+                            // Immediate UI feedback - scroll to where posts section should be
+                            window.scrollTo({
+                                top: document.querySelector('.profile-feed-section')?.offsetTop - 100 || window.scrollY + 300,
+                                behavior: 'smooth'
+                            });
+                            
+                            // Then ensure we find the actual element after state updates
+                            setTimeout(() => {
+                                const postsElement = document.getElementById('posts');
+                                if (postsElement) {
+                                    postsElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                    
+                                    // Make the posts section flash briefly to draw attention
+                                    postsElement.style.backgroundColor = 'rgba(123, 157, 224, 0.2)';
+                                    setTimeout(() => {
+                                        postsElement.style.backgroundColor = '';
+                                        postsElement.style.transition = 'background-color 0.5s ease';
+                                    }, 800);
+                                }
+                            }, 300);
+                        }} className="profileIcon-respect-button">Upload</button>
                         <button onClick={() => navigate('/receivedOrders')} className="profileIcon-respect-button">Received Orders</button>
                     </>
                 )}
-                {/* <button className="profileIcon-update-profile-button profileIcon-respect-button">Story</button> */}
             </div>
         </div>
     );

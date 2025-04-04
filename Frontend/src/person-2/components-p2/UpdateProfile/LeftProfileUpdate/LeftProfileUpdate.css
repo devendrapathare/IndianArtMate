@@ -1,61 +1,306 @@
 .LeftProfileUpdate-container {
+    background: transparent;
+    margin: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: #FFF9D7; 
-    margin: 20px;
-    height: 100vh;
-    border-radius: 8px; 
+    height: auto;
+}
+
+.profile-header {
+    display: none; /* Hidden as we'll use parent section header */
 }
 
 .LeftProfileUpdate-image {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
+    justify-content: center;
+    gap: 25px;
+    padding: 30px 0;
+    width: 100%;
 }
 
 .LeftProfileUpdate-image img {
+    width: 220px;
+    height: 220px;
     border-radius: 50%;
-    width: 200px;
-    height: 200px;
     object-fit: cover;
-    border: 2px solid #8E4800;
+    border: 5px solid #dfe6ff;
+    box-shadow: 0 15px 35px rgba(223, 230, 255, 0.6);
+    transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    animation: profileImgAppear 0.8s cubic-bezier(0.26, 1.32, 0.46, 0.98);
+}
+
+@keyframes profileImgAppear {
+    0% {
+        opacity: 0;
+        transform: scale(0.6) rotate(-15deg);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) rotate(0);
+    }
+}
+
+.LeftProfileUpdate-image img:hover {
+    transform: scale(1.05) rotate(5deg);
+    border-color: #ff9717;
+    box-shadow: 0 20px 45px rgba(255, 151, 23, 0.4);
 }
 
 .LeftProfileUpdate-image button {
-    background-color: #8E4800;
-    color: #FFF9D7;
+    background: linear-gradient(135deg, #8e4800 0%, #ff9717 100%);
+    color: white;
     border: none;
-    border-radius: 4px;
-    padding: 5px 15px;
-    font-size: 0.875rem;
-    font-weight: bold;
+    border-radius: 12px;
+    padding: 14px 0;
+    font-size: 16px;
     cursor: pointer;
-    height: 30px;
-    line-height: 30px;
+    transition: all 0.4s ease;
+    width: 85%;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    box-shadow: 0 8px 20px rgba(255, 151, 23, 0.25);
+    position: relative;
+    overflow: hidden;
+    animation: buttonSlideUp 0.5s ease backwards;
+}
+
+.LeftProfileUpdate-image button:nth-child(4) {
+    animation-delay: 0.1s;
+}
+
+.LeftProfileUpdate-image button:nth-child(5) {
+    animation-delay: 0.2s;
+}
+
+@keyframes buttonSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.LeftProfileUpdate-image button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: all 0.4s ease;
+}
+
+.LeftProfileUpdate-image button:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(255, 151, 23, 0.4);
+}
+
+.LeftProfileUpdate-image button:hover::before {
+    animation: buttonLight 1.5s ease-in-out;
+}
+
+@keyframes buttonLight {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+.LeftProfileUpdate-image button:active {
+    transform: translateY(1px);
+    box-shadow: 0 4px 15px rgba(255, 151, 23, 0.3);
+}
+
+.LeftProfileUpdate-image button:last-child {
+    background: white;
+    border: 2px solid #dfe6ff;
+    color: #8e4800;
+    box-shadow: 0 8px 20px rgba(223, 230, 255, 0.3);
+}
+
+.LeftProfileUpdate-image button:last-child:hover {
+    background: linear-gradient(135deg, #f5f8ff 0%, #ffffff 100%);
+    color: #ff9717;
+    border-color: #ff9717;
+    box-shadow: 0 12px 30px rgba(223, 230, 255, 0.5);
+}
+
+/* Loading indicator */
+.image-loading {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    color: #8e4800;
+    font-style: italic;
+}
+
+/* Error message */
+.image-error {
+    color: #e74c3c;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+/* Profile image placeholder and loading states */
+.profile-image-placeholder {
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #e9eeff 0%, #f5f8ff 100%);
     display: flex;
     align-items: center;
     justify-content: center;
+    border: 5px solid #dfe6ff;
+    box-shadow: 0 15px 35px rgba(223, 230, 255, 0.4);
+}
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(142, 72, 0, 0.1);
+    border-radius: 50%;
+    border-top: 5px solid #ff9717;
+    animation: spin 1.2s cubic-bezier(0.5, 0.1, 0.5, 0.9) infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.LeftProfileUpdate-image img.loading {
+    opacity: 0.7;
+    filter: blur(3px);
+    transition: all 0.3s ease;
+}
+
+/* Status messages */
+.upload-status {
+    padding: 12px 15px;
+    border-radius: 10px;
     text-align: center;
-}
-
-
-.LeftProfileUpdate-image button:hover {
-    background-color: #6f3d00;
-}
-
-.profile-header{
-    background: #6f3d00;
-    width: 100%;
-    color: #FFF9D7;
-    display: flex;
-    justify-content: center;
-    margin-bottom: 200px;
-    border-radius: 8px 8px 0 0;
-
-}
-.profile-header p{
+    font-size: 15px;
+    width: 90%;
+    margin-top: 5px;
     font-weight: 500;
-    font-size: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    animation: fadeInScale 0.4s cubic-bezier(0.26, 1.32, 0.46, 0.98);
+    transform-origin: top center;
+}
+
+@keyframes fadeInScale {
+    0% {
+        opacity: 0;
+        transform: scaleY(0.5);
+    }
+    100% {
+        opacity: 1;
+        transform: scaleY(1);
+    }
+}
+
+.upload-status.success {
+    background-color: rgba(46, 204, 113, 0.15);
+    border: 1px solid #2ecc71;
+    color: #27ae60;
+}
+
+.upload-status.error {
+    background-color: rgba(231, 76, 60, 0.15);
+    border: 1px solid #e74c3c;
+    color: #c0392b;
+}
+
+.upload-status.info {
+    background-color: rgba(52, 152, 219, 0.15);
+    border: 1px solid #3498db;
+    color: #2980b9;
+}
+
+/* Disabled button states */
+.LeftProfileUpdate-image button:disabled {
+    background: linear-gradient(135deg, #ccc 0%, #999 100%);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.LeftProfileUpdate-image button:last-child:disabled {
+    background-color: #f8f8f8;
+    border-color: #ddd;
+    color: #999;
+    box-shadow: none;
+}
+
+/* Media queries */
+@media (max-width: 768px) {
+    .LeftProfileUpdate-image img,
+    .profile-image-placeholder {
+        width: 180px;
+        height: 180px;
+    }
+    
+    .LeftProfileUpdate-image button {
+        font-size: 15px;
+        padding: 12px 0;
+    }
+    
+    .loading-spinner {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+@media (max-width: 576px) {
+    .LeftProfileUpdate-image img,
+    .profile-image-placeholder {
+        width: 150px;
+        height: 150px;
+        border-width: 4px;
+    }
+    
+    .LeftProfileUpdate-image {
+        gap: 20px;
+        padding: 20px 0;
+    }
+    
+    .upload-status {
+        font-size: 14px;
+        padding: 10px 12px;
+    }
+}
+
+.LeftProfileUpdate-image img.animate {
+    animation: profileImgAppear 0.8s cubic-bezier(0.26, 1.32, 0.46, 0.98);
+}
+
+.change-photo-btn {
+    animation: buttonSlideUp 0.5s ease backwards;
+    animation-delay: 0.1s;
+}
+
+.save-photo-btn {
+    animation: buttonSlideUp 0.5s ease backwards;
+    animation-delay: 0.2s;
+}
+
+@keyframes scaleIn {
+    0% {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.form-section {
+    animation: scaleIn 0.4s ease backwards;
 }

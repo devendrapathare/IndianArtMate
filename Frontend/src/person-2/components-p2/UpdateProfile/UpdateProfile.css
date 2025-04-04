@@ -1,7 +1,846 @@
-.UpdateProfile-container{
-    display: grid;
-    grid-template-columns: 1.25fr 2.75fr 1.25fr;
-    height: 100%;
-    width: 100%;
-    background: #BFAE8C;
+/* Update Profile Page Container */
+.update-profile-page {
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #c5d1ff 0%, #f5f8ff 100%);
+  padding: 40px 20px;
+  animation: fadeIn 0.5s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Background decorative elements */
+.update-profile-page::before,
+.update-profile-page::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.4;
+  filter: blur(60px);
+  z-index: 0;
+}
+
+.update-profile-page::before {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, #ffc285 0%, rgba(223, 230, 255, 0) 70%);
+  top: -100px;
+  left: -100px;
+  animation: float 15s ease-in-out infinite;
+}
+
+.update-profile-page::after {
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, #c5d1ff 0%, rgba(255, 151, 23, 0) 70%);
+  bottom: -200px;
+  right: -200px;
+  animation: float 20s ease-in-out infinite reverse;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(5%, 5%); }
+  50% { transform: translate(0, 10%); }
+  75% { transform: translate(-5%, 5%); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.update-profile-content {
+  display: grid;
+  grid-template-columns: 30% 40% 30%;
+  max-width: 1600px;
+  margin: 0 auto;
+  gap: 30px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Profile Section Styling */
+.profile-section {
+  background-color: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  height: fit-content;
+  transform: translateY(0);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: slideUp 0.6s ease backwards;
+  position: relative;
+  border: 1px solid #c5d1ff;
+}
+
+/* Decorative corner elements for sections */
+.profile-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, transparent 50%, rgba(223, 230, 255, 0.5) 50%);
+  border-radius: 0 12px 0 0;
+  transition: all 0.3s ease;
+  opacity: 0;
+}
+
+.profile-section:hover::before {
+  opacity: 1;
+  transform: scale(1.2);
+}
+
+.profile-section:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.profile-pic-section {
+  animation-delay: 0.1s;
+}
+
+.profile-details-section {
+  animation-delay: 0.2s;
+}
+
+.artists-section {
+  animation-delay: 0.3s;
+  max-height: calc(100vh - 80px);
+  position: sticky;
+  top: 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Artists section content scrollable */
+.artists-section .section-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 25px;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.section-header {
+  background: linear-gradient(135deg, #c5d1ff 0%, #ffffff 100%);
+  color: #445b7c;
+  padding: 20px 24px;
+  text-align: left;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 2px solid #c5d1ff;
+}
+
+.section-header::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background-color: #ffc285;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.section-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+}
+
+.section-content {
+  padding: 25px;
+  position: relative;
+  background: linear-gradient(135deg, #ffffff 0%, #edf1ff 100%);
+}
+
+/* Add dynamic gradient border effect */
+.section-content::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 5%;
+  width: 90%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #c5d1ff, transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.profile-section:hover .section-content::after {
+  opacity: 1;
+}
+
+/* Profile Pic Section */
+.profile-pic-section .section-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Decorative elements in empty spaces */
+.profile-pic-section::after {
+  content: '';
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border: 3px dashed rgba(223, 230, 255, 0.5);
+  border-radius: 50%;
+  bottom: -20px;
+  left: -50px;
+  z-index: -1;
+  animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Override LeftProfileUpdate styles */
+.LeftProfileUpdate-container {
+  background: transparent;
+  box-shadow: none;
+  margin: 0;
+  width: 100%;
+  height: auto;
+}
+
+.LeftProfileUpdate-container .profile-header {
+  display: none; /* Hide the original header */
+}
+
+.LeftProfileUpdate-image {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 30px 0;
+}
+
+.LeftProfileUpdate-image img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #c5d1ff;
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 10px 25px rgba(223, 230, 255, 0.5);
+  position: relative;
+  z-index: 1;
+}
+
+/* Add a pulsing effect behind the profile image */
+.LeftProfileUpdate-image::before {
+  content: '';
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: rgba(255, 151, 23, 0.1);
+  z-index: 0;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 0.5; }
+  50% { transform: scale(1.1); opacity: 0.2; }
+}
+
+.LeftProfileUpdate-image img:hover {
+  transform: scale(1.05) rotate(3deg);
+  border-color: #ffc285;
+  box-shadow: 0 15px 35px rgba(255, 194, 133, 0.3);
+}
+
+.LeftProfileUpdate-image button,
+.update-profile-btn {
+  background: transparent;
+  border: 2px solid #c5d1ff;
+  color: #445b7c;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  width: auto;
+  min-width: 150px;
+  text-align: center;
+}
+
+.LeftProfileUpdate-image button:hover,
+.update-profile-btn:hover {
+  border-color: #ffc285;
+  color: #ffc285;
+  background: rgba(197, 209, 255, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 194, 133, 0.2);
+}
+
+/* Light sweep animation */
+.LeftProfileUpdate-image button::after,
+.update-profile-btn::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -60%;
+  width: 20px;
+  height: 200%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(35deg);
+  transition: all 0.3s ease;
+}
+
+.LeftProfileUpdate-image button:hover::after,
+.update-profile-btn:hover::after {
+  left: 110%;
+  transition: all 0.7s ease;
+}
+
+.LeftProfileUpdate-image button:active,
+.update-profile-btn:active {
+  transform: translateY(1px);
+}
+
+/* Add pulsing effect */
+.update-profile-btn::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: radial-gradient(circle, rgba(255, 194, 133, 0.1) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.update-profile-btn:hover::before {
+  opacity: 1;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 0.5; }
+  50% { transform: scale(1.05); opacity: 0.2; }
+}
+
+.LeftProfileUpdate-image button:last-child {
+  background: white;
+  border: 2px solid #c5d1ff;
+  color: #8e4800;
+  box-shadow: 0 4px 15px rgba(223, 230, 255, 0.3);
+}
+
+.LeftProfileUpdate-image button:last-child:hover {
+  background-color: #f5f8ff;
+  color: #ffc285;
+  border-color: #ffc285;
+  box-shadow: 0 8px 20px rgba(223, 230, 255, 0.5);
+}
+
+/* Add decorative elements to profile details section */
+.profile-details-section::before {
+  content: '';
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle, rgba(223, 230, 255, 0.3) 0%, transparent 70%);
+  top: -30px;
+  right: -50px;
+  border-radius: 50%;
+  z-index: -1;
+}
+
+.profile-details-section::after {
+  content: '';
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  border: 2px solid rgba(255, 151, 23, 0.2);
+  border-radius: 50%;
+  bottom: -20px;
+  right: 50px;
+  z-index: -1;
+  animation: float 10s ease-in-out infinite;
+}
+
+/* Profile Details Section */
+.profile-details-section .section-content {
+  padding: 25px;
+}
+
+/* Override MainProfileUpdate styles */
+.MainProfileUpdate-container {
+  background: transparent;
+  box-shadow: none;
+  margin: 0;
+  border-radius: 0;
+  height: auto;
+}
+
+.MainProfileUpdate-header {
+  display: none; /* Hide the original header */
+}
+
+.address-detail-container {
+  background: transparent;
+  padding: 0;
+}
+
+/* Add decoration to artists section */
+.artists-section::before {
+  content: '';
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, rgba(255, 151, 23, 0.2) 0%, transparent 70%);
+  top: 30px;
+  left: -30px;
+  border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+  animation: morphing 15s ease-in-out infinite;
+}
+
+@keyframes morphing {
+  0% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
+  25% { border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%; }
+  50% { border-radius: 70% 30% 30% 70% / 70% 70% 30% 30%; }
+  75% { border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%; }
+  100% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
+}
+
+/* Artists Section */
+.artists-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.artists-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  width: 100%;
+}
+
+.artist-card {
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  animation: fadeIn 0.5s ease backwards;
+  position: relative;
+}
+
+.artist-card::before {
+  content: '';
+  position: absolute;
+  height: 0;
+  width: 3px;
+  background: linear-gradient(to bottom, #ffdab3, #ffc285);
+  left: 0;
+  top: 0;
+  transition: height 0.3s ease;
+}
+
+.artist-card:hover::before {
+  height: 100%;
+}
+
+.artist-card:nth-child(1) { animation-delay: 0.4s; }
+.artist-card:nth-child(2) { animation-delay: 0.6s; }
+.artist-card:nth-child(3) { animation-delay: 0.8s; }
+.artist-card:nth-child(4) { animation-delay: 1.0s; }
+.artist-card:nth-child(5) { animation-delay: 1.2s; }
+
+.artist-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);
+}
+
+.artist-image {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 15px;
+  border: 3px solid #c5d1ff;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.artist-card:hover .artist-image {
+  border-color: #ffc285;
+  transform: scale(1.05);
+}
+
+.artist-image::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 70% 30%, rgba(255, 255, 255, 0.8) 0%, transparent 25%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.artist-card:hover .artist-image::after {
+  opacity: 1;
+}
+
+.artist-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.artist-info {
+  flex: 1;
+}
+
+.artist-info h4 {
+  margin: 0 0 5px 0;
+  font-size: 18px;
+  color: #333;
+  transition: all 0.3s ease;
+}
+
+.artist-info p {
+  margin: 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.artist-card:hover .artist-info h4 {
+  color: #ffc285;
+  transform: translateX(5px);
+}
+
+.artist-card:hover .artist-info p {
+  transform: translateX(5px);
+  transition: all 0.3s ease;
+}
+
+.error-message {
+  text-align: center;
+  padding: 20px;
+  color: #445b7c;
+  font-size: 16px;
+  background: #edf1ff;
+  border-radius: 8px;
+  margin: 10px;
+  border: 1px dashed #c5d1ff;
+}
+
+/* Artists section scrollbar */
+.artists-section .section-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.artists-section .section-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 8px;
+}
+
+.artists-section .section-content::-webkit-scrollbar-thumb {
+  background-color: #c5d1ff;
+  border-radius: 8px;
+  border: 1px solid #edf1ff;
+}
+
+.artists-section .section-content::-webkit-scrollbar-thumb:hover {
+  background-color: #ffc285;
+}
+
+/* Add more artists button */
+.more-artists-btn {
+  margin-top: 20px;
+  background: transparent;
+  border: 2px dashed #c5d1ff;
+  color: #445b7c;
+  padding: 15px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.more-artists-btn span {
+  position: relative;
+  z-index: 1;
+  transition: all 0.3s ease;
+}
+
+.more-artists-btn::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background: rgba(255, 151, 23, 0.05);
+  transition: all 0.3s ease;
+  z-index: 0;
+}
+
+.more-artists-btn:hover::before {
+  width: 100%;
+}
+
+.more-artists-btn:hover {
+  border-color: #ffc285;
+  color: #ffc285;
+}
+
+.more-artists-btn:hover span {
+  transform: scale(1.1);
+}
+
+.more-artists-btn span {
+  font-size: 20px;
+  margin-right: 10px;
+}
+
+/* Loading state */
+.loading {
+  text-align: center;
+  padding: 20px;
+  color: #445b7c;
+}
+
+.loading::after {
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #c5d1ff;
+  border-radius: 50%;
+  border-top-color: #ffc285;
+  animation: spin 1s linear infinite;
+  margin-left: 10px;
+  vertical-align: middle;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 1100px) {
+  .update-profile-content {
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  
+  .artists-section {
+    grid-column: span 2;
+    position: static;
+    max-height: none;
+  }
+  
+  .artists-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* Adjust decorative elements for smaller screens */
+  .profile-pic-section::after,
+  .profile-details-section::before,
+  .profile-details-section::after,
+  .artists-section::before {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .update-profile-content {
+    grid-template-columns: 1fr;
+  }
+  
+  .artists-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .section-header h3 {
+    font-size: 20px;
+  }
+  
+  .LeftProfileUpdate-image img {
+    width: 160px;
+    height: 160px;
+  }
+
+  .update-profile-page::before,
+  .update-profile-page::after {
+    opacity: 0.2;
+  }
+}
+
+@media (max-width: 576px) {
+  .update-profile-page {
+    padding: 20px 10px;
+  }
+  
+  .artists-list {
+    grid-template-columns: 1fr;
+  }
+  
+  .section-content {
+    padding: 15px;
+  }
+}
+
+/* Order Page Styling */
+.order-page {
+  background: linear-gradient(135deg, #c5d1ff 0%, #f5f8ff 100%);
+  border-radius: 12px;
+  padding: 30px;
+  margin: 20px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #c5d1ff;
+  transition: all 0.3s ease;
+}
+
+.order-page:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Header styling */
+.order-page h2 {
+  color: #445b7c;
+  font-size: 24px;
+  margin: 0;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #c5d1ff;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.order-page h2::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background-color: #ffc285;
+  border-radius: 50%;
+}
+
+/* Total Orders styling */
+.order-page h2 span {
+  color: #666;
+  font-size: 18px;
+  font-weight: normal;
+  margin-left: 10px;
+}
+
+/* No orders message styling */
+.no-orders {
+  text-align: center;
+  padding: 40px 20px;
+  color: #445b7c;
+  font-size: 16px;
+  background: linear-gradient(135deg, #ffffff 0%, #edf1ff 100%);
+  border-radius: 8px;
+  margin-top: 20px;
+  border: 1px dashed #c5d1ff;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Add decorative elements */
+.order-page::before {
+  content: '';
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(255, 194, 133, 0.1) 0%, transparent 70%);
+  top: -100px;
+  right: -100px;
+  border-radius: 50%;
+  animation: float 15s ease-in-out infinite;
+}
+
+.order-page::after {
+  content: '';
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  border: 2px dashed rgba(197, 209, 255, 0.5);
+  bottom: -75px;
+  left: -75px;
+  border-radius: 50%;
+  animation: rotate 20s linear infinite;
+}
+
+/* Light sweep animation */
+.no-orders::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  animation: lightSweep 3s ease-in-out infinite;
+}
+
+@keyframes lightSweep {
+  0% { left: -100%; }
+  50% { left: 100%; }
+  100% { left: 100%; }
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .order-page {
+    padding: 20px;
+    margin: 10px;
+  }
+
+  .order-page h2 {
+    font-size: 20px;
+  }
+
+  .no-orders {
+    padding: 30px 15px;
+  }
+
+  .order-page::before,
+  .order-page::after {
+    display: none;
+  }
 }

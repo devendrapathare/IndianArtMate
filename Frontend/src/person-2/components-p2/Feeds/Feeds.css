@@ -1,7 +1,93 @@
 .feeds-container{
-    margin-top: 20px;  
+    margin-top: 20px;
+    position: relative;
+    z-index: 1;
 }
 
 .feeds-header{
-    background-color: #f7f7f7;
+    background: linear-gradient(135deg, #dfe6ff 0%, #ffffff 100%);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 8px 30px rgba(223, 230, 255, 0.4);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(223, 230, 255, 0.5);
+}
+
+.feeds-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    animation: lightSweep 3s ease-in-out infinite;
+}
+
+@keyframes lightSweep {
+    0% { left: -100%; }
+    50% { left: 100%; }
+    100% { left: 100%; }
+}
+
+/* No feeds message styling */
+.no-feeds-message {
+    text-align: center;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, #ffffff 0%, #dfe6ff 20%);
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(223, 230, 255, 0.4);
+    margin-top: 20px;
+    border: 1px solid rgba(223, 230, 255, 0.5);
+}
+
+.no-feeds-message h3 {
+    color: #445b7c;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.no-feeds-message p {
+    color: #445b7c;
+    font-size: 1rem;
+}
+
+/* Empty state styling */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 50px 20px;
+    background: linear-gradient(135deg, #ffffff 0%, #dfe6ff 20%);
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(223, 230, 255, 0.4);
+    margin-top: 20px;
+    animation: fadeIn 0.5s ease;
+    border: 1px solid rgba(223, 230, 255, 0.5);
+}
+
+.empty-state-icon {
+    font-size: 3rem;
+    color: #445b7c;
+    margin-bottom: 20px;
+}
+
+.empty-state-text {
+    text-align: center;
+    color: #445b7c;
+    max-width: 400px;
+}
+
+.empty-state-text h3 {
+    color: #445b7c;
+    margin-bottom: 10px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }

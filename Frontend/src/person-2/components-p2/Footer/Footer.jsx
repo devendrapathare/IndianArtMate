@@ -1,40 +1,56 @@
 import React from 'react'
 import './Footer.css'
 import { assets } from '../../../assets/assets'
+import { Link } from 'react-router-dom'
 
 const Footer = () => {
   return (
     <div className='footer' id='footer'>
       <div className="footer-content">
         <div className='footer-content-left'>
-            <img  src={assets.logo} alt="" />
-            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sed accusantium repudiandae a totam cum ratione similique inventore, molestiae expedita vel esse quia consequuntur, quisquam ipsum?</p>
-            <div className="footer-social-icons">
-                <img src={assets.facebook_icon} alt="" />
-                <img src={assets.twitter_icon} alt="" />
-                <img src={assets.linkedin_icon} alt="" />
-            </div>
+            <h2 className='footer-logo'>IndianArtMate</h2>
+            <p className='footer-tagline'>Connecting Indian artists with art lovers worldwide.</p>
+            
         </div>
         <div className='footer-content-center'>
-            <h2>COMPANY</h2>
+            <h2>Quick Links</h2>
             <ul>
-                <li>Home</li>
-                <li>About Us</li>
-                <li>Delivery</li>
-                <li>privacy Policy</li>
+                <li><Link to="/about">About Us</Link></li>
+                <li><Link to="/artists">Artists</Link></li>
+                <li><Link to="/auctions">Auctions</Link></li>
+                <li><Link to="/blog">Blog</Link></li>
             </ul>
         </div>
         <div className='footer-content-right'>
-            <h2>GET IN TOUCH</h2>
+            <h2>Support</h2>
             <ul>
-                <li>+91-993-562-6600</li>
-                <li>dummyemail@dummy.com</li>
+                <li><Link to="/help">Help Center</Link></li>
+                <li><Link to="/terms">Terms of Service</Link></li>
+                <li><Link to="/privacy">Privacy Policy</Link></li>
+                <li><Link to="/contact">Contact Us</Link></li>
             </ul>
+        </div>
+        <div className='footer-social'>
+            <h2>Connect With Us</h2>
+            <div className="social-icons">
+                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+                    <img src={assets.instagram_icon || assets.facebook_icon} alt="Instagram" />
+                </a>
+                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
+                    <img src={assets.twitter_icon} alt="Twitter" />
+                </a>
+                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
+                    <img src={assets.facebook_icon} alt="Facebook" />
+                </a>
+                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
+                    <img src={assets.linkedin_icon} alt="LinkedIn" />
+                </a>
+            </div>
         </div>
       </div>
       <hr />
       <p className="footer-copyright">
-        Copyright 2024 © IndianArtMate -  All Right Reserved.
+        © 2025 IndianArtMate. All rights reserved.
       </p>
     </div>
   )

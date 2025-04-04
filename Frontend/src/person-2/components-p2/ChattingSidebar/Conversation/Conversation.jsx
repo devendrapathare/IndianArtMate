@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import './Conversation.css'
 import { useAuthContext } from '../../../context/AuthContext/AuthContext'
 import { usePostContext } from '../../../context/PostContext/PostContext'
@@ -16,6 +16,8 @@ const Conversation = ({ participants, message }) => {
   const { getMessageReceiverDetails } = useChatContext();
   const { setSelectedConversation } = useConversation();
   const [UserLastMessage, setUserLastMessage] = useState([])
+  const [hasNewMessage, setHasNewMessage] = useState(false);
+  const prevMessageIdRef = useRef(null);
 
   const { loading, messages } = UseGetMessages()
 
@@ -66,7 +68,7 @@ const Conversation = ({ participants, message }) => {
   const handleChat = async () => {
     await getMessageReceiverDetails(receiverId);
     setSelectedConversation(receiverId);
-    // navigate('/myChats')
+    setHasNewMessage(false); // Reset new message state when clicking on conversation
   };
 
   const lastMessgeId = message.slice(-1)[0]
@@ -84,6 +86,21 @@ const Conversation = ({ participants, message }) => {
         throw new Error('Network response was not ok');
       }
       const data = await response.json();
+      
+      // Check if this is a new message
+      if (prevMessageIdRef.current !== lastMessgeId) {
+        // Only animate if this isn't the first load
+        if (prevMessageIdRef.current !== null) {
+          setHasNewMessage(true);
+          
+          // Reset animation after 2 seconds
+          setTimeout(() => {
+            setHasNewMessage(false);
+          }, 2000);
+        }
+        prevMessageIdRef.current = lastMessgeId;
+      }
+      
       setUserLastMessage(data)
 
     } catch (error) {
@@ -102,7 +119,10 @@ const Conversation = ({ participants, message }) => {
 
   return (
     <>
-      <div onClick={handleChat} className='Conversation-container'>
+      <div 
+        onClick={handleChat} 
+        className={`Conversation-container ${hasNewMessage ? 'new-message' : ''}`}
+      >
         <div className="Conversation-dp">
           <img src={fullImageUrl} alt="" />
         </div>

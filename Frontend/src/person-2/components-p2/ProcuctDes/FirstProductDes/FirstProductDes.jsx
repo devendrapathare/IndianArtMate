@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useRef } from 'react';
 import './FirstProductDes.css';
 import images_for_categories, { assets } from '../../../../assets/assets';
 import { useAuthContext } from '../../../context/AuthContext/AuthContext';
@@ -41,6 +41,19 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
   const { applyHire } = useContext(HireContext)
 
   const { setSelectedConversation } = useConversation()
+
+  // Reference for the product container
+  const productContainerRef = useRef(null);
+  
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    
+    // Focus on the product container
+    if (productContainerRef.current) {
+      productContainerRef.current.scrollIntoView({ behavior: 'auto', block: 'start' });
+    }
+  }, []);
 
   const handleChat = async () => {
     setMyId(authUser._id)
@@ -272,111 +285,132 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
   };
 
   return (
-    <div className='FirstProductDes-container'>
+    <div className='FirstProductDes-container' ref={productContainerRef}>
       <div className="FirstProductDes-img">
         <img src={image} alt={title} />
       </div>
+      <div className="comments-wrapper">
+        <div className="section-title">Comments</div>
+        <Comment postId={id} Recived_userId={userId} />
+      </div>
       <div className="FirstProductDes-main-info">
-        <div className="header-title">
-          <h2>{title}</h2>
-          <p>({category})</p>
-        </div>
-        <hr />
-        <div className="price header-title">
-          <p>₹{price}</p>
-          <div id='taxes'>
-            <p>No hidden fees – all taxes are included!</p>
+        <div className="product-panel">
+          <div className="section-title">Product Information</div>
+          <div className="header-title">
+            <h2>{title}</h2>
+            <p>({category})</p>
           </div>
         </div>
-        <hr />
-        <div className="summery">
-          <p>{description}</p>
-        </div>
-        <hr />
-        <div onClick={handleProfilePage} className="item-owner">
-          <p>Designed by</p>
-          <div className="owner-profile">
-            <div className="owner-img">
-              <img src={imageUrl} alt="Owner Profile" />
-            </div>
-            <div className="owner-detail">
-              <div className="owner-name">
-                <p>{userData.userName}</p>
-              </div>
-              <div className="owner-respecters">
-                <p><span>{respectorsCount}</span> Respecters</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <hr />
-        {isOwner === true ? (
-          <div className="bidding-section">
-            <p>Current Highest Bid: ₹{biddingData?.highestPriceReceivedDueToBidding}</p>
-            <p id="profileView" onClick={() => gotoProfile(highestBidder?._id)}>
-              Highest Bidder: {highestBidder?.userName || 'No bids yet'}
-            </p>
-          </div>
-        ) : isOwner === false ? (
-          endTime && currentTime < endTime ? (
 
+        <div className="product-panel">
+          <div className="section-title">Price Details</div>
+          <div className="price header-title">
+            <p>₹{price}</p>
+            <div id='taxes'>
+              <p>No hidden fees – all taxes are included!</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="product-panel description-panel">
+          <div className="section-title">Description</div>
+          <div className="summery">
+            <p>{description}</p>
+          </div>
+        </div>
+
+        <div className="product-panel">
+          <div className="section-title">Artist</div>
+          <div onClick={handleProfilePage} className="item-owner">
+            <div className="owner-profile">
+              <div className="owner-img">
+                <img src={imageUrl} alt="Owner Profile" />
+              </div>
+              <div className="owner-detail">
+                <div className="owner-name">
+                  <p>{userData.userName}</p>
+                </div>
+                <div className="owner-respecters">
+                  <p><span>{respectorsCount}</span> Respecters</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {isOwner === true ? (
+          <div className="product-panel">
+            <div className="section-title">Bidding Status</div>
             <div className="bidding-section">
               <p>Current Highest Bid: ₹{biddingData?.highestPriceReceivedDueToBidding}</p>
               <p id="profileView" onClick={() => gotoProfile(highestBidder?._id)}>
                 Highest Bidder: {highestBidder?.userName || 'No bids yet'}
               </p>
+            </div>
+          </div>
+        ) : isOwner === false ? (
+          endTime && currentTime < endTime ? (
+            <div className="product-panel">
+              <div className="section-title">Place Your Bid</div>
+              <div className="bidding-section">
+                <p>Current Highest Bid: ₹{biddingData?.highestPriceReceivedDueToBidding}</p>
+                <p id="profileView" onClick={() => gotoProfile(highestBidder?._id)}>
+                  Highest Bidder: {highestBidder?.userName || 'No bids yet'}
+                </p>
 
-              <div className="place-bid">
-                <input
-                  type="number"
-                  placeholder="Enter your bid"
-                  value={userBid}
-                  onChange={(e) => setUserBid(e.target.value)}
-                />
-                <button onClick={handleBidSubmit} className="place-bid-btn">
-                  Place Bid
-                </button>
+                <div className="place-bid">
+                  <input
+                    type="number"
+                    placeholder="Enter your bid"
+                    value={userBid}
+                    onChange={(e) => setUserBid(e.target.value)}
+                  />
+                  <button onClick={handleBidSubmit} className="place-bid-btn">
+                    Place Bid
+                  </button>
+                </div>
               </div>
             </div>
           ) : (
-            <p>Bidding has ended or is not active yet.</p>
+            <div className="product-panel">
+              <div className="section-title">Bidding Status</div>
+              <p>Bidding has ended or is not active yet.</p>
+            </div>
           )
         ) : (
           (authUser?._id === userId ? (
-            <div className="impressions">
-              <p>Likes <span>{totalLike}</span> </p>
-              <p>Dislikes <span>{totaldisLike}</span> </p>
-              <button onClick={handleDeletePost}>Delete Post</button>
-              <button onClick={handleDownloadCA}>Download CA</button>
+            <div className="product-panel">
+              <div className="section-title">Actions</div>
+              <div className="impressions">
+                <p>Likes <span>{totalLike}</span> </p>
+                <p>Dislikes <span>{totaldisLike}</span> </p>
+                <button onClick={handleDeletePost}>Delete Post</button>
+                <button onClick={handleDownloadCA}>Download CA</button>
+              </div>
             </div>
           ) : (
-            <div className="impressions">
-              <button onClick={handleChat}>Chat</button>
-              {/* <button onClick={handleHireMe} disabled={isHired}>
-                {isHired ? 'Sent' : 'Hire me'}
-              </button> */}
-              {!cartItems[id] ? (
-                <button onClick={() => addItemToCart(id)} className="buy-btn">Buy Now</button>
-              ) : (
-                <div className='add-to-cart-edit'>
-                  <div className="minus-plus">
-                    <img onClick={() => removeItemFromCart(id)} src={assets.minus_icon} alt="Remove from Cart" />
-                    <p>Quantity: <span>{cartItems[id]}</span></p>
-                    <img onClick={() => addItemToCart(id)} src={assets.plus_icon} alt="Add to Cart" />
+            <div className="product-panel">
+              <div className="section-title">Purchase Options</div>
+              <div className="impressions">
+                <button onClick={handleChat}>Chat</button>
+                {!cartItems[id] ? (
+                  <button onClick={() => addItemToCart(id)} className="buy-btn">Buy Now</button>
+                ) : (
+                  <div className='add-to-cart-edit'>
+                    <div className="minus-plus">
+                      <img onClick={() => removeItemFromCart(id)} src={assets.minus_icon} alt="Remove from Cart" />
+                      <p>Quantity: <span>{cartItems[id]}</span></p>
+                      <img onClick={() => addItemToCart(id)} src={assets.plus_icon} alt="Add to Cart" />
+                    </div>
+                    <button onClick={handleNavigate} className="add-to-cart-btn">Go to Cart</button>
                   </div>
-                  <button onClick={handleNavigate} className="add-to-cart-btn">Go to Cart</button>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           ))
-
         )}
-
-        <hr />
       </div>
-      <Comment postId={id} Recived_userId={userId} />
     </div>
-
   );
 };
 

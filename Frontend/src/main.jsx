@@ -10,6 +10,7 @@ import HireContextProvider from './person-2/context/HireContext/HIreContext.jsx'
 import {CommentProvider} from './person-3/context/CommentContext.jsx'
 import SocketProvider from './person-2/context/SocketContext/SocketContext.jsx'
 import ChatContextProvider from './person-2/context/chatContext/chatContext.jsx'
+import ScrollToTop from './components/ScrollToTop.jsx'
 
 createRoot(document.getElementById('root')).render(
   <AuthContextProvider>
@@ -20,6 +21,7 @@ createRoot(document.getElementById('root')).render(
             <CommentProvider>
             <SocketProvider>
               <BrowserRouter>
+                <ScrollToTop />
                 <App />
               </BrowserRouter>
             </SocketProvider>

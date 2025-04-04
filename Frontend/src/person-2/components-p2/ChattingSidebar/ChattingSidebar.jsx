@@ -8,10 +8,17 @@ import './tailwind.css';
 const ChattingSidebar = () => {
   return (
     <div className='ChattingSidebar-container'>
-      <SearchInputs />
-      <div className="ChattingSidebar-other-content"></div>
-      <Conversations />
-      {/* <LogOutButton /> */}
+      <div className="sidebar-main-block">
+        <div className="search-section">
+          <h2 className="section-title">Find Contacts</h2>
+          <SearchInputs />
+        </div>
+        
+        <div className="conversations-section">
+          <h2 className="section-title">Recent Chats</h2>
+          <Conversations />
+        </div>
+      </div>
     </div>
   );
 };
