@@ -65,7 +65,7 @@ const UploadPost = () => {
 
     // Handle automatic scrolling when redirected to profile with #posts
     const ensureScroll = () => {
-        if (location.hash === 'Page') {
+        if (location.hash === '/ProfilePage') {
             // Add a small delay to ensure the DOM has updated
             setTimeout(() => {
                 const postsElement = document.getElementById('posts');

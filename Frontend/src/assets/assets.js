@@ -59,6 +59,8 @@ import crouselImg1 from './Images/crouselImg1.jpg'
 import crouselImg2 from './Images/crouselImg2.jpg'
 import crouselImg3 from './Images/crouselImg3.jpg'
 
+import handPrintedMadhubaniArt from './Images/handPrintedMadhubaniArt.jpg'
+
 
 export const like_dislike_images = {
   like,

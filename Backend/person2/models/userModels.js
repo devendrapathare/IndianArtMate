@@ -15,10 +15,16 @@ const userSchema = new mongoose.Schema({
         required: true,
         minlength: 8
     },
-    wallet:{
+    wallet: {
         type: Number,
-        default: 2000
+        default: 0
     },
+    // 🔽 Optional: Add walletTransactionRefs if needed later
+    // walletTransactions: [{
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: "WalletTransaction"
+    // }],
+
     bio: {
         type: String,
         default: ''
@@ -63,7 +69,7 @@ const userSchema = new mongoose.Schema({
         type: Object,
         default: {}
     }
-}, { timestamps: true,minimize: false });
+}, { timestamps: true, minimize: false });
 
 const User = mongoose.model("User", userSchema, "users");
 
