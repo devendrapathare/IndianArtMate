@@ -7,7 +7,7 @@
     max-width: 1600px; /* Increased max-width from 1400px to 1600px */
     position: relative;
     background-color: transparent;
-    margin: 30px auto; /* Equal margin top and bottom */
+    /* margin: 30px auto;   */
     box-shadow: none;
     padding: 0;
     overflow: visible; /* Allow buttons to be visible outside container */

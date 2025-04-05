@@ -53,7 +53,7 @@ const prevImage = () => {
 };
 
 useEffect(() => {
-  const interval = setInterval(nextImage, 8000); // Increased from 5000 to 8000ms for better viewing experience
+  const interval = setInterval(nextImage, 4000); // Increased from 5000 to 8000ms for better viewing experience
   return () => clearInterval(interval);
 }, []);
 

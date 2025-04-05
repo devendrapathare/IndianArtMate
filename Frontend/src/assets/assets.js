@@ -57,7 +57,7 @@ import searchImg from './Images/search.png'
 
 import crouselImg1 from './Images/crouselImg1.jpg'
 import crouselImg2 from './Images/crouselImg2.jpg'
-import crouselImg3 from './Images/crouselImg3.png'
+import crouselImg3 from './Images/crouselImg3.jpg'
 
 
 export const like_dislike_images = {
@@ -230,23 +230,23 @@ export const for_home = {
 export const CrouselData = [
   {
     id: 1,
-    title: 'Handpainted Madhubani Art',
+    title: 'Mystic Shadows of Creativity',
     src: crouselImg1,
-    description1: 'Vibrant and intricate, Madhubani art tells stories through delicate brushstrokes.',
-    description2: 'Each piece is a reflection of centuries-old tradition, hand-painted to perfection.'
+    description1: 'Art emerges from the unknown, like whispers in a dark forest. Let your imagination wander into the depths of artistic expression.',
+    description2: 'Like an artist lost in thought, the dark woods whisper stories waiting to be painted. Explore the depths of artistic mysteries.'
   },
   {
     id: 2,
-    title: 'Handwoven Kanjivaram Saree',
+    title: ' Orb of Inspiration',
     src: crouselImg2,
-    description1: 'A masterpiece of textile art, woven with rich silk threads and intricate designs.',
-    description2: 'Perfect for special occasions, each saree is crafted with deep cultural significance and skilled craftsmanship.'
+    description1: 'Creativity is an enigma, a fusion of structure and chaos. Discover the magic of artistic innovation with every stroke and shape.',
+    description2: 'The heart of creation glows with boundless energy. Dive into a world where every brushstroke is a spark of infinite imagination.'
   },
   {
     id: 3,
-    title: 'Discover the Soul of <span>Indian Art</span>',
+    title: ' Divine Aesthetics – Art Beyond Time',
     src: crouselImg3,
-    description1: 'Connect with talented artists, collect unique pieces, and become part of a thriving creative community.',
-    description2: 'These sculptures, each unique, bring timeless elegance to your home or space.'
+    description1: 'Inspired by the divine essence, art transcends reality. Celebrate the spirituality and timeless beauty of artistic devotion.',
+    description2: ' From the cosmic dance of colors to the sacred essence of tradition, experience art that bridges the human and the divine.'
   }
 ]

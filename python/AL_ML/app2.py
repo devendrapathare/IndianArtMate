@@ -1,7 +1,5 @@
 from flask import Flask
 from sentiment_routes import sentiment_bp
-# from shaswat.NLP.routes import nlp_blueprint
-# from shaswat.node2vec.routes import recommend_bp
 from NLP.routes import nlp_blueprint
 from node2vec.routes import recommend_bp
 

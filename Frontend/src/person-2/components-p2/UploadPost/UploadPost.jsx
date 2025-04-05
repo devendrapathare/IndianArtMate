@@ -373,7 +373,6 @@ const UploadPost = () => {
                                     >
                                         <option value="Painting">Painting</option>
                                         <option value="Sketch">Sketch</option>
-                                        <option value="Wallart">Wallart</option>
                                         <option value="Digital Art">Digital Art</option>
                                     </select>
                                 </div>
