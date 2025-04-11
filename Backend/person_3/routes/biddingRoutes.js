@@ -13,5 +13,6 @@ router.post('/placeBid', biddingController.placeBid);
 router.get('/myBidings/:userId',biddingController.myBidings)
 router.get('/ownerBiddings/:userId',biddingController.getOwnerBiddings);
 router.post('/endBidding/:biddingId', biddingController.endBidding);
+router.post('/end-and-settle', biddingController.endBiddingAndSettle);
 
 export default router;

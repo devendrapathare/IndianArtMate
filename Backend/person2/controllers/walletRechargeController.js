@@ -39,7 +39,8 @@ export const rechargeWallet = async (req, res) => {
         newTransaction.paymentId = session.id;
         await newTransaction.save();
 
-        res.json({ success: true, session_url: session.url });
+        // res.json({ success: true, session_url: session.url });
+        res.json({ success: true, txnId: newTransaction._id });
 
     } catch (err) {
         console.log(err);
@@ -47,15 +48,20 @@ export const rechargeWallet = async (req, res) => {
     }
 };
 
-// Verify Wallet Recharge
+
 export const verifyRecharge = async (req, res) => {
     const { txnId, success } = req.body;
+
+    console.log("txnId", txnId);
+    console.log("success", success);
+
 
     try {
         const txn = await WalletTransaction.findById(txnId);
         if (!txn) return res.json({ success: false, message: "Transaction not found" });
 
-        if (success == "true") {
+        if (success) {
+            console.log("in true")
             txn.paymentStatus = "success";
             await txn.save();
 
@@ -65,6 +71,7 @@ export const verifyRecharge = async (req, res) => {
 
             res.json({ success: true, message: "Wallet recharged successfully" });
         } else {
+            console.log("in flase")
             txn.paymentStatus = "failed";
             await txn.save();
 

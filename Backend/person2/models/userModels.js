@@ -19,6 +19,15 @@ const userSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
+
+    locked: {
+        type: Array,
+        default: [],
+        lock: Number,
+        biddingId: mongoose.Schema.Types.ObjectId,
+        biddingOwnerId: mongoose.Schema.Types.ObjectId,
+    },
+
     // 🔽 Optional: Add walletTransactionRefs if needed later
     // walletTransactions: [{
     //     type: mongoose.Schema.Types.ObjectId,

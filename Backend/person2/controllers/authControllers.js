@@ -215,3 +215,60 @@ export const getAllUserData = async (req, res) => {
 
 
 
+export const  updateLockedAmount = async (req, res) => {
+  try {
+    // assuming middleware sets req.userId
+    const {userId, lock, biddingId, biddingOwnerId } = req.body;
+
+    console.log("lock:",lock)
+
+    if (!lock || !biddingId || !biddingOwnerId) {
+      return res.status(400).json({ message: "Missing required fields" });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    const existingEntryIndex = user.locked.findIndex(entry =>
+      entry.biddingId.toString() === biddingId
+    );
+
+    if (existingEntryIndex !== -1) {
+      // Entry exists - update the lock value
+      const oldLock = user.locked[existingEntryIndex].lock;
+      const difference = lock - oldLock;
+
+      if (user.wallet < difference) {
+        return res.status(400).json({ message: "Insufficient wallet balance for update" });
+      }
+
+      console.log("oldLock:",user.locked[existingEntryIndex])
+      user.locked[existingEntryIndex].lock = lock;
+      user.wallet -= difference;
+      user.markModified('locked');
+
+      console.log("oldLock_after:",user.locked[existingEntryIndex])
+    } else {
+      // Entry does not exist - create a new one
+      if (user.wallet < lock) {
+        return res.status(400).json({ message: "Insufficient wallet balance" });
+      }
+
+      user.locked.push({ lock, biddingId, biddingOwnerId });
+      user.wallet -= lock;
+    }
+
+    await user.save();
+
+    return res.status(200).json({ message: "Lock updated successfully", locked: user.locked, wallet: user.wallet });
+
+  } catch (err) {
+    console.error("Error in updateLockedAmount:", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+
+
+
+

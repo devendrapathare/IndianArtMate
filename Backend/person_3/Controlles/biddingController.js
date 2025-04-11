@@ -239,6 +239,62 @@ const endBidding = async (req, res) => {
 };
 
 
+const endBiddingAndSettle = async (req, res) => {
+  try {
+    const { biddingId, winnerId } = req.body;
+
+    // Step 1: Fetch bidding
+    const bidding = await BiddingSchemaNoti.findById(biddingId);
+    if (!bidding) return res.status(404).json({ message: 'Bidding not found' });
+
+    // Step 2: Set winner in bidding doc if not already set
+    if (!bidding.winnerId) {
+      bidding.winnerId = winnerId;
+      await bidding.save();
+    }
+
+    // === Handle Winner ===
+    const winner = await User.findById(winnerId);
+    const winnerLocked = winner.locked.find(entry => entry.biddingId === biddingId);
+    if (!winnerLocked) return res.status(404).json({ message: 'Winner lock not found' });
+
+    const { lock: winnerLockAmount, biddingOwnerId } = winnerLocked;
+
+    const biddingOwner = await User.findById(biddingOwnerId);
+    if (!biddingOwner) return res.status(404).json({ message: 'Owner not found' });
+
+    biddingOwner.wallet += winnerLockAmount;
+    winner.locked = winner.locked.filter(entry => entry.biddingId !== biddingId);
+    bidding.orderPlaced = true; // Mark the order as placed
+    await biddingOwner.save();
+    await winner.save();
+    await bidding.save();
+
+    // === Handle Losers ===
+    const losers = bidding.biddingNotiReceivers.filter(id => id !== winnerId);
+
+    for (let userId of losers) {
+      const user = await User.findById(userId);
+      if (!user) continue;
+
+      const lockedEntry = user.locked.find(entry => entry.biddingId === biddingId);
+      if (!lockedEntry) continue;
+
+      user.wallet += lockedEntry.lock;
+      user.locked = user.locked.filter(entry => entry.biddingId !== biddingId);
+
+      await user.save();
+    }
+
+    return res.status(200).json({ message: 'Bidding ended. Winner paid. Losers refunded.' });
+
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Error settling bidding' });
+  }
+};
+
+
 export default {
-  startBidding ,getBiddingNotifications,getBiddingByPostId ,placeBid ,myBidings,getOwnerBiddings,endBidding
+  startBidding ,getBiddingNotifications,getBiddingByPostId ,placeBid ,myBidings,getOwnerBiddings,endBidding, endBiddingAndSettle
 };

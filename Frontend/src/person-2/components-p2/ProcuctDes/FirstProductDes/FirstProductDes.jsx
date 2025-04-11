@@ -14,10 +14,7 @@ import { useConversation } from '../../../Zustand/UseConversation';
 
 
 const FirstProductDes = ({ image, category, description, price, title, userId, id, isOwner, totalLike, totaldisLike }) => {
-
-  console.log('id', image);
-
-
+  
   const { authUser } = useAuthContext();
   const { cartItems, addItemToCart, removeItemFromCart } = useContext(CartContext);
   const [userData, setUserData] = useState({});
@@ -28,7 +25,7 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
   const [highestBidder, setHighestBidder] = useState(null);
   const [imageUrl, setImageUrl] = useState('');
   const [isHired, setIsHired] = useState(false);
-  const [timeleft, setTimeleft] = useState(0)
+
 
   let currentTime = new Date();
   let endTime = biddingData?.endTime ? new Date(biddingData.endTime) : null;
@@ -94,32 +91,32 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
     }
   };
 
-  const handleHireMe = async () => {
-    const ProjectOwnerId = authUser?._id;
-    const ContributerId = userId;
-    console.log("owner", ProjectOwnerId);
-    console.log("receiver", ContributerId);
-    console.log("userData", userData);
-    console.log("authUser", authUser);
+  // const handleHireMe = async () => {
+  //   const ProjectOwnerId = authUser?._id;
+  //   const ContributerId = userId;
+  //   console.log("owner", ProjectOwnerId);
+  //   console.log("receiver", ContributerId);
+  //   console.log("userData", userData);
+  //   console.log("authUser", authUser);
 
-    if (!ProjectOwnerId) {
-      toast.error('You must be logged in to hire.');
-      return;
-    }
+  //   if (!ProjectOwnerId) {
+  //     toast.error('You must be logged in to hire.');
+  //     return;
+  //   }
 
-    if (ProjectOwnerId === ContributerId) {
-      toast.error('You cannot hire yourself.');
-      return;
-    }
+  //   if (ProjectOwnerId === ContributerId) {
+  //     toast.error('You cannot hire yourself.');
+  //     return;
+  //   }
 
-    try {
-      applyHire(ProjectOwnerId, ContributerId, authUser, userData)
-      setIsHired(true);
-    } catch (error) {
-      console.error('Error sending hiring request:', error);
-      toast.error(error.response?.data?.message || 'An error occurred.');
-    }
-  };
+  //   try {
+  //     applyHire(ProjectOwnerId, ContributerId, authUser, userData)
+  //     setIsHired(true);
+  //   } catch (error) {
+  //     console.error('Error sending hiring request:', error);
+  //     toast.error(error.response?.data?.message || 'An error occurred.');
+  //   }
+  // };
 
   useEffect(() => {
 
@@ -207,81 +204,117 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
     navigate(`/temp/${userId}`);
   };
 
+
   const handleBidSubmit = async () => {
-    if (parseFloat(userBid) <= biddingData?.highestPriceReceivedDueToBidding) {
-      alert('Your bid must be higher than the current highest bid!');
+    const bidAmount = parseFloat(userBid);
+    if (isNaN(bidAmount) || bidAmount <= biddingData?.highestPriceReceivedDueToBidding) {
+      toast.error('Your bid must be higher than the current highest bid!');
       return;
     }
 
     try {
+      // Fetch updated user data to get wallet balance
+      const userResponse = await axios.get(`${url}/users/${authUser._id}`);
+      const userWalletBalance = userResponse.data.user.wallet; // Assuming 'wallet' holds the balance
+
+      if (bidAmount > userWalletBalance) {
+        toast.error('Insufficient funds! Please add money to your wallet, After that you can place a bid.');
+        return;
+      }
+
+      // Proceed with placing the bid
       const response = await axios.post(`${url}/api/bidding/placeBid`, {
         postId: id,
         userId: authUser._id,
-        bidAmount: userBid
+        bidAmount: bidAmount
       });
 
       if (response.data.success) {
         setBiddingData((prevData) => ({
           ...prevData,
-          highestPriceReceivedDueToBidding: userBid,
+          highestPriceReceivedDueToBidding: bidAmount,
           highestBiddingAmountSetBy: authUser?._id
-          // highestBiddingAmountSetBy: authUser.userName
         }));
+
+        handleLock(bidAmount);
         toast.success('Bid placed successfully!');
       } else {
         toast.error('Failed to place the bid. Try again.');
       }
     } catch (error) {
       console.error('Error placing bid:', error.message);
-      alert('An error occurred. Please try again later.');
+      toast.error('An error occurred. Please try again later.');
     }
   };
 
 
-
-  // const handleBidSubmit = async () => {
-  //   const bidAmount = parseFloat(userBid);
-  //   if (isNaN(bidAmount) || bidAmount <= biddingData?.highestPriceReceivedDueToBidding) {
-  //     toast.error('Your bid must be higher than the current highest bid!');
-  //     return;
-  //   }
-
-  //   try {
-  //     // Fetch updated user data to get wallet balance
-  //     const userResponse = await axios.get(`${url}/users/${authUser._id}`);
-  //     const userWalletBalance = userResponse.data.user.wallet; // Assuming 'wallet' holds the balance
-
-  //     if (bidAmount > userWalletBalance) {
-  //       toast.error('Insufficient funds! Please add money to your wallet.');
-  //       return;
-  //     }
-
-  //     // Proceed with placing the bid
-  //     const response = await axios.post(`${url}/api/bidding/placeBid`, {
-  //       postId: id,
-  //       userId: authUser._id,
-  //       bidAmount: bidAmount
-  //     });
-
-  //     if (response.data.success) {
-  //       setBiddingData((prevData) => ({
-  //         ...prevData,
-  //         highestPriceReceivedDueToBidding: bidAmount,
-  //         highestBiddingAmountSetBy: authUser?._id
-  //       }));
-  //       toast.success('Bid placed successfully!');
-  //     } else {
-  //       toast.error('Failed to place the bid. Try again.');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error placing bid:', error.message);
-  //     toast.error('An error occurred. Please try again later.');
-  //   }
-  // };
-
-
   const gotoProfile = (artistId) => {
     navigate(`/temp/${artistId}`);
+  };
+
+
+  // const setorder = ()=>{
+  //   // userData = ;
+  //   // bidingDataId = biddingData._id;
+  //   // postId = id;
+  //   let orderItems = {
+  //       userId : biddingData.userId,
+  //       title:title,
+  //       description:description,
+  //       postId:id
+  //   }
+
+  //   let orderData = {
+  //     buyerId:highestBidder._id,
+  //     address:{
+  //       "xyz":"xyz"
+  //     },
+  //     items:orderItems,
+  //     amount:biddingData?.highestPriceReceivedDueToBidding, 
+  //     bidId : biddingData._id
+  //   }
+
+  //   console.log("orderData:",orderData)
+
+  // }
+
+
+
+  const updateLock = async ({ userId, lock, biddingId, biddingOwnerId }) => {
+    try {
+      const response = await axios.post('http://localhost:5000/api/auth/lock', {
+        userId,
+        lock,
+        biddingId,
+        biddingOwnerId
+      });
+  
+      console.log("Lock updated successfully:", response.data);
+      return response.data;
+  
+    } catch (error) {
+      console.error("Error updating lock:", error.response?.data || error.message);
+      throw error;
+    }
+  };
+
+
+  const handleLock = async (amount) => {
+    const data = {
+      userId: authUser?._id, 
+      lock: amount,
+      biddingId: biddingData._id,
+      biddingOwnerId: biddingData.userId
+    };
+
+    console.log("Data to be sent:", data);
+  
+    try {
+      const result = await updateLock(data);
+      alert("Locked successfully! New wallet balance: " + result.wallet);
+    } catch (err) {
+      alert("Failed to lock amount");
+    }
   };
 
   return (
@@ -373,9 +406,11 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
             </div>
           ) : (
             <div className="product-panel">
-              <div className="section-title">Bidding Status</div>
-              <p>Bidding has ended or is not active yet.</p>
+            <div className="section-title">Bidding Status</div>
+            <p>Bidding has ended </p>
+            {/* <button onClick={setorder}>Set Order</button> */}
             </div>
+            
           )
         ) : (
           (authUser?._id === userId ? (

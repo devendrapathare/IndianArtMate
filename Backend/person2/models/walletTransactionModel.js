@@ -15,19 +15,17 @@ const walletTransactionSchema = new mongoose.Schema({
         enum: ["pending", "success", "failed"],
         default: "pending"
     },
-    paymentId: {
-        type: String // Stripe payment ID
-    },
+    // paymentId: {
+    //     type: String 
+    // },
     transactionType: {
         type: String,
         enum: ["credit", "debit"],
         required: true
     },
-    paymentTxnId: {
-        type: String,
-        // required: true,  
-        unique: true
-    },
+    // paymentTxnId: {
+    //     type: String,
+    // },
     createdAt: {
         type: Date,
         default: Date.now

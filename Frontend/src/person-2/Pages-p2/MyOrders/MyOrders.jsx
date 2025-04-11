@@ -40,7 +40,7 @@ const MyOrders = () => {
                         <div key={index} className="my-orders-order">
                             <img src={assets.delivery_box} alt="" />
                             <p>{order.items.map((item, idx) => 
-                                `${item.title} X ${item.quantity}${idx < order.items.length - 1 ? ', ' : ''}`
+                                `${item.title} X ${item.quantity || item.Quantity}${idx < order.items.length - 1 ? ', ' : ''}`
                             )}</p>
                             <p>₹{order.amount}.00</p>
                             <p>Items: {order.items.length}</p>

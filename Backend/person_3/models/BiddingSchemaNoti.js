@@ -10,6 +10,7 @@ const BiddingSchemaNoti = new mongoose.Schema({
   highestBiddingAmountSetBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },
   winnerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null }, // New field
   biddingNotiReceivers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  orderPlaced: { type: Boolean, default: false },
   startTime: { type: Date, required: true },
   endTime: { type: Date, required: true, index: { expires: 0 } },
   endedAt: { type: Date }, // Optional: Record when bidding ended

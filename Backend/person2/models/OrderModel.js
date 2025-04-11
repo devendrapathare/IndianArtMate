@@ -29,7 +29,11 @@ const orderSchema = new mongoose.Schema ({
     payment: {
         type: Boolean,
         default: false
-    }
+    },
+    // bidId: {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     default:''
+    // },
 })
 
 const orderModel = mongoose.models.order || mongoose.model("order",orderSchema);

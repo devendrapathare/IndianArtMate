@@ -37,7 +37,7 @@ const placeOrder = async (req,res) => {
                 currency: 'usd',
                 product_data: {
                     name: 'Delivery Fee'
-                },
+                },  
                 unit_amount: deliveryCharges * 100
             },
             quantity: 1
@@ -57,6 +57,24 @@ const placeOrder = async (req,res) => {
         res.json({ success: false, message: "Backend Error" });
     }
 }
+const biddingOrder = async (req, res) => {
+    try {
+        console.log('biddingOrder', req.body);
+        const newOrder = new orderModel({
+            buyerId: req.body.buyerId,
+            items: req.body.items,
+            amount: req.body.amount,
+            address: req.body.address
+        });
+        const savedOrder = await newOrder.save();
+        console.log('Newly saved order ID:', savedOrder._id);
+
+        res.json({ success: true, message: "Order placed successfully", orderId: savedOrder._id });
+    } catch (error) {
+        console.error("Error placing bidding order:", error);
+        res.json({ success: false, message: "Backend Error" });
+    }
+};
 
 const verifyOrder = async (req,res) => {
     const { orderId,success } = req.body;
@@ -119,4 +137,4 @@ const updateOrderStatus = async (req, res) => {
 };
 
 
-export { placeOrder,verifyOrder,userOrders,updateOrderStatus }
+export { placeOrder,verifyOrder,userOrders,updateOrderStatus,biddingOrder }

@@ -112,7 +112,6 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
       console.log('Settlement Response:', response.data);
 
       toast.success('You have been paid, now it\'s time to deliver the art');
-      placeOrder(bid, winner);
 
       return response.data;
 
@@ -121,55 +120,12 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
       throw error;
     }
 
-     
-  };
-
-  const placeOrder = async(bid , winner) => {
-    
-    const userdata = await axios.get(`${url}/users/${winner.winnerId}`);
-    if (!userdata.data.success) {
-      alert("Failed to fetch user data.");
-      return;
-    }
-    const user = userdata.data.user;
-
-    const postdata = await axios.get(`${url}/api/post/getPostDataByID/${bid.postId}`);
-    if (!postdata.data.success) {
-      alert("Failed to fetch user data.");
-      return;
-    }
-    const post = postdata.data.data;
-    const orderItem = { ...post, Quantity: 1 };
-    console.log("post:", orderItem);
-
-    const orderPayload = {
-      buyerId: user._id,
-      items: [
-        orderItem
-      ],
-      amount: bid.highestPriceReceivedDueToBidding,
-      // amount: 2,
-      address: {
-        user
-      },
-      status: "pending",
-      date: new Date()
-    };
-
-    const response = await axios.post(`${url}/api/order/placeBiddingOrder`, orderPayload);
-    if (response.data.success) {
-      alert("Order placed successfully.");
-    } else {
-      alert("Failed to place order.");
-    }
-  
-
-
 
   };
 
-
-  
+  const handleReject = (bid) => {
+    alert(`Rejected winner for post "${postTitles[bid.postId]}"`);
+  };
 
 
   useEffect(() => {
