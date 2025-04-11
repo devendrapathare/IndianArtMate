@@ -7,7 +7,7 @@ import connectToMongoDB from './person2/database/connectToMongoDB.js'
 import store_rout from './person_3/routes/StoreRoutes.js'
 import profile_rout from './person_3/routes/ProfileRoutes.js'
 import profile_pic_router from './person_3/routes/Profile_pic_routes.js'
-import cartRoutes  from './person2/routes/cartRoutes.js'
+import cartRoutes from './person2/routes/cartRoutes.js'
 import orderRouter from './person2/routes/OrderRoutes.js'
 import like_dislike_controlls from './person_3/routes/setLikeDislikeroutes.js'
 import setRespectingRoutes from './person_3/routes/setRespectingRoutes.js'
@@ -21,6 +21,7 @@ import { initializeSocket } from './socket.js';
 import messageRoutes from './person2/routes/messageRoutes.js'
 import cookieParser from 'cookie-parser';
 import walletRechargeRouter from './person2/routes/walletRechargeRoutes.js'
+import { cleanPendingTransactions } from './person2/utils/cleanup.js'
 
 const app = express();
 
@@ -29,7 +30,7 @@ dotenv.config();
 const PORT = process.env.PORT || 5000;
 
 const corsOptions = {
-    origin: 'http://localhost:3000',  
+    origin: 'http://localhost:3000',
     credentials: true,  // Allow cookies
 };
 
@@ -46,8 +47,8 @@ app.use("/api/post", userPosts);
 app.use("/api/cart", cartRoutes);
 app.use("/api/order", orderRouter);
 app.use("/images", express.static('uploads'));
-app.use("/api/messages",messageRoutes)
-app.use('/api/wallet',walletRechargeRouter)
+app.use("/api/messages", messageRoutes)
+app.use('/api/wallet', walletRechargeRouter)
 
 app.use(store_rout);
 app.use(profile_rout);
@@ -67,4 +68,8 @@ initializeSocket(server);
 server.listen(PORT, () => {
     connectToMongoDB();
     console.log(`Server is running on port ${PORT}`);
+
+    // Background job for cleaning pending wallet transactions
+    setInterval(cleanPendingTransactions, 15 * 60 * 1000);
+
 });

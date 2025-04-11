@@ -102,6 +102,7 @@ export const loginUser = async (req, res) => {
         }
 
         generateTokenAndSetCookie(user._id,res)
+        // console.log("user._id",user.wallet)
 
         res.status(200).json({
             _id: user._id,
@@ -116,7 +117,8 @@ export const loginUser = async (req, res) => {
             respectors: user.respectors,
             addressLine1: user.addressLine1,
             addressLine2: user.addressLine2,
-            profile_type: user.profile_type
+            profile_type: user.profile_type,
+            wallet: user.wallet,
         })
         
     } catch (error) {
@@ -155,6 +157,7 @@ export const userDataFromId = async (req, res) => {
             _id: user._id,
             userName: user.userName,
             profilePic: user.profilePic,
+            wallet: user.wallet,
         })
 
     } catch (error) {

@@ -1,10 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useAuthContext } from '../../../person-2/context/AuthContext/AuthContext';
 
 const Wallet = () => {
     const [amount, setAmount] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [walletBalance, setWalletBalance] = useState(0);
+
+    const { authUser, fetchUserData } = useAuthContext();
+
+    const loadWalletBalance = async () => {
+        if (authUser && authUser._id) {
+            try {
+                const userData = await fetchUserData(authUser._id);
+                setWalletBalance(userData);
+                
+            } catch (err) {
+                console.error("Failed to fetch wallet:", err);
+                setError("Failed to load wallet balance.");
+            }
+        }
+    };
+
+    useEffect(() => {
+        loadWalletBalance();
+    }, [authUser]);
 
     const handleRecharge = async () => {
         if (!amount || isNaN(amount) || amount <= 0) {
@@ -21,17 +42,12 @@ const Wallet = () => {
                 { amount },
                 { withCredentials: true }
             );
-            console.log("Recharge Response:", res.data.success);
-
-            if (res.data.success && res.data.txnId) {
-                await axios.post(
-                    'http://localhost:5000/api/wallet/verify-recharge',
-                    {
-                        txnId: res.data.txnId,
-                        success: res.data.success
-                    },
-                );
-
+            console.log(res.data);
+            console.log(res.data.success);
+            console.log(res.data.session_url);
+            
+            if (res.data.success && res.data.session_url) {
+                window.location.replace(res.data.session_url); // Stripe checkout
             } else {
                 setError("Failed to initiate recharge.");
             }
@@ -57,6 +73,7 @@ const Wallet = () => {
                 {loading ? 'Processing...' : 'Recharge'}
             </button>
             {error && <p style={styles.error}>{error}</p>}
+            <p><strong>Wallet Balance:</strong> ${walletBalance.wallet}</p>
         </div>
     );
 };

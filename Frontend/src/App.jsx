@@ -24,6 +24,7 @@ import Search from './person-3/Components-3/search/Search';
 import ChattingPage from './person-2/Pages-p2/ChattingPage/ChattingPage';
 import FeedPage from './person-2/Pages-p2/FeedPage/FeedPage';
 import LoadingScreen from './components/LoadingScreen';
+import WalletPage from './person-2/Pages-p2/WalletPage/WalletPage';
 
 function App() {
     const { authUser } = useAuthContext();
@@ -65,7 +66,8 @@ function App() {
                     <Route path="/receivedOrders" element={<ReceivedOrder />}/>
                     <Route path="/myProfileDetails/:whatToDo/:userId" element={<Show_resp_respting/>}/>
                     <Route path="/SearchPost" element={<Search/>}/>
-                    <Route path="/feedPage" element={<FeedPage />} />
+                    <Route path="/feedPage" element={<FeedPage />} />                    
+                    <Route path="/walletPage" element={<WalletPage />} />                    
                 </Routes>
 
                 <Toaster 
