@@ -1,5 +1,5 @@
 import express from 'express'
-import { loginUser, logOutUser, signupUser, userDataFromId, fetchUserByName, getAllUserData, updateLockedAmount } from '../controllers/authControllers.js'
+import { loginUser, logOutUser, signupUser, userDataFromId, fetchUserByName, getAllUserData, updateLockedAmount, getLockedAmountData } from '../controllers/authControllers.js'
 
 
 const router =  express.Router()
@@ -11,6 +11,7 @@ router.post('/userData', userDataFromId)
 router.post('/userSearch', fetchUserByName)
 router.get('/getAllUserData', getAllUserData)
 router.post('/lock', updateLockedAmount)
+router.get('/lockedAmount/:userId', getLockedAmountData)
 
 
 export default router

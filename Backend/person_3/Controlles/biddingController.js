@@ -135,34 +135,69 @@ const getBiddingByPostId = async (req, res) => {
     res.status(500).json({ message: 'Server error', error });
   }
 };
-
 const placeBid = async (req, res) => {
   try {
-      const { postId, userId, bidAmount } = req.body;
+    const { postId, userId, bidAmount } = req.body;
 
-      const biddingData = await BiddingSchemaNoti.findOne({ postId });
+    const biddingData = await BiddingSchemaNoti.findOne({ postId });
 
-      if (!biddingData) {
-          return res.status(404).json({ message: 'Bidding data not found' });
+    if (!biddingData) {
+      return res.status(404).json({ message: 'Bidding data not found' });
+    }
+
+    const currentHighestBid = biddingData.highestPriceReceivedDueToBidding || biddingData.startingPrice;
+
+    if (parseFloat(bidAmount) <= currentHighestBid) {
+      return res.status(400).json({ message: 'Your bid must be higher than the current highest bid' });
+    }
+
+    // Step 1: Check if user already placed a bid
+    const existingBidIndex = biddingData.bidders.findIndex(
+      bid => bid.bidderId.toString() === userId.toString()
+    );
+
+    if (existingBidIndex !== -1) {
+      // User has already bid → update bid amount, time, and backedOut = false
+      biddingData.bidders[existingBidIndex].amount = bidAmount;
+      biddingData.bidders[existingBidIndex].bidTime = new Date();
+      biddingData.bidders[existingBidIndex].backedOut = false;
+    } else {
+      // New bidder → push to array
+      biddingData.bidders.push({
+        bidderId: userId,
+        amount: bidAmount,
+        bidTime: new Date()
+      });
+    }
+
+    // Step 2: Recalculate highest bid & bidder from valid bids (excluding backed out)
+    let highestBid = biddingData.startingPrice;
+    let highestBidder = null;
+
+    biddingData.bidders.forEach(bid => {
+      if (!bid.backedOut && bid.amount > highestBid) {
+        highestBid = bid.amount;
+        highestBidder = bid.bidderId;
       }
+    });
 
-      const currentHighestBid = biddingData.highestPriceReceivedDueToBidding || biddingData.startingPrice;
+    // Step 3: Update main bidding info
+    biddingData.highestPriceReceivedDueToBidding = highestBid;
+    biddingData.highestBiddingAmountSetBy = highestBidder;
 
-      if (parseFloat(bidAmount) <= currentHighestBid) {
-          return res.status(400).json({ message: 'Your bid must be higher than the current highest bid' });
-      }
+    await biddingData.save();
 
-      // Update the bidding data with the new highest bid
-      biddingData.highestPriceReceivedDueToBidding = bidAmount;
-      biddingData.highestBiddingAmountSetBy = userId;
+    return res.status(200).json({
+      success: true,
+      message: 'Bid placed successfully',
+      biddingData
+    });
 
-      await biddingData.save();
-
-      return res.status(200).json({success:true, message: 'Bid placed successfully', biddingData });
   } catch (error) {
-      return res.status(500).json({ message: 'Error placing bid', error: error.message });
+    return res.status(500).json({ message: 'Error placing bid', error: error.message });
   }
 };
+
 
 const myBidings = async (req, res) => {
   try {
@@ -265,12 +300,15 @@ const endBiddingAndSettle = async (req, res) => {
 
     biddingOwner.wallet += winnerLockAmount;
     winner.locked = winner.locked.filter(entry => entry.biddingId !== biddingId);
-    bidding.orderPlaced = true; // Mark the order as placed
+    bidding.orderPlaced = true; 
     await biddingOwner.save();
     await winner.save();
+
+    bidding.status = 'ended';
+    bidding.endedAt = new Date();
+    bidding.bidders = [];
     await bidding.save();
 
-    // === Handle Losers ===
     const losers = bidding.biddingNotiReceivers.filter(id => id !== winnerId);
 
     for (let userId of losers) {
@@ -361,7 +399,76 @@ const refundLockedAmounts = async (req, res) => {
 
 
 
+const backoutBid = async (req, res) => {
+  try {
+    const { userId, biddingId } = req.body;
+
+    // console.log("backoutBid: userId, biddingId", userId, biddingId);
+
+    // Step 1: Fetch the Bidding Data
+    const biddingData = await BiddingSchemaNoti.findOne({ _id: biddingId });
+
+    if (!biddingData) {
+      // console.log("Bidding not found");
+      return res.status(404).json({ message: 'Bidding not found' });
+    }
+
+    // console.log("biddingData:", biddingData);
+
+    // ✅ Prevent highest bidder from backing out
+    if (biddingData.highestBiddingAmountSetBy?.toString() === userId) {
+      // console.log("Current highest bidder cannot backout");
+      return res.status(200).json({ message: 'Highest bidder cannot backout from the bid' });
+    }
+
+    // Step 2: Check if User is in the Bidders List
+    const bidderIndex = biddingData.bidders.findIndex(bidder => bidder.bidderId.toString() === userId);
+
+    if (bidderIndex === -1) {
+      // console.log("User has not placed a bid");
+      return res.status(400).json({ message: 'User has not placed a bid' });
+    }
+
+    // console.log("bidderIndex:", bidderIndex);
+
+    // Step 3: Get the Bid Amount and Remove User from Bidders
+    const bidAmount = biddingData.bidders[bidderIndex].amount;
+    biddingData.bidders.splice(bidderIndex, 1);
+
+    // console.log("bidiing:", biddingData.bidders);
+
+    // Step 4: Update User Wallet (Refund)
+    const user = await User.findById(userId);
+
+    if (!user) {
+      // console.log("User not found");
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // console.log("user:", user);
+
+    // Add back the locked amount to user wallet
+    user.wallet += bidAmount;
+    user.locked = user.locked.filter(lock => lock.biddingId.toString() !== biddingId);
+
+    await user.save();
+
+    // console.log("user after save:", user);
+
+    // Step 5: Save bidding data
+    await biddingData.save();
+
+    // console.log("biddingData after save:", biddingData);
+
+    return res.status(200).json({ success: true, message: 'Successfully backout from bidding and amount refunded' });
+
+  } catch (error) {
+    console.error("Error during backout:", error);
+    return res.status(500).json({ message: 'Error during backout', error: error.message });
+  }
+};
+
 
 export default {
-  startBidding ,getBiddingNotifications,getBiddingByPostId ,placeBid ,myBidings,getOwnerBiddings,endBidding, endBiddingAndSettle, deleteBiddingById, getAllBiddingData,refundLockedAmounts
+  startBidding ,getBiddingNotifications,getBiddingByPostId ,placeBid ,myBidings,getOwnerBiddings,endBidding, endBiddingAndSettle, deleteBiddingById, getAllBiddingData,refundLockedAmounts,backoutBid
 };

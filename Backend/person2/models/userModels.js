@@ -33,12 +33,6 @@ const userSchema = new mongoose.Schema({
         biddingOwnerId: mongoose.Schema.Types.ObjectId,
     },
 
-    // 🔽 Optional: Add walletTransactionRefs if needed later
-    // walletTransactions: [{
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: "WalletTransaction"
-    // }],
-
     bio: {
         type: String,
         default: ''

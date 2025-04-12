@@ -273,5 +273,23 @@ export const  updateLockedAmount = async (req, res) => {
 
 
 
+export const getLockedAmountData = async (req, res) => {
+    try {
+      const { userId } = req.params;
+  
+      const user = await User.findById(userId);
+  
+      if (!user) return res.status(404).json({ message: 'User not found' });
+  
+      return res.status(200).json({
+        lockedData: user.locked,
+        totalLocked: user.locked.reduce((acc, curr) => acc + curr.lock, 0),
+      });
+    } catch (error) {
+        console.log("🔥 ERROR IN LOCKED API:", error);
+      res.status(500).json({ message: 'Error fetching locked amount', error: error.message });
+    }
+  };
+  
 
 
