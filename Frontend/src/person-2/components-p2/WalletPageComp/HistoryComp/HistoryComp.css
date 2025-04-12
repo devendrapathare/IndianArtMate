@@ -24,3 +24,31 @@
     font-weight: bold;
   }
   
+  .pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 16px;
+    gap: 12px;
+}
+
+.pagination-controls button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    background-color: #3b49df;
+    color: white;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+}
+
+.pagination-controls button:disabled {
+    background-color: #b0b0b0;
+    cursor: not-allowed;
+}
+
+.pagination-controls span {
+    font-size: 1rem;
+    font-weight: 500;
+}

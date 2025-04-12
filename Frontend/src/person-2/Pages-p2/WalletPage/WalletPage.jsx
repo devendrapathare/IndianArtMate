@@ -31,7 +31,7 @@ const WalletPage = () => {
             className={activeTab === 'recharge' ? 'active' : ''}
             onClick={() => setActiveTab('recharge')}
           >
-            Recharge Wallet
+            Wallet
           </button>
           <button
             className={activeTab === 'history' ? 'active' : ''}
