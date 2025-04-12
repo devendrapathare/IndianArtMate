@@ -8,35 +8,50 @@ const PassbookComp = () => {
   const { authUser, fetchUserData } = useAuthContext();
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { url } = usePostContext()
+  const { url } = usePostContext();
 
   useEffect(() => {
     const loadTransactions = async () => {
       try {
-        console.log('Fetching transactions for user:', authUser._id);
         const res = await axios.get(`http://localhost:5000/api/other-transactions/${authUser._id}`);
-        const transactionsWithUsers = await Promise.all(res.data.transactions.map(async (txn, index) => {
-          const buyer = await fetchUserData(txn.buyerId);
-          const seller = await fetchUserData(txn.sellerId);
-          console.log('Buyer:', buyer);
-          console.log('Seller:', seller);
+        const transactionsWithUsers = await Promise.all(
+          res.data.transactions.map(async (txn, index) => {
+            const buyer = await fetchUserData(txn.buyerId._id || txn.buyerId);
+            const seller = await fetchUserData(txn.sellerId._id || txn.sellerId);
 
-          return {
-            srNo: index + 1,
-            from: {
-              username: buyer?._id === authUser._id ? 'You' : buyer?.userName,
-              profilePic: getProfileImageUrl(buyer?.profilePic)
-            },
-            to: {
-              username: seller?._id === authUser._id ? 'You' : seller?.userName,
-              profilePic: getProfileImageUrl(seller?.profilePic)
-            },
-            amount: txn.amount,
-            purpose: txn.purpose,
-            status: buyer._id === authUser._id ? 'Debited':'Credited'
-          };
-        }));
-        console.log('Transactions with users:', transactionsWithUsers);
+            let role = '';
+            let balanceAfterTransaction = null;
+
+            if (txn.buyerId?._id?.toString() === authUser._id.toString()) {
+              role = 'buyer';
+              balanceAfterTransaction = txn.buyerBalanceAfterTransaction;
+            } else if (txn.sellerId?._id?.toString() === authUser._id.toString()) {
+              role = 'seller';
+              balanceAfterTransaction = txn.sellerBalanceAfterTransaction;
+            }
+
+            return {
+              srNo: index + 1,
+              transactionId: txn.transactionId, // Add transaction ID
+              date: txn.createdAt, // Add date
+              from: {
+                username: buyer?._id === authUser._id ? 'You' : buyer?.userName || buyer?.email,
+                profilePic: getProfileImageUrl(buyer?.profilePic)
+              },
+              to: {
+                username: seller?._id === authUser._id ? 'You' : seller?.userName || seller?.email,
+                profilePic: getProfileImageUrl(seller?.profilePic)
+              },
+              amount: txn.amount,
+              purpose: txn.purpose,
+              transactionType: txn.transactionType,
+              status: txn.status,
+              balanceAfterTransaction,
+              role
+            };
+          })
+        );
+
         setTransactions(transactionsWithUsers);
       } catch (err) {
         console.error('Error fetching transactions:', err);
@@ -53,7 +68,7 @@ const PassbookComp = () => {
   const getProfileImageUrl = (profilePic) => {
     const desiredPath = 'https://avatar.iran.liara.run/public/';
     if (!profilePic) return '';
-  
+
     if (profilePic.startsWith(desiredPath)) {
       return profilePic;
     } else {
@@ -62,7 +77,6 @@ const PassbookComp = () => {
       return `${url}/profilePics${wantedPath}`;
     }
   };
-  
 
   return (
     <div className="passbook-container">
@@ -74,17 +88,23 @@ const PassbookComp = () => {
           <thead>
             <tr>
               <th>Sr. No</th>
+              <th>Transaction ID</th> {/* Add header for Transaction ID */}
+              <th>Date</th> {/* Add header for Date */}
               <th>From</th>
               <th>To</th>
               <th>Amount</th>
               <th>Purpose</th>
+              <th>Transaction Type</th>
               <th>Status</th>
+              <th>Balance After Transaction</th>
             </tr>
           </thead>
           <tbody>
             {transactions.map((txn, index) => (
               <tr key={index}>
                 <td>{txn.srNo}</td>
+                <td>{txn.transactionId}</td> {/* Display Transaction ID */}
+                <td>{new Date(txn.date).toLocaleString()}</td> {/* Format and display date */}
                 <td>
                   <img src={txn.from.profilePic} alt="from" className="profile-pic" />
                   {txn.from.username}
@@ -93,9 +113,15 @@ const PassbookComp = () => {
                   <img src={txn.to.profilePic} alt="to" className="profile-pic" />
                   {txn.to.username}
                 </td>
-                <td>${txn.amount.toFixed(2)}</td>
+                <td>{txn.role === 'buyer' ? '-' : '+'}${txn.amount.toFixed(2)}</td>
                 <td>{txn.purpose}</td>
+                <td>{txn.transactionType}</td>
                 <td>{txn.status}</td>
+                <td>
+                  {txn.balanceAfterTransaction !== null
+                    ? `$${txn.balanceAfterTransaction.toFixed(2)}`
+                    : '—'}
+                </td>
               </tr>
             ))}
           </tbody>

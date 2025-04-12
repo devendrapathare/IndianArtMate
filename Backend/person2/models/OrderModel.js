@@ -13,6 +13,9 @@ const orderSchema = new mongoose.Schema ({
         type: Number,
         required: true
     },
+    deliveryCharge: {
+        type: Number,
+    },
     address: {
         type: Object,
         required: true
