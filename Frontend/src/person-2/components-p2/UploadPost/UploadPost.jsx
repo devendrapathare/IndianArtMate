@@ -422,6 +422,7 @@ const UploadPost = () => {
                                         value={data.duration} 
                                         onChange={onChangeHandler}
                                         min="1" 
+                                        max="24"
                                         required 
                                     />
                                 </div>

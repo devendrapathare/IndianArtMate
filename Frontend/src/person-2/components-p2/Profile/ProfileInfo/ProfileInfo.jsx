@@ -14,8 +14,14 @@ const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
     const numOfPosts = posts.filter(post => post.userId === userId).length
 
     const { authUser } = useAuthContext();
-
     const LogggedInUserId = authUser?._id;
+    // const createdAt = new Date(authUser.createdAt);
+    // const updatedAt = new Date(authUser.updatedAt);
+
+    console.log("authUser:", userData);
+    // console.log("createdAt:", createdAt.getTime());
+    // console.log("updatedAt:", updatedAt.getTime());
+
 
 
     const navigate = useNavigate();
@@ -202,7 +208,10 @@ const styles = {
                             )}
                             {isOwnProfile && (
                                 <button onClick={() => { handleUpdateProfileClick() }} className="profileIcon-update-profile-button">
-                                    Update Profile
+                                    {
+                                        userData.isUpdated ?  'Update the profile':'Complete the profile'
+                                    }
+                                    {/* Update Profile */}
                                 </button>
                             )}
                         </div>

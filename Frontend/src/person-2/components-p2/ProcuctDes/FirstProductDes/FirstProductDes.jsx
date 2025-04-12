@@ -14,7 +14,7 @@ import { useConversation } from '../../../Zustand/UseConversation';
 
 
 const FirstProductDes = ({ image, category, description, price, title, userId, id, isOwner, totalLike, totaldisLike }) => {
-  
+
   const { authUser } = useAuthContext();
   const { cartItems, addItemToCart, removeItemFromCart } = useContext(CartContext);
   const [userData, setUserData] = useState({});
@@ -41,11 +41,11 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
 
   // Reference for the product container
   const productContainerRef = useRef(null);
-  
+
   // Scroll to top when component mounts
   useEffect(() => {
     window.scrollTo(0, 0);
-    
+
     // Focus on the product container
     if (productContainerRef.current) {
       productContainerRef.current.scrollIntoView({ behavior: 'auto', block: 'start' });
@@ -164,7 +164,7 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
   const getTheHighestBidderData = async (userId) => {
     if (authUser) {
 
-      console.log("from first:", userId)
+      // console.log("from first:", userId)
       const response = await axios.get(`${url}/users/${userId}`);
       if (response.data.success) {
         setHighestBidder(response.data.user);
@@ -206,15 +206,22 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
 
 
   const handleBidSubmit = async () => {
-    const bidAmount = parseFloat(userBid);
-    if (isNaN(bidAmount) || bidAmount <= biddingData?.highestPriceReceivedDueToBidding) {
-      toast.error('Your bid must be higher than the current highest bid!');
-      return;
-    }
 
     try {
-      // Fetch updated user data to get wallet balance
       const userResponse = await axios.get(`${url}/users/${authUser._id}`);
+      const bidAmount = parseFloat(userBid);
+      // console.log("userData:", userResponse.data.user);
+      if (userResponse.data.user.isUpdated === false) {
+        toast.error('Please complete your profile before placing a bid.');
+        return;
+      }
+      if (isNaN(bidAmount) || bidAmount <= biddingData?.highestPriceReceivedDueToBidding) {
+        toast.error('Your bid must be higher than the current highest bid!');
+        return;
+      }
+
+
+      // Fetch updated user data to get wallet balance
       const userWalletBalance = userResponse.data.user.wallet; // Assuming 'wallet' holds the balance
 
       if (bidAmount > userWalletBalance) {
@@ -288,10 +295,10 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
         biddingId,
         biddingOwnerId
       });
-  
+
       console.log("Lock updated successfully:", response.data);
       return response.data;
-  
+
     } catch (error) {
       console.error("Error updating lock:", error.response?.data || error.message);
       throw error;
@@ -301,14 +308,14 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
 
   const handleLock = async (amount) => {
     const data = {
-      userId: authUser?._id, 
+      userId: authUser?._id,
       lock: amount,
       biddingId: biddingData._id,
       biddingOwnerId: biddingData.userId
     };
 
     console.log("Data to be sent:", data);
-  
+
     try {
       const result = await updateLock(data);
       alert("Locked successfully! New wallet balance: " + result.wallet);
@@ -394,10 +401,21 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
                 <div className="place-bid">
                   <input
                     type="number"
+                    min="1"
+                    step="1"
                     placeholder="Enter your bid"
                     value={userBid}
-                    onChange={(e) => setUserBid(e.target.value)}
+                    onChange={(e) => {
+                      const value = e.target.value;
+
+                      // Allow only positive integers or empty string (to allow clearing)
+                      if (/^\d*$/.test(value)) {
+                        const numericValue = parseInt(value, 10);
+                        setUserBid(value === '' ? '' : numericValue);
+                      }
+                    }}
                   />
+
                   <button onClick={handleBidSubmit} className="place-bid-btn">
                     Place Bid
                   </button>
@@ -406,11 +424,11 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
             </div>
           ) : (
             <div className="product-panel">
-            <div className="section-title">Bidding Status</div>
-            <p>Bidding has ended </p>
-            {/* <button onClick={setorder}>Set Order</button> */}
+              <div className="section-title">Bidding Status</div>
+              <p>Bidding has ended </p>
+              {/* <button onClick={setorder}>Set Order</button> */}
             </div>
-            
+
           )
         ) : (
           (authUser?._id === userId ? (

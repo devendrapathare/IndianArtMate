@@ -295,6 +295,24 @@ const endBiddingAndSettle = async (req, res) => {
 };
 
 
+export const deleteBiddingById = async (req, res) => {
+  const biddingId = req.params.id;
+
+  try {
+    const deletedBidding = await BiddingSchemaNoti.findByIdAndDelete(biddingId);
+
+    if (!deletedBidding) {
+      return res.status(404).json({ message: 'Bidding data not found' });
+    }
+
+    res.status(200).json({ message: 'Bidding data deleted successfully', data: deletedBidding });
+  } catch (err) {
+    console.error('Error deleting bidding data:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+
 export default {
-  startBidding ,getBiddingNotifications,getBiddingByPostId ,placeBid ,myBidings,getOwnerBiddings,endBidding, endBiddingAndSettle
+  startBidding ,getBiddingNotifications,getBiddingByPostId ,placeBid ,myBidings,getOwnerBiddings,endBidding, endBiddingAndSettle, deleteBiddingById
 };

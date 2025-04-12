@@ -124,6 +124,20 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
      
   };
 
+  const deleteBidding = async (biddingId) => {
+
+    if (!window.confirm("Are you sure you want to delete this bidding?")) return;
+
+    try {
+      const response = await axios.delete(`http://localhost:5000/api/bidding/delete/${biddingId}`);
+      console.log('Bidding deleted successfully:', response.data);
+      // Optionally show a success message to user or refresh the list
+    } catch (error) {
+      console.error('Error deleting bidding:', error.response?.data || error.message);
+      // Handle error: show alert or error message to user
+    }
+  };
+
   const placeOrder = async(bid , winner) => {
     
     const userdata = await axios.get(`${url}/users/${winner.winnerId}`);
@@ -335,7 +349,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                             bid.orderPlaced ? (null) : (
                               <div className="action-buttons">
                                 <button onClick={() => handleAccept(bid, winners[bid._id])}>Accept</button>
-                                {/* <button onClick={() => handleReject(bid)}>Reject</button> */}
+                                <button onClick={() => deleteBidding(bid?._id)}>Reject</button>
                               </div>
                             )
                           }

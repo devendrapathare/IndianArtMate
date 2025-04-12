@@ -10,6 +10,11 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    phoneNumber:{
+        type: String,
+        unique: true,
+        default: null
+    },
     password: {
         type: String,
         required: true,
@@ -77,6 +82,10 @@ const userSchema = new mongoose.Schema({
     cartData: {
         type: Object,
         default: {}
+    },
+    isUpdated:{
+        type: Boolean,
+        default: false
     }
 }, { timestamps: true, minimize: false });
 

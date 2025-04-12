@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import './MainProfileUpdate.css';
-import { useAuthContext } from '../../../../person-2/context/AuthContext/AuthContext'; 
-import axios from 'axios';  
+import { useAuthContext } from '../../../../person-2/context/AuthContext/AuthContext';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 // import somthing from ''
 
 
 const MainProfileUpdate = () => {
   const { authUser } = useAuthContext();
-  const userId = authUser?._id; 
-  const [user, setUser] = useState({}); 
+  const userId = authUser?._id;
+  const [user, setUser] = useState({});
   const navigate = useNavigate();
 
   // = () => {
@@ -20,10 +20,12 @@ const MainProfileUpdate = () => {
     userName: '',
     bio: '',
     email: '',
-    addressLine1: '',  
+    addressLine1: '',
     addressLine2: '',
-    profile_type: '',  
+    profile_type: '',
+    phoneNumber: '', // <-- add this
   });
+  
 
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState({ text: '', type: '' });
@@ -34,8 +36,8 @@ const MainProfileUpdate = () => {
       try {
         const response = await axios.get(`http://localhost:5000/users/${userId}`);
         const userData = response.data.user;
-  
-        setUser(userData); 
+
+        setUser(userData);
         setFormData({
           userName: userData.userName || '',
           bio: userData.bio || '',
@@ -43,7 +45,9 @@ const MainProfileUpdate = () => {
           addressLine1: userData.addressLine1 || '',
           addressLine2: userData.addressLine2 || '',
           profile_type: userData.profile_type || '',
+          phoneNumber: userData.phoneNumber || '', // ✅
         });
+        
       } catch (e) {
         console.log("Error fetching data:", e);
         setMessage({ text: 'Failed to load profile data. Please try again.', type: 'error' });
@@ -53,7 +57,7 @@ const MainProfileUpdate = () => {
     };
     fetchData();
   }, [userId]);
-  
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -71,7 +75,9 @@ const MainProfileUpdate = () => {
       addressLine1: formData.addressLine1 || user.addressLine1,
       addressLine2: formData.addressLine2 || user.addressLine2,
       profile_type: formData.profile_type || user.profile_type,
+      phoneNumber: formData.phoneNumber || user.phoneNumber, 
     };
+    
 
     try {
       const response = await axios.put(`http://localhost:5000/profile/update/${userId}`, updatedData);
@@ -94,37 +100,52 @@ const MainProfileUpdate = () => {
         <div className="form-section">
           <div className="form-field name-update">
             <label htmlFor="userName">Name:</label>
-            <input 
-              type="text" 
+            <input
+              type="text"
               id="userName"
-              name="userName" 
-              value={formData.userName} 
-              onChange={handleChange} 
-              placeholder="Enter your name" 
-              required 
+              name="userName"
+              value={formData.userName}
+              onChange={handleChange}
+              placeholder="Enter your name"
+              required
             />
           </div>
 
           <div className="form-field email-update">
             <label htmlFor="email">Email:</label>
-            <input 
-              type="email" 
+            <input
+              type="email"
               id="email"
-              name="email" 
-              value={formData.email} 
-              onChange={handleChange} 
-              placeholder="Enter your email" 
-              required 
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="Enter your email"
+              required
             />
+          </div>
+
+          <div className="form-section">
+            <div className="form-field mobile-update">
+              <label htmlFor="phoneNumber">Mobile Number:</label>
+              <input
+                type="tel"
+                id="phoneNumber"
+                name="phoneNumber"
+                value={formData.phoneNumber || ''}
+                onChange={handleChange}
+                placeholder="Enter your mobile number"
+                required
+              />
+            </div>
           </div>
 
           <div className="form-field profile-type-update">
             <label htmlFor="profile_type">Profile Type:</label>
-            <select 
+            <select
               id="profile_type"
-              name="profile_type" 
-              value={formData.profile_type} 
-              onChange={handleChange} 
+              name="profile_type"
+              value={formData.profile_type}
+              onChange={handleChange}
               required
             >
               <option value="">Select a profile type</option>
@@ -136,11 +157,11 @@ const MainProfileUpdate = () => {
 
           <div className="form-field bio-update">
             <label htmlFor="bio">Bio:</label>
-            <textarea 
+            <textarea
               id="bio"
-              name="bio" 
-              value={formData.bio} 
-              onChange={handleChange} 
+              name="bio"
+              value={formData.bio}
+              onChange={handleChange}
               placeholder="Tell us about yourself and your art"
               rows="4"
             ></textarea>
@@ -153,24 +174,24 @@ const MainProfileUpdate = () => {
             <div className="address-fields">
               <div className="address-field">
                 <label htmlFor="addressLine1">Address Line 1:</label>
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   id="addressLine1"
-                  name="addressLine1" 
-                  value={formData.addressLine1} 
-                  onChange={handleChange} 
-                  placeholder="Street address" 
+                  name="addressLine1"
+                  value={formData.addressLine1}
+                  onChange={handleChange}
+                  placeholder="Street address"
                   required
                 />
               </div>
               <div className="address-field">
                 <label htmlFor="addressLine2">Address Line 2:</label>
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   id="addressLine2"
-                  name="addressLine2" 
-                  value={formData.addressLine2} 
-                  onChange={handleChange} 
+                  name="addressLine2"
+                  value={formData.addressLine2}
+                  onChange={handleChange}
                   placeholder="City, State, Pin code"
                   required
                 />
@@ -184,7 +205,7 @@ const MainProfileUpdate = () => {
             {message.text}
           </div>
         )}
-       
+
         <div className="form-actions">
           <button type="submit" disabled={isLoading}>
             {isLoading ? 'Updating...' : 'Update Profile'}

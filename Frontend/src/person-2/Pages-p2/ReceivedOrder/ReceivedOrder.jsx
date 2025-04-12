@@ -174,6 +174,7 @@ import { CartContext } from '../../context/CartContext/CartContext';
 import axios from 'axios';
 import { assets } from '../../../assets/assets';
 import { useAuthContext } from '../../context/AuthContext/AuthContext';
+import { add } from 'lodash';
 
 const ReceivedOrder = () => {
     const { url } = usePostContext();
@@ -181,7 +182,9 @@ const ReceivedOrder = () => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [userData,setuserData] = useState('')
     const { authUser } = useAuthContext();
+
 
     const fetchOrders = async () => {
         try {
@@ -204,6 +207,16 @@ const ReceivedOrder = () => {
             return () => clearInterval(interval);
         }
     }, [token]);
+
+    const getUserData = async (userId) =>{
+        try{
+            const userResponse = await axios.get(`${url}/users/${userId}`);
+            setuserData(userResponse.data.user)
+            return
+        }catch(e){
+            
+        }
+    }
 
     const orderStatusHandler = async (event, orderId) => {
         const newStatus = event.target.value;
@@ -278,10 +291,16 @@ const ReceivedOrder = () => {
                         const address = order.address || {};
                         const user = address.user || {};
 
+                        console.log("address:",address.user)
+
+
+                        // getUserData(address.user._id)
+                       
+
                         const fullName = `${address.firstName || user.userName || 'Unknown'} ${address.lastName || ''}`.trim();
-                        const phone = address.phone || user.phone || 'N/A';
-                        const street = address.street || address.addressLine1 || '';
-                        const city = address.city || '';
+                        const phone = address.phone || user.phoneNumber || 'N/A';
+                        const street = address.street || user.addressLine1 || '';
+                        const city = address.city || user.addressLine2 || '';
                         const state = address.state || '';
                         const country = address.country || '';
                         const zipcode = address.zipcode || '';
@@ -301,7 +320,7 @@ const ReceivedOrder = () => {
                                     <p className="order-item-name">{fullName}</p>
                                     <div className="order-item-address">
                                         <p>{street},</p>
-                                        <p>{city}, {state}, {country}, {zipcode}</p>
+                                        <p>{city} {state} {country} {zipcode}</p>
                                     </div>
                                     <p className="order-item-phone">{phone}</p>
                                 </div>
