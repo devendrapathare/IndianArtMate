@@ -130,50 +130,50 @@ const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
     }
 
 
-    
-const styles = {
-    walletButton: {
-      padding: '0.6rem 1.2rem',
-      backgroundColor: '#28a745',
-      color: 'white',
-      border: 'none',
-      borderRadius: '5px',
-      cursor: 'pointer',
-      position: 'relative',
-      zIndex: 1,
-    },
-    overlay: {
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      zIndex: 999, // High z-index to show above everything
-      width: '100%',
-      height: '100%',
-      backgroundColor: 'rgba(0, 0, 0, 0.3)',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    popup: {
-      width: '300px',
-      height: '300px',
-      backgroundColor: '#fff',
-      borderRadius: '10px',
-      boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
-      position: 'relative',
-      padding: '1rem',
-      zIndex: 1000,
-    },
-    closeBtn: {
-      position: 'absolute',
-      top: '5px',
-      right: '10px',
-      background: 'none',
-      border: 'none',
-      fontSize: '1.2rem',
-      cursor: 'pointer',
-    }
-  };
+
+    const styles = {
+        walletButton: {
+            padding: '0.6rem 1.2rem',
+            backgroundColor: '#28a745',
+            color: 'white',
+            border: 'none',
+            borderRadius: '5px',
+            cursor: 'pointer',
+            position: 'relative',
+            zIndex: 1,
+        },
+        overlay: {
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            zIndex: 999, // High z-index to show above everything
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(0, 0, 0, 0.3)',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+        },
+        popup: {
+            width: '300px',
+            height: '300px',
+            backgroundColor: '#fff',
+            borderRadius: '10px',
+            boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
+            position: 'relative',
+            padding: '1rem',
+            zIndex: 1000,
+        },
+        closeBtn: {
+            position: 'absolute',
+            top: '5px',
+            right: '10px',
+            background: 'none',
+            border: 'none',
+            fontSize: '1.2rem',
+            cursor: 'pointer',
+        }
+    };
 
     return (
         <div className="profileInfo-container">
@@ -280,6 +280,11 @@ const styles = {
                                 </div>
                             </div>
                         )}
+                        <button
+                            onClick={() => { navigate('/walletPage') }}
+                            className="profileIcon-respect-button">
+                            WalletPage
+                        </button>
                     </>
                 )}
             </div>

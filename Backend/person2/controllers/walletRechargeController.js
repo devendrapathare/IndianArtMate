@@ -32,15 +32,19 @@ export const rechargeWallet = async (req, res) => {
                 quantity: 1
             }],
             mode: 'payment',
-            success_url: `${frontend_url}/wallet-verify?success=true&txnId=${newTransaction._id}`,
-            cancel_url: `${frontend_url}/wallet-verify?success=false&txnId=${newTransaction._id}`
+            success_url: `${frontend_url}/verify?success=true&txnId=${newTransaction._id}`,
+            cancel_url: `${frontend_url}/verify?success=false&txnId=${newTransaction._id}`
         });
 
         newTransaction.paymentId = session.id;
         await newTransaction.save();
 
         // res.json({ success: true, session_url: session.url });
-        res.json({ success: true, txnId: newTransaction._id });
+        res.json({
+            success: true,
+            txnId: newTransaction._id,
+            session_url: session.url   // 🔥 Add this line
+        });
 
     } catch (err) {
         console.log(err);
