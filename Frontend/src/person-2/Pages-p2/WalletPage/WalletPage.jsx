@@ -28,16 +28,16 @@ const WalletPage = () => {
       <div className="wallet-container">
         <div className="wallet-tabs">
           <button
-            className={activeTab === 'history' ? 'active' : ''}
-            onClick={() => setActiveTab('history')}
-          >
-            History
-          </button>
-          <button
             className={activeTab === 'recharge' ? 'active' : ''}
             onClick={() => setActiveTab('recharge')}
           >
             Recharge Wallet
+          </button>
+          <button
+            className={activeTab === 'history' ? 'active' : ''}
+            onClick={() => setActiveTab('history')}
+          >
+            History
           </button>
           <button
             className={activeTab === 'passbook' ? 'active' : ''}

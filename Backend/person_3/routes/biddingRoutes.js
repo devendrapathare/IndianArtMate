@@ -15,5 +15,6 @@ router.get('/ownerBiddings/:userId',biddingController.getOwnerBiddings);
 router.post('/endBidding/:biddingId', biddingController.endBidding);
 router.post('/end-and-settle', biddingController.endBiddingAndSettle);
 router.delete('/delete/:id', biddingController.deleteBiddingById);
+router.get('/allBiddingData', biddingController.getAllBiddingData);
 
 export default router;

@@ -269,17 +269,7 @@ const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
 
                         <button onClick={() => navigate('/receivedOrders')} className="profileIcon-respect-button">Received Orders</button>
 
-                        <button onClick={togglePopup} style={styles.walletButton} >
-                            Wallet
-                        </button>
-                        {showPopup && (
-                            <div style={styles.overlay}>
-                                <div style={styles.popup}>
-                                    <button onClick={togglePopup} style={styles.closeBtn}>✖</button>
-                                    <Wallet />
-                                </div>
-                            </div>
-                        )}
+                        
                         <button
                             onClick={() => { navigate('/walletPage') }}
                             className="profileIcon-respect-button">

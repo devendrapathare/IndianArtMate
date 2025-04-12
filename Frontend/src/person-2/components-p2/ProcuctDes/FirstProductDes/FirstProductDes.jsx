@@ -91,32 +91,7 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
     }
   };
 
-  // const handleHireMe = async () => {
-  //   const ProjectOwnerId = authUser?._id;
-  //   const ContributerId = userId;
-  //   console.log("owner", ProjectOwnerId);
-  //   console.log("receiver", ContributerId);
-  //   console.log("userData", userData);
-  //   console.log("authUser", authUser);
-
-  //   if (!ProjectOwnerId) {
-  //     toast.error('You must be logged in to hire.');
-  //     return;
-  //   }
-
-  //   if (ProjectOwnerId === ContributerId) {
-  //     toast.error('You cannot hire yourself.');
-  //     return;
-  //   }
-
-  //   try {
-  //     applyHire(ProjectOwnerId, ContributerId, authUser, userData)
-  //     setIsHired(true);
-  //   } catch (error) {
-  //     console.error('Error sending hiring request:', error);
-  //     toast.error(error.response?.data?.message || 'An error occurred.');
-  //   }
-  // };
+  
 
   useEffect(() => {
 
@@ -140,20 +115,15 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
   useEffect(() => {
     if (userData.profilePic) {
       let currentImageUrl = userData.profilePic;
-      // let currentImageUrl =userData.profilePic ;
       const desiredPath = 'https://avatar.iran.liara.run/public/';
 
-      // Check if the profile picture URL matches the desired path
       if (currentImageUrl.startsWith(desiredPath)) {
         currentImageUrl = userData.profilePic;
-        // console.log(currentImageUrl);
       } else {
         const fullPath = userData.profilePic;
         const wantedpath = fullPath.replace('/uploads/profilePic', '');
         currentImageUrl = `${url}/profilePics${wantedpath}`;
-        // console.log(currentImageUrl);
       }
-      // console.log(currentImageUrl);
       setImageUrl(currentImageUrl);
     }
   }, [userData.profilePic, authUser.profilePic]);
@@ -260,30 +230,6 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
   };
 
 
-  // const setorder = ()=>{
-  //   // userData = ;
-  //   // bidingDataId = biddingData._id;
-  //   // postId = id;
-  //   let orderItems = {
-  //       userId : biddingData.userId,
-  //       title:title,
-  //       description:description,
-  //       postId:id
-  //   }
-
-  //   let orderData = {
-  //     buyerId:highestBidder._id,
-  //     address:{
-  //       "xyz":"xyz"
-  //     },
-  //     items:orderItems,
-  //     amount:biddingData?.highestPriceReceivedDueToBidding, 
-  //     bidId : biddingData._id
-  //   }
-
-  //   console.log("orderData:",orderData)
-
-  // }
 
 
 
@@ -318,9 +264,9 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
 
     try {
       const result = await updateLock(data);
-      alert("Locked successfully! New wallet balance: " + result.wallet);
+      toast.success("Locked successfully! New wallet balance: " + result.wallet?.toFixed(2));
     } catch (err) {
-      alert("Failed to lock amount");
+      toast.error("Failed to lock amount");
     }
   };
 
@@ -408,7 +354,6 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
                     onChange={(e) => {
                       const value = e.target.value;
 
-                      // Allow only positive integers or empty string (to allow clearing)
                       if (/^\d*$/.test(value)) {
                         const numericValue = parseInt(value, 10);
                         setUserBid(value === '' ? '' : numericValue);
@@ -426,7 +371,6 @@ const FirstProductDes = ({ image, category, description, price, title, userId, i
             <div className="product-panel">
               <div className="section-title">Bidding Status</div>
               <p>Bidding has ended </p>
-              {/* <button onClick={setorder}>Set Order</button> */}
             </div>
 
           )

@@ -1,4 +1,5 @@
 import userPosts from "../models/postModels.js";
+import BiddingSchemaNoti from "../../person_3/models/BiddingSchemaNoti.js";
 import axios from "axios";
 import path from 'path';
 import fs from 'fs';
@@ -151,6 +152,7 @@ const get_post_data_by_name = async (req, res) => {
     }
 };
 
+// const deletePostById = async (req, res) => {
 const deletePostById = async (req, res) => {
     const { id: postId } = req.params;
 
@@ -161,6 +163,13 @@ const deletePostById = async (req, res) => {
             return res.status(404).json({ error: "Post not found in MongoDB" });
         }
 
+        // Check if the post has any bidding data
+        const biddingData = await BiddingSchemaNoti.findOne({ postId: postId });
+        if (biddingData) {
+            // Delete the bidding data
+            await BiddingSchemaNoti.findByIdAndDelete(biddingData._id);
+        }
+
         // Then, delete from the Python NLP system
         const pythonResponse = await axios.delete('http://127.0.0.1:6000/nlp/delete', {
             params: { post_id: postId },
@@ -168,7 +177,7 @@ const deletePostById = async (req, res) => {
 
         res.status(200).json({
             success: true,
-            message: "Post deleted from MongoDB and CSV",
+            message: "Post deleted from MongoDB, BiddingSchemaNoti and CSV",
             pythonData: pythonResponse.data
         });
 
@@ -177,6 +186,7 @@ const deletePostById = async (req, res) => {
         res.status(500).json({ error: "Internal Server Error" });
     }
 };
+
 
 const dowloadPostCA = async (req, res) => {
     const { id: postId } = req.params;

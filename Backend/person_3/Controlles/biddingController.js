@@ -313,6 +313,22 @@ export const deleteBiddingById = async (req, res) => {
 };
 
 
+const getAllBiddingData = async (req, res) => {
+  try {
+    const biddingData = await BiddingSchemaNoti.find({});
+
+    if (biddingData.length === 0) {
+      return res.status(404).json({ message: 'No bidding data found' });
+    }
+
+    res.status(200).json(biddingData);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error', error });
+  }
+};
+
+
 export default {
-  startBidding ,getBiddingNotifications,getBiddingByPostId ,placeBid ,myBidings,getOwnerBiddings,endBidding, endBiddingAndSettle, deleteBiddingById
+  startBidding ,getBiddingNotifications,getBiddingByPostId ,placeBid ,myBidings,getOwnerBiddings,endBidding, endBiddingAndSettle, deleteBiddingById, getAllBiddingData
 };

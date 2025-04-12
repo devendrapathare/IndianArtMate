@@ -22,6 +22,7 @@ import messageRoutes from './person2/routes/messageRoutes.js'
 import cookieParser from 'cookie-parser';
 import walletRechargeRouter from './person2/routes/walletRechargeRoutes.js'
 import { cleanPendingTransactions } from './person2/utils/cleanup.js'
+import otherTransactionRoutes from './person_3/routes/otherTransactionRoutes.js'
 
 const app = express();
 
@@ -59,6 +60,7 @@ app.use('/profilePics', express.static('uploads/profilePic'));
 app.use('/api/bidding', biddingRoutes);
 app.use('/api/hiring', HIringRouter);
 app.use('/comment', CommentRoute);
+app.use("/api/other-transactions", otherTransactionRoutes);
 
 
 

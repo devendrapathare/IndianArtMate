@@ -6,7 +6,7 @@ const Wallet = () => {
     const [amount, setAmount] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
-    const [walletBalance, setWalletBalance] = useState(0);
+    const [walletBalance, setWalletBalance] = useState({ wallet: 0 });
 
     const { authUser, fetchUserData } = useAuthContext();
 
@@ -73,8 +73,7 @@ const Wallet = () => {
                 {loading ? 'Processing...' : 'Recharge'}
             </button>
             {error && <p style={styles.error}>{error}</p>}
-            <p><strong>Wallet Balance:</strong> ${walletBalance.wallet}</p>
-        </div>
+            <p><strong>Wallet Balance:</strong> {(walletBalance?.wallet ?? 0).toFixed(2)}</p>        </div>
     );
 };
 
