@@ -8,12 +8,10 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 
   return (
     <div className={`sidebar ${isOpen ? 'open' : ''}`}>
-      {/* Close Button */}
+     
       <button className="close-button" onClick={toggleSidebar}>
         &times;
       </button>
-
-      {/* Tab Buttons */}
       <div className="tab-buttons">
         <button 
           onClick={() => setActiveTab('bidding')}
@@ -29,7 +27,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         </button>
       </div>
 
-      {/* Tab Content */}
+     
       {activeTab === 'bidding' ? <Bidding /> : <Winning />}
     </div>
   )

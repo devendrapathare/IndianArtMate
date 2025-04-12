@@ -8,12 +8,22 @@ const BiddingSchemaNoti = new mongoose.Schema({
   startingPrice: { type: Number, required: true },
   highestPriceReceivedDueToBidding: { type: Number, default: 0 },
   highestBiddingAmountSetBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },
-  winnerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null }, // New field
+  winnerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },
   biddingNotiReceivers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   orderPlaced: { type: Boolean, default: false },
+
+  // bidders: [
+  //   {
+  //     bidderId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  //     amount: { type: Number, required: true },
+  //     bidTime: { type: Date, default: Date.now },
+  //     backedOut: { type: Boolean, default: false } // optional: if you want to support backout feature
+  //   }
+  // ],
+
   startTime: { type: Date, required: true },
   endTime: { type: Date, required: true, index: { expires: 0 } },
-  endedAt: { type: Date }, // Optional: Record when bidding ended
+  endedAt: { type: Date },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 }, { timestamps: true });

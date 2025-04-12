@@ -328,7 +328,40 @@ const getAllBiddingData = async (req, res) => {
   }
 };
 
+const refundLockedAmounts = async (req, res) => {
+  try {
+    const { biddingId } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(biddingId)) {
+      return res.status(400).json({ message: 'Invalid biddingId format.' });
+    }
+
+    const bidding = await BiddingSchemaNoti.findById(biddingId);
+    if (!bidding) {
+      return res.status(404).json({ message: 'Bidding not found.' });
+    }
+
+    const users = await User.find({});
+
+    users.forEach(async (user) => {
+      const lockedEntry = user.locked.find((entry) => entry.biddingId === biddingId);
+      if (lockedEntry) {
+        user.wallet += lockedEntry.lock;
+        user.locked = user.locked.filter((entry) => entry.biddingId !== biddingId);
+        await user.save();
+      }
+    });
+
+    res.status(200).json({success:true, message: 'Locked amounts refunded successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({success:false, message: 'Error refunding locked amounts' });
+  }
+};
+
+
+
 
 export default {
-  startBidding ,getBiddingNotifications,getBiddingByPostId ,placeBid ,myBidings,getOwnerBiddings,endBidding, endBiddingAndSettle, deleteBiddingById, getAllBiddingData
+  startBidding ,getBiddingNotifications,getBiddingByPostId ,placeBid ,myBidings,getOwnerBiddings,endBidding, endBiddingAndSettle, deleteBiddingById, getAllBiddingData,refundLockedAmounts
 };

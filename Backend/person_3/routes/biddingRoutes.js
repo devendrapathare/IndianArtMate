@@ -16,5 +16,6 @@ router.post('/endBidding/:biddingId', biddingController.endBidding);
 router.post('/end-and-settle', biddingController.endBiddingAndSettle);
 router.delete('/delete/:id', biddingController.deleteBiddingById);
 router.get('/allBiddingData', biddingController.getAllBiddingData);
+router.post('/refundLockedAmounts/:biddingId', biddingController.refundLockedAmounts);
 
 export default router;

@@ -135,6 +135,9 @@ const Bidding = () => {
     if (!window.confirm("Are you sure you want to delete this bidding?")) return;
 
     try {
+
+      refundLockedAmounts(biddingId)
+
       const response = await axios.delete(`http://localhost:5000/api/bidding/delete/${biddingId}`);
       console.log('Bidding deleted successfully:', response.data);
       // Optionally show a success message to user or refresh the list
@@ -182,6 +185,25 @@ const Bidding = () => {
       toast.error("Failed to place order.");
     }
   };
+
+const refundLockedAmounts = async (biddingId) => {
+    try { 
+      const response = await axios.post(`${url}/api/bidding/refundLockedAmounts/${biddingId}`, {
+
+      });
+      if (response.data.success) {
+        toast.success("Refund successful.");
+        return true;
+      }
+      else {
+        toast.error("Refund failed.");
+        return false;
+      }
+    } catch (error) {
+      console.error('Error refunding locked amounts:', error.response?.data || error.message);
+      toast.error("Refund failed.");
+};
+}
 
 
   const createOtherTransaction = async (buyerId, sellerId, amount, purpose) => {
