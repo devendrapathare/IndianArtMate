@@ -43,6 +43,7 @@ const MyOrders = () => {
                                 `${item.title} X ${item.quantity || item.Quantity}${idx < order.items.length - 1 ? ', ' : ''}`
                             )}</p>
                             <p>₹{order.amount}.00</p>
+                            <p>Delivery Charge ₹{order.deliveryCharge} .00</p>
                             <p>Items: {order.items.length}</p>
                             <p><span>&#x25cf;</span> <b>{order.status}</b></p>
                             <button onClick={fetchOrders}>Track order</button>

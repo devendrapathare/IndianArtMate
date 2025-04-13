@@ -175,6 +175,7 @@ import axios from 'axios';
 import { assets } from '../../../assets/assets';
 import { useAuthContext } from '../../context/AuthContext/AuthContext';
 import { add } from 'lodash';
+import toast from 'react-hot-toast';
 
 const ReceivedOrder = () => {
     const { url } = usePostContext();
@@ -198,7 +199,9 @@ const ReceivedOrder = () => {
         } finally {
             setLoading(false);
         }
-    };
+    };   
+    // console.log("data:",data);
+    
 
     useEffect(() => {
         if (token) {
@@ -231,7 +234,7 @@ const ReceivedOrder = () => {
             }
         } catch (err) {
             console.error('Error updating order status:', err);
-            alert('Failed to update order status. Please try again.');
+            toast.error('Failed to update order status. Please try again.');
         }
     };
 
@@ -326,6 +329,7 @@ const ReceivedOrder = () => {
                                 </div>
                                 <p className='items'>Items: {orderItems.length}</p>
                                 <p className='items'>₹{totalAmount.toLocaleString('en-IN')}</p>
+                                <p className='items'>₹{order.amount}</p>
                                 <select
                                     className='items'
                                     onChange={(event) => orderStatusHandler(event, order._id)}
