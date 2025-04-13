@@ -329,8 +329,8 @@ const ReceivedOrder = () => {
                                     <p className="order-item-phone">{phone}</p>
                                 </div>
                                 <p className='items'>Items: {orderItems.length}</p>
-                                <p className='items'>₹{totalAmount.toLocaleString('en-IN')}</p>
-                                <p className='items'>₹{order.deliveryCharge}</p>
+                                <p className='items'>Amount: ₹{order.amount}</p>
+                                <p className='items'>Delivery Charge: ₹{order.deliveryCharge}</p>
                                 <select
                                     className='items'
                                     onChange={(event) => orderStatusHandler(event, order._id)}

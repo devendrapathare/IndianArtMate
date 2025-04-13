@@ -113,12 +113,14 @@ const Bidding = () => {
       console.log('Settlement Response:', response.data);
 
       toast.success('You have been paid, now it\'s time to deliver the art');
+      console.log('Bidding settled successfully:', bid);
+      console.log('Winner:', winner);
       placeOrder(bid, winner);
       createOtherTransaction(
         winner?.winnerId,
         bid?.userId,
         bid?.highestPriceReceivedDueToBidding,
-        "Bidding Amount"
+        
       );
 
       return response.data;
