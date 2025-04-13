@@ -183,7 +183,7 @@ const ReceivedOrder = () => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [userData,setuserData] = useState('')
+    const [userData, setuserData] = useState('')
     const { authUser } = useAuthContext();
 
 
@@ -199,9 +199,9 @@ const ReceivedOrder = () => {
         } finally {
             setLoading(false);
         }
-    };   
+    };
     // console.log("data:",data);
-    
+
 
     useEffect(() => {
         if (token) {
@@ -211,13 +211,13 @@ const ReceivedOrder = () => {
         }
     }, [token]);
 
-    const getUserData = async (userId) =>{
-        try{
+    const getUserData = async (userId) => {
+        try {
             const userResponse = await axios.get(`${url}/users/${userId}`);
             setuserData(userResponse.data.user)
             return
-        }catch(e){
-            
+        } catch (e) {
+
         }
     }
 
@@ -225,7 +225,7 @@ const ReceivedOrder = () => {
         const newStatus = event.target.value;
 
         try {
-            if (newStatus === "Delivered") {
+            if (newStatus === "Delivered" || newStatus === "Cancelled") {
                 if (window.confirm("You cannot change the status again after this. Do you want to proceed?")) {
                     await updateOrderStatus(orderId, newStatus);
                 }
@@ -257,6 +257,7 @@ const ReceivedOrder = () => {
             case 'Delivered': return '#4CAF50';
             case 'Out For Delivery': return '#2196F3';
             case 'Shipped': return '#FF9800';
+            case 'Cancelled': return '#FF0000';
             default: return '#9E9E9E';
         }
     };
@@ -287,18 +288,18 @@ const ReceivedOrder = () => {
                     filteredOrders.map((order, index) => {
                         const orderItems = order.items.filter(item => item.userId === authUser._id);
                         const totalAmount = orderItems.reduce((total, item) =>
-                            (total + (item.price * (item.quantity ))) || order.amount, 0
+                            (total + (item.price * (item.quantity))) || order.amount, 0
                         );
 
                         // Safely accessing nested properties
                         const address = order.address || {};
                         const user = address.user || {};
 
-                        console.log("address:",address.user)
+                        console.log("address:", address.user)
 
 
                         // getUserData(address.user._id)
-                       
+
 
                         const fullName = `${address.firstName || user.userName || 'Unknown'} ${address.lastName || ''}`.trim();
                         const phone = address.phone || user.phoneNumber || 'N/A';
@@ -329,12 +330,12 @@ const ReceivedOrder = () => {
                                 </div>
                                 <p className='items'>Items: {orderItems.length}</p>
                                 <p className='items'>₹{totalAmount.toLocaleString('en-IN')}</p>
-                                <p className='items'>₹{order.amount}</p>
+                                <p className='items'>₹{order.deliveryCharge}</p>
                                 <select
                                     className='items'
                                     onChange={(event) => orderStatusHandler(event, order._id)}
                                     value={order.status}
-                                    disabled={order.status === "Delivered"}
+                                    disabled={order.status === "Delivered" || order.status === "Cancelled"}
                                     style={{
                                         borderColor: getStatusColor(order.status),
                                         color: getStatusColor(order.status)
@@ -344,6 +345,7 @@ const ReceivedOrder = () => {
                                     <option value="Shipped">Shipped</option>
                                     <option value="Out For Delivery">Out For Delivery</option>
                                     <option value="Delivered">Delivered</option>
+                                    <option value="Cancelled">Cancel</option>
                                 </select>
                             </div>
                         );

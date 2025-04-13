@@ -88,8 +88,8 @@ const PassbookComp = () => {
           <thead>
             <tr>
               <th>Sr. No</th>
-              <th>Transaction ID</th> {/* Add header for Transaction ID */}
-              <th>Date</th> {/* Add header for Date */}
+              <th>Transaction ID</th>
+              <th>Date</th>
               <th>From</th>
               <th>To</th>
               <th>Amount</th>
@@ -103,8 +103,8 @@ const PassbookComp = () => {
             {transactions.map((txn, index) => (
               <tr key={index}>
                 <td>{txn.srNo}</td>
-                <td>{txn.transactionId}</td> {/* Display Transaction ID */}
-                <td>{new Date(txn.date).toLocaleString()}</td> {/* Format and display date */}
+                <td>{txn.transactionId}</td>
+                <td>{new Date(txn.date).toLocaleString()}</td>
                 <td>
                   <img src={txn.from.profilePic} alt="from" className="profile-pic" />
                   {txn.from.username}
@@ -113,13 +113,13 @@ const PassbookComp = () => {
                   <img src={txn.to.profilePic} alt="to" className="profile-pic" />
                   {txn.to.username}
                 </td>
-                <td>{txn.role === 'buyer' ? '-' : '+'}${txn.amount.toFixed(2)}</td>
+                <td>{txn.role === 'buyer' ? '-' : '+'}₹{txn.amount?.toFixed(2)}</td>
                 <td>{txn.purpose}</td>
                 <td>{txn.transactionType}</td>
                 <td>{txn.status}</td>
                 <td>
                   {txn.balanceAfterTransaction !== null
-                    ? `$${txn.balanceAfterTransaction.toFixed(2)}`
+                    ? `₹${txn.balanceAfterTransaction?.toFixed(2)}`
                     : '—'}
                 </td>
               </tr>
