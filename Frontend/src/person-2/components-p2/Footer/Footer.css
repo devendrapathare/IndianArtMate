@@ -99,6 +99,29 @@
     text-align: center;
 }
 
+.contact-info {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.contact-info p {
+    margin: 5px 0;
+    color: #fff;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.contact-info p:first-child {
+    color: #fff;
+    font-weight: 500;
+}
+
+.contact-info p:last-child {
+    color: #fff;
+    font-weight: 500;
+}
+
 @media (max-width: 1200px) {
     .footer {
         padding: 50px 6vw 25px;

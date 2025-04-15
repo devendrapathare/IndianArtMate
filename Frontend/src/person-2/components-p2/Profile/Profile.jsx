@@ -7,14 +7,14 @@ import UploadPost from '../UploadPost/UploadPost';
 import { useLocation } from 'react-router-dom';
 
 const Profile = ({ isOwnProfile, userId }) => {
-  const [showUploadPost, setShowUploadPost] = useState(true);
+  const [showUploadPost, setShowUploadPost] = useState(false);
   const postsRef = useRef(null);
   const location = useLocation();
   
   // Enhanced scrolling behavior for posts section
   useEffect(() => {
     // Handle both hash-based navigation and direct setshowUploadPost calls
-    if (location.hash === '#posts' || !showUploadPost) {
+    if (location.hash === '#posts' || showUploadPost) {
       // Add a slight delay to ensure the component is fully rendered
       setTimeout(() => {
         if (postsRef.current) {
@@ -37,7 +37,7 @@ const Profile = ({ isOwnProfile, userId }) => {
         </div>
         <div id="posts" ref={postsRef} className="profile-feed-section">
           <h2 className="profile-section-title">Posts</h2>
-          {!showUploadPost ? <UploadPost /> : <ProfilefeedDisplay isOwnProfile={isOwnProfile} current_id={userId} />}
+          {showUploadPost ? <UploadPost setShowUploadPost={setShowUploadPost} /> : <ProfilefeedDisplay isOwnProfile={isOwnProfile} current_id={userId} />}
         </div>
       </div>
       <div className="profile-sidebar">

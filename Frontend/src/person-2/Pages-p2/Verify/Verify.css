@@ -18,3 +18,39 @@
         transform: rotate(360deg);
     }
 }
+
+@keyframes smoothFadeIn {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.Verify-container, .verify-main {
+  animation: smoothFadeIn 0.7s cubic-bezier(0.4,0,0.2,1);
+}
+
+@media (max-width: 1200px) {
+  .Verify-container {
+    flex-direction: column;
+    gap: 15px;
+  }
+}
+
+@media (max-width: 768px) {
+  .Verify-container {
+    padding: 5px;
+  }
+  .verify-main {
+    padding: 5px;
+  }
+}
+
+@media (max-width: 430px), (max-width: 412px), (max-width: 400px), (max-width: 390px), (max-width: 375px), (max-width: 360px) {
+  .Verify-container {
+    padding: 2px;
+    font-size: 13px;
+  }
+  .verify-main {
+    padding: 2px;
+    font-size: 13px;
+  }
+}

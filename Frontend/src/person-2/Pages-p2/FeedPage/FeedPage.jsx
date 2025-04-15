@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react'
 import './FeedPage.css'
 import ProfileInfo from '../../components-p2/Profile/ProfileInfo/ProfileInfo'
 import { useAuthContext } from '../../context/AuthContext/AuthContext'
-import TopArtistProfileDisplay from '../../components-p2/ProfileDisplay/TopArtistProfileDisplay/TopArtistProfileDisplay'
 import Feeds from '../../components-p2/Feeds/Feeds'
 import Feed from '../../components-p2/Feeds/Feed/Feed'
 import { usePostContext } from '../../context/PostContext/PostContext'
@@ -91,10 +90,7 @@ const FeedPage = () => {
             {/* Top section with profile and more artists */}
             <div className='FeedPage-top-section'>
                 <div className='FeedPage-profile-section'>
-                    <ProfileInfo setshowUploadPost={false} isOwnProfile={true} userId={authUser._id} />
-                </div>
-                <div className='FeedPage-more-artists-section'>
-                    <TopArtistProfileDisplay />
+                    <ProfileInfo isOwnProfile={true} userId={authUser._id} />
                 </div>
             </div>
 

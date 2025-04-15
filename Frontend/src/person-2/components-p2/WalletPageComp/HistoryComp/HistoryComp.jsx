@@ -46,6 +46,7 @@ const HistoryComp = () => {
     return (
         <div className="history-container">
             <h2>Wallet Recharge History</h2>
+            <br /><br />
             {currentItems.length === 0 ? (
                 <p>No transactions yet.</p>
             ) : (
@@ -77,7 +78,7 @@ const HistoryComp = () => {
                             ))}
                         </tbody>
                     </table>
-
+                    <br />
                     <div className="pagination-controls">
                         <button onClick={handlePrev} disabled={currentPage === 1}>Previous</button>
                         <span>Page {currentPage} of {totalPages}</span>

@@ -1,23 +1,66 @@
 .passbook-container {
     padding: 20px;
-  }
-  
-  .passbook-table {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.passbook-table-wrapper {
+    min-width: 100%;
+    display: inline-block;
+}
+
+.passbook-table {
     width: 100%;
     border-collapse: collapse;
-  }
-  
-  .passbook-table th,
-  .passbook-table td {
+    min-width: 800px;
+}
+
+.passbook-table th,
+.passbook-table td {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: center;
-  }
-  
-  .profile-pic {
+    white-space: nowrap;
+}
+
+.passbook-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.passbook-container::-webkit-scrollbar-track {
+    background: rgba(255, 249, 215, 0.2);
+    border-radius: 4px;
+}
+
+.passbook-container::-webkit-scrollbar-thumb {
+    background: linear-gradient(145deg, #dfe6ff, #fff9d7);
+    border-radius: 4px;
+}
+
+.passbook-container::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(145deg, #fff9d7, #dfe6ff);
+}
+
+.profile-pic {
     width: 30px;
     height: 30px;
     border-radius: 50%;
     margin-right: 8px;
-  }
-  
+}
+
+.passbook-table th {
+    background-color: #fff9d7;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.passbook-table td {
+    background-color: #fff;
+    transition: background-color 0.3s ease;
+}
+
+.passbook-table td:hover {
+    background-color: rgba(223, 230, 255, 0.1);
+}

@@ -244,32 +244,10 @@ const ProfileInfo = ({ setshowUploadPost, isOwnProfile, userId }) => {
             <div className="profile-secondary-actions">
                 {isOwnProfile && (
                     <>
-                        <button onClick={() => {
-                            setshowUploadPost(false);
-
-                            // Immediate UI feedback - scroll to where posts section should be
-                            window.scrollTo({
-                                top: document.querySelector('.profile-feed-section')?.offsetTop - 100 || window.scrollY + 300,
-                                behavior: 'smooth'
-                            });
-
-                            setTimeout(() => {
-                                const postsElement = document.getElementById('posts');
-                                if (postsElement) {
-                                    postsElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-                                    postsElement.style.backgroundColor = 'rgba(123, 157, 224, 0.2)';
-                                    setTimeout(() => {
-                                        postsElement.style.backgroundColor = '';
-                                        postsElement.style.transition = 'background-color 0.5s ease';
-                                    }, 800);
-                                }
-                            }, 300);
-                        }} className="profileIcon-respect-button">Upload</button>
-
                         <button onClick={() => navigate('/receivedOrders')} className="profileIcon-respect-button">Received Orders</button>
-
-                        
+                        {setshowUploadPost && (
+                            <button onClick={() => setshowUploadPost(true)} className="profileIcon-respect-button">Upload</button>
+                        )}
                         <button
                             onClick={() => { navigate('/walletPage') }}
                             className="profileIcon-respect-button">

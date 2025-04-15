@@ -130,7 +130,7 @@ const PlaceOrder = () => {
           </div>
 
           {/* Payment method selection */}
-          <div className="payment-method">
+          <div className="cart-total-payment-methods">
             <label>
               <input 
                 type="radio" 

@@ -1,0 +1,35 @@
+@keyframes smoothFadeIn {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.UpdateProfilePage-container, .updateprofile-main {
+  animation: smoothFadeIn 0.7s cubic-bezier(0.4,0,0.2,1);
+}
+
+@media (max-width: 1200px) {
+  .UpdateProfilePage-container {
+    flex-direction: column;
+    gap: 15px;
+  }
+}
+
+@media (max-width: 768px) {
+  .UpdateProfilePage-container {
+    padding: 5px;
+  }
+  .updateprofile-main {
+    padding: 5px;
+  }
+}
+
+@media (max-width: 430px), (max-width: 412px), (max-width: 400px), (max-width: 390px), (max-width: 375px), (max-width: 360px) {
+  .UpdateProfilePage-container {
+    padding: 2px;
+    font-size: 13px;
+  }
+  .updateprofile-main {
+    padding: 2px;
+    font-size: 13px;
+  }
+}

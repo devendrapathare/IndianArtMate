@@ -80,7 +80,7 @@ const PassbookComp = () => {
 
   return (
     <div className="passbook-container">
-      <h2>Transaction History</h2>
+      <h2>Transaction History</h2> <br />
       {loading ? (
         <p>Loading...</p>
       ) : (
@@ -104,7 +104,18 @@ const PassbookComp = () => {
               <tr key={index}>
                 <td>{txn.srNo}</td>
                 <td>{txn.transactionId}</td>
-                <td>{new Date(txn.date).toLocaleString()}</td>
+                <td>{new Date(txn.date).toLocaleDateString('en-GB', {
+                  day: '2-digit',
+                  month: 'short',
+                  year: 'numeric'
+                })}:
+                  {new Date(txn.date).toLocaleTimeString('en-IN', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: true
+                  })}
+                </td>
                 <td>
                   <img src={txn.from.profilePic} alt="from" className="profile-pic" />
                   {txn.from.username}

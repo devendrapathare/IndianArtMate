@@ -60,9 +60,9 @@ useEffect(() => {
 return (
   <div className='landing'>
     <div className="carousel-container">
-      <button className="nav-button prev" onClick={prevImage}>
+      {/* <button className="nav-button prev" onClick={prevImage}>
         <img src={arrowIcon} alt="Previous" />
-      </button>
+      </button> */}
       <div className={`carousel-content ${isTransitioning ? 'transitioning' : ''}`}>
         <div className="carousel-text">
           <h2 dangerouslySetInnerHTML={{ __html: CrouselData[currentIndex].title }}></h2>
@@ -72,9 +72,9 @@ return (
         <img src={CrouselData[currentIndex].src} alt={CrouselData[currentIndex].title} />
         <div className="loading-indicator">loading... {loadingProgress}%</div>
       </div>
-      <button className="nav-button next" onClick={nextImage}>
+      {/* <button className="nav-button next" onClick={nextImage}>
         <img src={arrowIcon} alt="Next" style={{ transform: 'rotate(180deg)' }} />
-      </button>
+      </button> */}
       <div className="indicators">
         {CrouselData.map((_, index) => (
           <span

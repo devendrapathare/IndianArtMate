@@ -5,6 +5,10 @@
     height: auto;
     overflow-y: visible;
     width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    flex: 1;
 }
 
 .MainProfileUpdate-header {
@@ -16,21 +20,22 @@
     background: transparent;
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    gap: 25px;
     width: 100%;
 }
 
 /* Form sections */
 .form-section {
-    margin-bottom: 25px;
-    background-color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 20px;
+    background-color: rgba(255, 255, 255, 0.9);
     border-radius: 12px;
     padding: 25px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
     transition: all 0.3s ease;
     transform: translateY(0);
     animation: formSectionSlide 0.6s ease backwards;
     width: 100%;
+    border: 1px solid rgba(123, 157, 224, 0.1);
 }
 
 .form-section:nth-child(1) { animation-delay: 0.1s; }
@@ -52,19 +57,26 @@
 .form-section:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: rgba(255, 255, 255, 0.95);
 }
 
 /* Two-column layout for form fields */
 .form-section:first-child {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 20px;
+    gap: 15px;
     align-items: start;
 }
 
+.form-section:nth-child(2),
+.form-section:nth-child(3) {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+}
+
 .form-field {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     position: relative;
     overflow: hidden;
 }
@@ -82,10 +94,10 @@
 .form-field label {
     display: block;
     font-weight: 600;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     color: #333;
-    font-size: 16px;
-    letter-spacing: 0.3px;
+    font-size: 15px;
+    letter-spacing: 0.2px;
     transition: all 0.3s ease;
 }
 
@@ -99,14 +111,14 @@
 .form-field textarea,
 .form-field select {
     width: 100%;
-    padding: 14px;
+    padding: 12px;
     border: 2px solid #dfe6ff;
     border-radius: 8px;
     background-color: #fff;
     color: #333;
-    font-size: 16px;
+    font-size: 15px;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 10px rgba(223, 230, 255, 0.2);
+    box-shadow: 0 3px 8px rgba(223, 230, 255, 0.15);
 }
 
 .form-field input:focus,
@@ -134,14 +146,14 @@
 /* Textarea specific */
 .form-field textarea {
     resize: vertical;
-    min-height: 120px;
+    min-height: 100px;
 }
 
 /* Address fields */
 .address-fields {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 20px;
+    gap: 15px;
 }
 
 .address-field {
@@ -152,7 +164,9 @@
 .form-actions {
     display: flex;
     justify-content: center;
-    margin-top: 20px;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #dfe6ff;
 }
 
 .form-actions button {
@@ -160,14 +174,14 @@
     color: white;
     border: none;
     border-radius: 8px;
-    padding: 15px 30px;
-    font-size: 18px;
+    padding: 12px 25px;
+    font-size: 16px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
-    min-width: 200px;
-    letter-spacing: 0.5px;
-    box-shadow: 0 4px 15px rgba(255, 151, 23, 0.25);
+    min-width: 180px;
+    letter-spacing: 0.4px;
+    box-shadow: 0 3px 10px rgba(255, 151, 23, 0.2);
     position: relative;
     overflow: hidden;
 }
@@ -306,4 +320,3 @@
     border-radius: 8px;
     border: 2px solid #f1f1f1;
 }
-

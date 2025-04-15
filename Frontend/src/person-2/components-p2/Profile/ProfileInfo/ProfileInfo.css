@@ -4,7 +4,7 @@
     background: #FFF9D7; 
     margin: 20px;
     padding: 2rem;
-    border-radius: 8px;
+    border-radius: 0 20px 20px 0;
     min-height: 400px;
     box-shadow: 0 8px 20px rgba(93, 123, 157, 0.1);
     animation: fadeIn 0.6s ease-out;
@@ -291,6 +291,14 @@
 .profileIcon-respect-button:active,
 .profileIcon-update-profile-button:active {
     transform: scale(0.98);
+}
+
+.profile-info-section {
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
 }
 
 @media (max-width: 768px) {

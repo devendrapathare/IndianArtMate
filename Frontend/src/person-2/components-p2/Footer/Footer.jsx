@@ -46,11 +46,15 @@ const Footer = () => {
                     <img src={assets.linkedin_icon} alt="LinkedIn" />
                 </a>
             </div>
+            <div className="contact-info">
+                <p>Mobile: +91-1234567890 (India)</p>
+                <p>Email: indianartmate@ac.co.in</p>
+            </div>
         </div>
       </div>
       <hr />
       <p className="footer-copyright">
-        © 2025 IndianArtMate. All rights reserved.
+        2025 IndianArtMate. All rights reserved.
       </p>
     </div>
   )
