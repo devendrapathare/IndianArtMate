@@ -1,0 +1,2 @@
+# IndianArtMate
+A PLATFORM FOR ARTISTS
