@@ -45,7 +45,7 @@ except Exception as e:
 
 try:
     app.register_blueprint(nlp_blueprint, url_prefix="/nlp")
-    print("✅ nlp_blueprint registered")
+    print("✅ nlp_blueprint registered") 
 except Exception as e:
     print(f"❌ Error registering nlp_blueprint: {e}")
 

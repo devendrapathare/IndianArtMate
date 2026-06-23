@@ -8,7 +8,9 @@ const walletTransactionSchema = new mongoose.Schema({
     },
     amount: {
         type: Number,
-        required: true
+        required: true,
+        default:2000,
+        min: 0
     },
     paymentStatus: {
         type: String,

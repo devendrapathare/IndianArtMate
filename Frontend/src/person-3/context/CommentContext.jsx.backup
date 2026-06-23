@@ -50,14 +50,13 @@ export const CommentProvider = ({ children }) => {
     
             // Ensure `response.data` is accessed correctly
             const newComments = response.data.comment.comments;
-            
-            console.log("newComments:",newComments)
+    
             // setComments((prev) => [...prev, ...newComments]);
             setComments(newComments)
-            console.log("comme:",comments)
+            // console.log("comme:",comments)
             setError(null);
         } catch (err) {
-            alert(err.response?.data?.message || 'Cannot add inapporopriate comment');
+            setError(err.response?.data?.message || 'Failed to add comment');
         }
     };
     

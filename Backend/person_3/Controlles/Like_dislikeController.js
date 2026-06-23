@@ -42,6 +42,7 @@ export const for_like = async (req, res) => {
     const { userId } = req.body;
 
     try {
+        console.log('userId',userId);
         const post = await userPosts.findById(postId);
         if (!post) return res.status(404).json({ error: "Post not found" });
 
@@ -54,9 +55,10 @@ export const for_like = async (req, res) => {
 
         const stats = await calculateAndUpdateLikeDislikeStats(post);
         res.status(200).json(stats);
-        // console.log('stas',stats);
+        console.log('stas',stats);
         
     } catch (err) {
+        console.log('err',err);
         res.status(500).json({ error: 'Something went wrong' });
     }
 };

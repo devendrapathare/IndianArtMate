@@ -218,8 +218,11 @@ const Categories = () => {
     }
 
     try {
+
+      const path = `${url}/posts/${action}/${postId}`
+      console.log(postId)
       // Make API request to like/dislike endpoint
-      await axios.post(`${url}/posts/${action}/${postId}`, {
+      await axios.post(path, {
         userId: authUser._id,
       });
 

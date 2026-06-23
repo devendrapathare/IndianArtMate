@@ -80,7 +80,7 @@ from pymongo import MongoClient
 import pandas as pd
 
 MONGO_URI = "mongodb://localhost:27017/"
-DB_NAME = "Indian_ArtMate"
+DB_NAME = "Indian_ArtMate2"
 COLLECTION_NAME = "users"
 
 def get_users():
