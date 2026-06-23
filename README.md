@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # IndianArtMate Project
 
 ## Description
@@ -36,3 +37,7 @@ Contributions are welcome! Please submit a pull request or open an issue for dis
 
 ## License
 This project is licensed under the MIT License.
+=======
+# IndianArtMate
+A PLATFORM FOR ARTISTS
+>>>>>>> b3463fdf9f51996b2cf185dbcca512e3deee90e1
